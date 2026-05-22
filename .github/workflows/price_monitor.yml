@@ -1,0 +1,94 @@
+name: Flight Price Monitor
+
+on:
+  schedule:
+    # 每天 10:00 AM 台灣時間（UTC+8 → UTC 02:00）
+    - cron: '0 2 * * *'
+  workflow_dispatch:   # 也可手動在 Actions 頁面觸發
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # 允許 commit 回 history.json
+      issues: write     # 允許在票價達標時建立 Issue 通知
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run price tracker
+        id: scan
+        run: |
+          cd 價格追蹤
+          python3 track.py 2>&1 | tee /tmp/scan_output.txt
+          echo "exit_code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit updated history
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add 價格追蹤/history.json
+          # 只在有變動時 commit（避免空 commit）
+          git diff --staged --quiet || \
+            git commit -m "auto: price scan $(date -u '+%Y-%m-%d') [skip ci]"
+          git push
+
+      - name: Check alert thresholds and create issue if triggered
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            // 讀取最新 history
+            const history = JSON.parse(
+              fs.readFileSync('價格追蹤/history.json', 'utf8')
+            );
+            const targets = JSON.parse(
+              fs.readFileSync('價格追蹤/targets.json', 'utf8')
+            );
+
+            const alerts = [];
+            for (const t of targets) {
+              if (t.type !== 'open_jaw') continue;
+              const records = history[t.id];
+              if (!records || records.length === 0) continue;
+
+              const latest  = records[records.length - 1];
+              const threshold = t.alert_threshold;
+              if (!threshold || latest.price > threshold) continue;
+
+              // 觸發警報！
+              alerts.push(
+                `**${t.name}**\n` +
+                `- 合計票價：TWD ${latest.price.toLocaleString()}（目標 ≤ TWD ${threshold.toLocaleString()}）\n` +
+                `- 去程：${latest.inbound.airline} ${latest.inbound.flight_no}  ` +
+                  `${latest.depart_date}  ${latest.inbound.dep}→${latest.inbound.arr}  ` +
+                  `TWD ${latest.inbound.price.toLocaleString()}\n` +
+                `- 回程：${latest.outbound.airline} ${latest.outbound.flight_no}  ` +
+                  `${latest.return_date}  ${latest.outbound.dep}→${latest.outbound.arr}  ` +
+                  `TWD ${latest.outbound.price.toLocaleString()}`
+              );
+            }
+
+            if (alerts.length === 0) {
+              console.log('No alerts triggered.');
+              return;
+            }
+
+            // 建立 GitHub Issue 通知（GitHub 會發信給 watch 的人）
+            const today = new Date().toISOString().slice(0, 10);
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo:  context.repo.repo,
+              title: `✈️ 票價警報 ${today}：開口票已達目標價`,
+              body:  alerts.join('\n\n---\n\n') +
+                     '\n\n> 此 Issue 由 GitHub Actions 自動建立。確認後可關閉。',
+              labels: ['price-alert'],
+            });
+            console.log('Alert issue created!');

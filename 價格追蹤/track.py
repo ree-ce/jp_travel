@@ -11,9 +11,10 @@ Usage:
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Optional
 
@@ -21,7 +22,9 @@ BASE = Path(__file__).parent
 SEARCH_PY = BASE.parent / ".claude/skills/search-flights/search.py"
 TARGETS_FILE = BASE / "targets.json"
 HISTORY_FILE = BASE / "history.json"
-TMP_RESULTS = Path("/tmp/flight_results.json")
+TMP_RESULTS  = Path("/tmp/flight_results.json")
+TMP_ONEWAY   = Path("/tmp/flight_oneway.json")
+TMP_INBOUND  = Path("/tmp/flight_inbound.json")   # temp copy while open-jaw scans outbound
 
 RATING_SCORE = {"超值": 1, "便宜": 2, "一般偏低": 3, "一般": 4, "偏高": 5, "高": 6}
 # Display as rank [1/6] so hierarchy is unambiguous
@@ -52,6 +55,67 @@ def save_history(history: dict):
         json.dump(history, f, ensure_ascii=False, indent=2)
 
 
+def query_openjaw_target(target: dict) -> Optional[dict]:
+    """Scan inbound and outbound legs separately, find cheapest combo at target trip_days."""
+    inb      = target["inbound"]
+    out      = target["outbound"]
+    budget   = str(target.get("budget", 12000))
+    trip_days = target["trip_days"]
+
+    # --- Inbound leg: e.g. TPE → KIX ---
+    print(f"  去程掃描：{inb['origin']} → {inb['dest']}  "
+          f"{inb['date_start']} ~ {inb['date_end']}...")
+    subprocess.run(
+        ["python3", str(SEARCH_PY), "--oneway",
+         inb["origin"], inb["dest"],
+         inb["date_start"], inb["date_end"],
+         budget, inb.get("airlines", "IT,CI,BR,JX,GK")],
+        capture_output=True, text=True,
+    )
+    inb_results = []
+    if TMP_ONEWAY.exists():
+        with open(TMP_ONEWAY, encoding="utf-8") as f:
+            inb_results = json.load(f)
+        shutil.copy(TMP_ONEWAY, TMP_INBOUND)   # preserve before next scan overwrites it
+
+    # --- Outbound leg: e.g. OKJ → TPE ---
+    print(f"  回程掃描：{out['origin']} → {out['dest']}  "
+          f"{out['date_start']} ~ {out['date_end']}...")
+    subprocess.run(
+        ["python3", str(SEARCH_PY), "--oneway",
+         out["origin"], out["dest"],
+         out["date_start"], out["date_end"],
+         budget, out.get("airlines", "IT")],
+        capture_output=True, text=True,
+    )
+    out_results = []
+    if TMP_ONEWAY.exists():
+        with open(TMP_ONEWAY, encoding="utf-8") as f:
+            out_results = json.load(f)
+
+    # --- Find cheapest combo where (return - depart) == trip_days - 1 ---
+    best: Optional[dict] = None
+    best_total = 999_999
+    for ir in inb_results:
+        for or_ in out_results:
+            dep = date.fromisoformat(ir["depart_date"])
+            ret = date.fromisoformat(or_["depart_date"])
+            if (ret - dep).days == trip_days - 1:
+                total = ir["price_ow"] + or_["price_ow"]
+                if total < best_total:
+                    best_total = total
+                    best = {
+                        "type":        "open_jaw",
+                        "depart_date": ir["depart_date"],
+                        "return_date": or_["depart_date"],
+                        "total_price": total,
+                        "inbound":     ir,
+                        "outbound":    or_,
+                    }
+
+    return best
+
+
 def query_target(target: dict) -> list:
     cmd = [
         "python3", str(SEARCH_PY),
@@ -79,32 +143,57 @@ def best_result(results: list) -> Optional[dict]:
     return min(results, key=lambda r: r.get("price_rt", 999999))
 
 
-def record_snapshot(history: dict, target_id: str, results: list) -> dict:
-    best = best_result(results)
-    if not best:
-        return history
-    snapshot = {
-        "checked_at": datetime.now(timezone.utc).isoformat(),
-        "price": best["price_rt"],
-        "airline": best["airline"],
-        "flight_no": best["flight_no"],
-        "dep": best["dep"],
-        "arr": best["arr"],
-        "rating": best["rating_label"],
-        "history_min": best.get("history_min"),
-        "top3": [
-            {
-                "airline": r["airline"],
-                "flight_no": r["flight_no"],
-                "dep": r["dep"],
-                "arr": r["arr"],
-                "price": r["price_rt"],
-                "rating": r["rating_label"],
-                "history_min": r.get("history_min"),
-            }
-            for r in sorted(results, key=lambda x: x["price_rt"])[:3]
-        ],
-    }
+def record_snapshot(history: dict, target_id: str, results) -> dict:
+    """Append a price snapshot to history. results can be a list (round trip)
+    or a dict with type=='open_jaw'."""
+    if isinstance(results, dict) and results.get("type") == "open_jaw":
+        snapshot = {
+            "checked_at":  datetime.now(timezone.utc).isoformat(),
+            "type":        "open_jaw",
+            "price":       results["total_price"],
+            "depart_date": results["depart_date"],
+            "return_date": results["return_date"],
+            "inbound": {
+                "airline":   results["inbound"]["airline"],
+                "flight_no": results["inbound"]["flight_no"],
+                "dep":       results["inbound"]["dep"],
+                "arr":       results["inbound"]["arr"],
+                "price":     results["inbound"]["price_ow"],
+            },
+            "outbound": {
+                "airline":   results["outbound"]["airline"],
+                "flight_no": results["outbound"]["flight_no"],
+                "dep":       results["outbound"]["dep"],
+                "arr":       results["outbound"]["arr"],
+                "price":     results["outbound"]["price_ow"],
+            },
+        }
+    else:
+        best = best_result(results)
+        if not best:
+            return history
+        snapshot = {
+            "checked_at": datetime.now(timezone.utc).isoformat(),
+            "price":      best["price_rt"],
+            "airline":    best["airline"],
+            "flight_no":  best["flight_no"],
+            "dep":        best["dep"],
+            "arr":        best["arr"],
+            "rating":     best["rating_label"],
+            "history_min": best.get("history_min"),
+            "top3": [
+                {
+                    "airline":    r["airline"],
+                    "flight_no":  r["flight_no"],
+                    "dep":        r["dep"],
+                    "arr":        r["arr"],
+                    "price":      r["price_rt"],
+                    "rating":     r["rating_label"],
+                    "history_min": r.get("history_min"),
+                }
+                for r in sorted(results, key=lambda x: x["price_rt"])[:3]
+            ],
+        }
     history.setdefault(target_id, []).append(snapshot)
     return history
 
@@ -173,60 +262,90 @@ def print_report(targets: list, history: dict):
             continue
 
         latest = records[-1]
-        prev = prev_snapshot(history, tid)
-        atl = all_time_low(history, tid)
-        eff_rating = effective_rating(latest["price"], latest["rating"], latest.get("history_min"))
-        rating_icon = RATING_LABEL.get(eff_rating, "")
+        prev   = prev_snapshot(history, tid)
+        atl    = all_time_low(history, tid)
 
-        print(f"\n  現在最低  TWD {latest['price']:,}  "
-              f"{rating_icon}  "
-              f"{latest['airline']} {latest['flight_no']}  "
-              f"{latest['dep']}→{latest['arr']}")
+        # --- Open jaw display ---
+        if latest.get("type") == "open_jaw":
+            inb = latest["inbound"]
+            out = latest["outbound"]
+            print(f"\n  現在最低  TWD {latest['price']:,}（開口票合計）")
+            print(f"  去程  {inb['airline']} {inb['flight_no']}  "
+                  f"{latest['depart_date']}  {inb['dep']}→{inb['arr']}  TWD {inb['price']:,}")
+            print(f"  回程  {out['airline']} {out['flight_no']}  "
+                  f"{latest['return_date']}  {out['dep']}→{out['arr']}  TWD {out['price']:,}")
 
-        if prev:
-            diff = latest["price"] - prev["price"]
-            sign = "↑" if diff > 0 else "↓"
-            color = "漲" if diff > 0 else "降"
-            ago = days_ago(prev["checked_at"])
-            print(f"  上次記錄  TWD {prev['price']:,}  "
-                  f"({sign}{color} {abs(diff):,}，{ago})")
+            if prev:
+                diff = latest["price"] - prev["price"]
+                sign, word = ("↑", "漲") if diff > 0 else ("↓", "降")
+                print(f"  上次記錄  TWD {prev['price']:,}  "
+                      f"({sign}{word} {abs(diff):,}，{days_ago(prev['checked_at'])})")
 
-        if atl:
-            diff_from_atl = latest["price"] - atl
-            if diff_from_atl == 0:
-                print(f"  歷史最低  TWD {atl:,}  ← 目前即歷史低點！")
+            if atl:
+                diff_from_atl = latest["price"] - atl
+                if diff_from_atl == 0:
+                    print(f"  歷史最低  TWD {atl:,}  ← 目前即歷史低點！")
+                else:
+                    print(f"  歷史最低  TWD {atl:,}  （距低點還差 TWD {diff_from_atl:,}）")
+
+            threshold = target.get("alert_threshold")
+            if threshold and latest["price"] <= threshold:
+                print(f"\n  🔥 建議：已達警戒低價 TWD {threshold:,}，可考慮出手！")
             else:
-                print(f"  歷史最低  TWD {atl:,}  （距低點還差 TWD {diff_from_atl:,}）")
+                print(f"\n  💡 建議：繼續等。目標價 TWD {threshold:,}" if threshold else
+                      f"\n  💡 建議：繼續觀察。")
 
-        if latest.get("history_min"):
-            google_low = latest["history_min"]
-            diff = latest["price"] - google_low
-            if diff <= 0:
-                print(f"  Google低點 TWD {google_low:,}  ← 已達或低於 Google 歷史低！")
-            else:
-                print(f"  Google低點 TWD {google_low:,}  （差 TWD {diff:,}）")
-
-        # 建議
-        rating = eff_rating
-        if rating == "超值":
-            print(f"\n  💡 建議：超值票，現在可考慮出手。")
-        elif rating == "便宜":
-            if diff_from_atl == 0 if atl else False:
-                print(f"\n  💡 建議：便宜且為歷史低點，可出手。")
-            else:
-                print(f"\n  💡 建議：便宜，但還有空間可等更低。")
+        # --- Round trip display (existing logic) ---
         else:
-            print(f"\n  💡 建議：繼續等，尚未到買點。")
+            eff_rating  = effective_rating(latest["price"], latest["rating"], latest.get("history_min"))
+            rating_icon = RATING_LABEL.get(eff_rating, "")
 
-        # Top 3
-        if latest.get("top3"):
-            print(f"\n  前3低價選項：")
-            for i, r in enumerate(latest["top3"], 1):
-                adj = effective_rating(r["price"], r["rating"], r.get("history_min"))
-                icon = RATING_LABEL.get(adj, "")
-                hmin = f"歷史低 {r['history_min']:,}" if r.get("history_min") else ""
-                print(f"  {i}. TWD {r['price']:,} {icon}  "
-                      f"{r['airline']} {r['flight_no']}  {r['dep']}→{r['arr']}  {hmin}")
+            print(f"\n  現在最低  TWD {latest['price']:,}  "
+                  f"{rating_icon}  "
+                  f"{latest['airline']} {latest['flight_no']}  "
+                  f"{latest['dep']}→{latest['arr']}")
+
+            if prev:
+                diff = latest["price"] - prev["price"]
+                sign, word = ("↑", "漲") if diff > 0 else ("↓", "降")
+                print(f"  上次記錄  TWD {prev['price']:,}  "
+                      f"({sign}{word} {abs(diff):,}，{days_ago(prev['checked_at'])})")
+
+            if atl:
+                diff_from_atl = latest["price"] - atl
+                if diff_from_atl == 0:
+                    print(f"  歷史最低  TWD {atl:,}  ← 目前即歷史低點！")
+                else:
+                    print(f"  歷史最低  TWD {atl:,}  （距低點還差 TWD {diff_from_atl:,}）")
+
+            if latest.get("history_min"):
+                google_low = latest["history_min"]
+                diff = latest["price"] - google_low
+                if diff <= 0:
+                    print(f"  Google低點 TWD {google_low:,}  ← 已達或低於 Google 歷史低！")
+                else:
+                    print(f"  Google低點 TWD {google_low:,}  （差 TWD {diff:,}）")
+
+            rating = eff_rating
+            if rating == "超值":
+                print(f"\n  💡 建議：超值票，現在可考慮出手。")
+            elif rating == "便宜":
+                diff_from_atl = latest["price"] - atl if atl else 1
+                if diff_from_atl == 0:
+                    print(f"\n  💡 建議：便宜且為歷史低點，可出手。")
+                else:
+                    print(f"\n  💡 建議：便宜，但還有空間可等更低。")
+            else:
+                print(f"\n  💡 建議：繼續等，尚未到買點。")
+
+            if latest.get("top3"):
+                print(f"\n  前3低價選項：")
+                for i, r in enumerate(latest["top3"], 1):
+                    adj  = effective_rating(r["price"], r["rating"], r.get("history_min"))
+                    icon = RATING_LABEL.get(adj, "")
+                    hmin = f"歷史低 {r['history_min']:,}" if r.get("history_min") else ""
+                    print(f"  {i}. TWD {r['price']:,} {icon}  "
+                          f"{r['airline']} {r['flight_no']}  {r['dep']}→{r['arr']}  {hmin}")
 
     print(f"\n{'='*60}")
     print(f"  歷史記錄已存至 {HISTORY_FILE.name}（共 "
@@ -278,12 +397,22 @@ def main():
 
     print(f"\n開始查詢 {len(targets)} 個目標路線...\n")
     for target in targets:
-        results = query_target(target)
-        if results:
-            history = record_snapshot(history, target["id"], results)
-            print(f"  ✓ 找到 {len(results)} 筆，最低 TWD {best_result(results)['price_rt']:,}")
+        if target.get("type") == "open_jaw":
+            print(f"  查詢中（開口票）：{target['name']}")
+            result = query_openjaw_target(target)
+            if result:
+                history = record_snapshot(history, target["id"], result)
+                print(f"  ✓ 最佳組合 {result['depart_date']} 去 / {result['return_date']} 回  "
+                      f"TWD {result['total_price']:,}")
+            else:
+                print(f"  ✗ {target['name']} 查無符合天數的組合")
         else:
-            print(f"  ✗ {target['name']} 查無結果")
+            results = query_target(target)
+            if results:
+                history = record_snapshot(history, target["id"], results)
+                print(f"  ✓ 找到 {len(results)} 筆，最低 TWD {best_result(results)['price_rt']:,}")
+            else:
+                print(f"  ✗ {target['name']} 查無結果")
 
     save_history(history)
     print_report(targets, history)
