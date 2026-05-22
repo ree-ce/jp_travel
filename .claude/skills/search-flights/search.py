@@ -146,55 +146,154 @@ def _extract_selected_flight(offer: dict, date_str: str) -> Optional[list]:
     return [[offer["from"], date_str, offer["to"], None, airline_code, flight_num]]
 
 
+# ---------------------------------------------------------------------------
+# Content-based field extractors — robust across route variants
+# Instead of hard-coded indices, we identify fields by their shape/content.
+# ---------------------------------------------------------------------------
+
+def _is_iata(x) -> bool:
+    """3-letter uppercase ASCII airport code, e.g. 'TPE', 'OKJ'."""
+    return isinstance(x, str) and len(x) == 3 and x.isalpha() and x.isupper()
+
+
+def _is_hhmm(x) -> bool:
+    """[h, m] time pair, e.g. [14, 40]."""
+    return (isinstance(x, list) and len(x) == 2
+            and isinstance(x[0], int) and isinstance(x[1], int)
+            and 0 <= x[0] <= 23 and 0 <= x[1] <= 59)
+
+
+def _is_duration(x) -> bool:
+    """Flight duration in minutes: plausible range 30–720 min."""
+    return isinstance(x, int) and 30 <= x <= 720
+
+
+def _scan(lst, pred, n=1):
+    """Return the n-th element (1-based) of lst satisfying pred, or None."""
+    count = 0
+    for x in lst:
+        if pred(x):
+            count += 1
+            if count == n:
+                return x
+    return None
+
+
+def _fmt_hhmm(t) -> str:
+    return "%02d:%02d" % (t[0], t[1]) if _is_hhmm(t) else "00:00"
+
+
+def _parse_segment(seg: list, fallback_airline: str) -> Optional[dict]:
+    """Parse one flight segment using content-based field detection."""
+    if not isinstance(seg, list) or len(seg) < 8:
+        return None
+
+    from_ap = _scan(seg, _is_iata, 1)
+    to_ap   = _scan(seg, _is_iata, 2)
+    if not from_ap or not to_ap:
+        return None
+
+    dep_t = _scan(seg, _is_hhmm, 1)
+    arr_t = _scan(seg, _is_hhmm, 2)
+    dur   = _scan(seg, _is_duration)
+
+    # Flight-number entry: ['IT', '214', ...] — first element is 2-3 char
+    # airline code, second element starts with a digit.
+    fn_code = fn_num = None
+    for x in seg:
+        if (isinstance(x, list) and len(x) >= 2
+                and isinstance(x[0], str) and 1 < len(x[0]) <= 3 and x[0].isupper()
+                and isinstance(x[1], str) and x[1] and x[1][0].isdigit()):
+            fn_code, fn_num = x[0], x[1]
+            break
+
+    # Aircraft: string containing a known keyword or matching A/B prefix pattern
+    aircraft = None
+    for x in seg:
+        if isinstance(x, str) and len(x) > 3 and any(
+                k in x for k in ("Airbus", "Boeing", "A320", "A321", "A330",
+                                  "B737", "B738", "B777", "B787", "E190")):
+            aircraft = x
+            break
+
+    # CO2 in grams: large integer, usually near end of segment
+    co2_g = None
+    for x in reversed(seg):
+        if isinstance(x, int) and 50_000 <= x <= 500_000:
+            co2_g = x
+            break
+
+    return {
+        "flight_no": f"{fn_code or fallback_airline}{fn_num or '?'}",
+        "from": from_ap,
+        "to": to_ap,
+        "dep": _fmt_hhmm(dep_t),
+        "arr": _fmt_hhmm(arr_t),
+        "duration_min": dur or 0,
+        "aircraft": aircraft,
+        "co2_kg": co2_g // 1000 if co2_g else None,
+    }
+
+
 def parse_offer(offer: list) -> Optional[dict]:
     if not isinstance(offer, list) or len(offer) < 2:
         return None
     leg = offer[0]
+    # leg[0] must be the airline IATA code (2-char uppercase string)
     if not isinstance(leg, list) or not leg or not isinstance(leg[0], str):
         return None
 
     airline_code = leg[0]
     airline_name = leg[1][0] if isinstance(leg[1], list) and leg[1] else airline_code
 
+    # Price and booking token — standard location offer[1][0][1] / offer[1][1]
+    price_rt = token = None
     try:
         price_rt = offer[1][0][1]
-        token = offer[1][1]
+        token    = offer[1][1]
+        if not isinstance(price_rt, (int, float)):
+            price_rt = None
     except (IndexError, TypeError):
-        price_rt = token = None
+        pass
 
+    # Segments are at leg[2]
     segs = []
-    for seg in (leg[2] or []):
-        if not isinstance(seg, list) or len(seg) < 12:
-            continue
-        dep_t = seg[8] if isinstance(seg[8], list) else [0, 0]
-        arr_t = seg[10] if isinstance(seg[10], list) else [0, 0]
-        fn_info = seg[22] if len(seg) > 22 else None
-        co2_g = seg[31] if len(seg) > 31 and isinstance(seg[31], int) else None
-        segs.append({
-            "flight_no": "%s%s" % (airline_code, fn_info[1] if isinstance(fn_info, list) and len(fn_info) > 1 else "?"),
-            "from": seg[3],
-            "to": seg[6],
-            "dep": "%02d:%02d" % (dep_t[0] or 0, dep_t[1] if len(dep_t) > 1 else 0),
-            "arr": "%02d:%02d" % (arr_t[0] or 0, arr_t[1] if len(arr_t) > 1 else 0),
-            "duration_min": seg[11] or 0,
-            "aircraft": seg[17] if len(seg) > 17 and isinstance(seg[17], str) else None,
-            "co2_kg": co2_g // 1000 if co2_g else None,
-        })
+    for raw_seg in (leg[2] if isinstance(leg[2], list) else []):
+        s = _parse_segment(raw_seg, airline_code)
+        if s:
+            segs.append(s)
 
-    dep_t = leg[5] if isinstance(leg[5], list) else [0, 0]
-    arr_t = leg[8] if isinstance(leg[8], list) else [0, 0]
+    # Leg-level fields: try fixed indices first (fastest, most precise),
+    # fall back to content-based scan when the slot contains unexpected data.
+    def _leg_iata(idx):
+        v = leg[idx] if len(leg) > idx else None
+        return v if _is_iata(v) else None
+
+    def _leg_hhmm(idx):
+        v = leg[idx] if len(leg) > idx else None
+        return v if _is_hhmm(v) and v != [0, 0] else None
+
+    def _leg_dur(idx):
+        v = leg[idx] if len(leg) > idx else None
+        return v if _is_duration(v) else None
+
+    from_ap = _leg_iata(3) or _scan(leg, _is_iata, 1)
+    to_ap   = _leg_iata(6) or _scan(leg, _is_iata, 2)
+    dep_t   = _leg_hhmm(5) or _scan(leg, lambda x: _is_hhmm(x) and x != [0, 0], 1)
+    arr_t   = _leg_hhmm(8) or _scan(leg, lambda x: _is_hhmm(x) and x != [0, 0], 2)
+    dur     = _leg_dur(9)  or _scan(leg, _is_duration)
 
     return {
         "airline": airline_name,
         "airline_code": airline_code,
-        "from": leg[3],
-        "to": leg[6],
-        "dep": "%02d:%02d" % (dep_t[0] or 0, dep_t[1] if len(dep_t) > 1 else 0),
-        "arr": "%02d:%02d" % (arr_t[0] or 0, arr_t[1] if len(arr_t) > 1 else 0),
-        "total_duration_min": leg[9] or 0,
+        "from": from_ap or "",
+        "to": to_ap or "",
+        "dep": _fmt_hhmm(dep_t),
+        "arr": _fmt_hhmm(arr_t),
+        "total_duration_min": dur or 0,
         "stops": max(0, len(segs) - 1),
         "segments": segs,
-        "price_rt": price_rt,
+        "price_rt": int(price_rt) if price_rt else None,
         "token": token,
     }
 
