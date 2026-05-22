@@ -243,9 +243,23 @@ def search_flights(origin, dest_airports, depart_date, return_date, airlines,
     if not chunks:
         return []
 
+    # Primary path: offers at c[2][0] (most routes)
+    offers = []
     try:
-        offers = chunks[0][2][0]
+        offers = chunks[0][2][0] or []
     except (IndexError, TypeError):
+        pass
+
+    # Fallback: some small airports (e.g. OKJ) return offers at c[3],
+    # each wrapped in an extra single-element list → unwrap with o[0]
+    if not offers:
+        try:
+            raw3 = chunks[0][3] or []
+            offers = [o[0] for o in raw3 if isinstance(o, list) and o]
+        except (IndexError, TypeError):
+            pass
+
+    if not offers:
         return []
 
     flights = [parse_offer(x) for x in offers]
