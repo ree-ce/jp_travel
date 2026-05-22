@@ -271,12 +271,23 @@ def parse_offer(offer: list) -> Optional[dict]:
 
     def _leg_hhmm(idx):
         v = leg[idx] if len(leg) > idx else None
+        # WARNING: Do NOT remove the `v != [0, 0]` guard.
+        # Some routes (e.g. GK50 OKJ→KIX) pad the leg array with [0, 0] at positions
+        # before the real arrival time. Without this guard, [0, 0] silently becomes
+        # "00:00" — a data corruption that looks valid but isn't.
         return v if _is_hhmm(v) and v != [0, 0] else None
 
     def _leg_dur(idx):
         v = leg[idx] if len(leg) > idx else None
         return v if _is_duration(v) else None
 
+    # Field layout observed across tested routes (indices may shift by route variant):
+    #   leg[0]  = airline code (str)         leg[1]  = [airline name, ...]
+    #   leg[2]  = segments list              leg[3]  = origin IATA
+    #   leg[5]  = departure [h, m]           leg[6]  = destination IATA
+    #   leg[8]  = arrival [h, m]             leg[9]  = total duration (min)
+    # Fixed-index read first; content-scan as fallback when index holds unexpected data.
+    # The `x != [0, 0]` exclusion in both paths is load-bearing — see _leg_hhmm comment.
     from_ap = _leg_iata(3) or _scan(leg, _is_iata, 1)
     to_ap   = _leg_iata(6) or _scan(leg, _is_iata, 2)
     dep_t   = _leg_hhmm(5) or _scan(leg, lambda x: _is_hhmm(x) and x != [0, 0], 1)
@@ -349,8 +360,10 @@ def search_flights(origin, dest_airports, depart_date, return_date, airlines,
     except (IndexError, TypeError):
         pass
 
-    # Fallback: some small airports (e.g. OKJ) return offers at c[3],
-    # each wrapped in an extra single-element list → unwrap with o[0]
+    # Fallback: small/regional airports (confirmed: OKJ, possibly TAK, MMY) return
+    # offers at c[3] instead of c[2][0]. Each entry is wrapped in an extra single-element
+    # list, so unwrap with o[0]. Do NOT merge this into the primary path — major airports
+    # (KIX, NRT, FUK…) do NOT have c[3], and blindly reading it would throw IndexError.
     if not offers:
         try:
             raw3 = chunks[0][3] or []
@@ -400,6 +413,10 @@ def get_booking_details(token, origin, dest_airports, depart_date, return_date, 
 
     ret_flights = []
     try:
+        # FRAGILE index: GetBookingResults places return-leg offers at c[0][1][5][0]
+        # for all tested routes. If return flights silently go missing, inspect with:
+        #   print(json.dumps(chunks[0][1][:8], ensure_ascii=False))
+        # Small airports (OKJ etc.) may need the c[3] fallback here too — not yet tested.
         ret_offers = chunks[0][1][5][0]
         ret_flights = [parse_offer(x) for x in ret_offers]
         ret_flights = [f for f in ret_flights if f]
@@ -486,6 +503,9 @@ def _call_calendar_graph_chunk(origin, dest_airports, chunk_start, chunk_end,
 
     results = []
     try:
+        # NOTE: GetCalendarGraph data lives at c[0][1], same structure as GetCalendarGrid.
+        # Small airports (OKJ) may return sparse/empty results here — if so, apply the
+        # same c[3] fallback pattern used in search_flights(). Not yet investigated.
         for entry in chunks[0][1]:
             if not isinstance(entry, list) or len(entry) < 3:
                 continue
