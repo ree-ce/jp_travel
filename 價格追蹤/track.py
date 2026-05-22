@@ -253,8 +253,13 @@ def print_report(targets: list, history: dict):
         tid = target["id"]
         records = history.get(tid, [])
         print(f"\n【{target['name']}】")
-        print(f"  {target['origin']} → {target['dest']}  "
-              f"{target['depart_date']} 出發  {target['days']}天")
+        if target.get("type") == "open_jaw":
+            inb, out = target["inbound"], target["outbound"]
+            print(f"  {inb['origin']}→{inb['dest']} 去 / {out['origin']}→{out['dest']} 回  "
+                  f"{inb['date_start']}～{out['date_end']}  {target['trip_days']}天")
+        else:
+            print(f"  {target['origin']} → {target['dest']}  "
+                  f"{target['depart_date']} 出發  {target['days']}天")
         print(f"  備注：{target['notes']}")
 
         if not records:
@@ -277,9 +282,12 @@ def print_report(targets: list, history: dict):
 
             if prev:
                 diff = latest["price"] - prev["price"]
-                sign, word = ("↑", "漲") if diff > 0 else ("↓", "降")
-                print(f"  上次記錄  TWD {prev['price']:,}  "
-                      f"({sign}{word} {abs(diff):,}，{days_ago(prev['checked_at'])})")
+                if diff == 0:
+                    change = f"持平，{days_ago(prev['checked_at'])}"
+                else:
+                    sign, word = ("↑", "漲") if diff > 0 else ("↓", "降")
+                    change = f"{sign}{word} {abs(diff):,}，{days_ago(prev['checked_at'])}"
+                print(f"  上次記錄  TWD {prev['price']:,}  ({change})")
 
             if atl:
                 diff_from_atl = latest["price"] - atl
@@ -290,26 +298,32 @@ def print_report(targets: list, history: dict):
 
             threshold = target.get("alert_threshold")
             if threshold and latest["price"] <= threshold:
-                print(f"\n  🔥 建議：已達警戒低價 TWD {threshold:,}，可考慮出手！")
+                print(f"\n  🔥 建議：已達目標價 TWD {threshold:,}，可考慮出手！")
+            elif threshold:
+                print(f"\n  💡 建議：繼續等。目標價 TWD {threshold:,}，"
+                      f"還差 TWD {latest['price'] - threshold:,}")
             else:
-                print(f"\n  💡 建議：繼續等。目標價 TWD {threshold:,}" if threshold else
-                      f"\n  💡 建議：繼續觀察。")
+                print(f"\n  💡 建議：繼續觀察。")
 
-        # --- Round trip display (existing logic) ---
+        # --- Round trip display ---
         else:
             eff_rating  = effective_rating(latest["price"], latest["rating"], latest.get("history_min"))
             rating_icon = RATING_LABEL.get(eff_rating, "")
+            stops_str   = "直飛" if latest.get("stops", 0) == 0 else f"{latest.get('stops')}停"
 
-            print(f"\n  現在最低  TWD {latest['price']:,}  "
-                  f"{rating_icon}  "
-                  f"{latest['airline']} {latest['flight_no']}  "
-                  f"{latest['dep']}→{latest['arr']}")
+            print(f"\n  現在最低  TWD {latest['price']:,}  {rating_icon}")
+            print(f"  {latest['airline']} {latest['flight_no']}  "
+                  f"{latest['dep']}→{latest['arr']}  {stops_str}  "
+                  f"出發 {latest.get('depart_date', '')}")
 
             if prev:
                 diff = latest["price"] - prev["price"]
-                sign, word = ("↑", "漲") if diff > 0 else ("↓", "降")
-                print(f"  上次記錄  TWD {prev['price']:,}  "
-                      f"({sign}{word} {abs(diff):,}，{days_ago(prev['checked_at'])})")
+                if diff == 0:
+                    change = f"持平，{days_ago(prev['checked_at'])}"
+                else:
+                    sign, word = ("↑", "漲") if diff > 0 else ("↓", "降")
+                    change = f"{sign}{word} {abs(diff):,}，{days_ago(prev['checked_at'])}"
+                print(f"  上次記錄  TWD {prev['price']:,}  ({change})")
 
             if atl:
                 diff_from_atl = latest["price"] - atl
@@ -322,30 +336,31 @@ def print_report(targets: list, history: dict):
                 google_low = latest["history_min"]
                 diff = latest["price"] - google_low
                 if diff <= 0:
-                    print(f"  Google低點 TWD {google_low:,}  ← 已達或低於 Google 歷史低！")
+                    print(f"  Google低點 TWD {google_low:,}  ← 已達或低於！")
                 else:
                     print(f"  Google低點 TWD {google_low:,}  （差 TWD {diff:,}）")
 
             rating = eff_rating
+            diff_from_atl = (latest["price"] - atl) if atl else 1
             if rating == "超值":
-                print(f"\n  💡 建議：超值票，現在可考慮出手。")
+                print(f"\n  💡 建議：超值票，可考慮出手。")
+            elif rating == "便宜" and diff_from_atl == 0:
+                print(f"\n  💡 建議：便宜且歷史低點，可出手。")
             elif rating == "便宜":
-                diff_from_atl = latest["price"] - atl if atl else 1
-                if diff_from_atl == 0:
-                    print(f"\n  💡 建議：便宜且為歷史低點，可出手。")
-                else:
-                    print(f"\n  💡 建議：便宜，但還有空間可等更低。")
+                print(f"\n  💡 建議：便宜，但還有空間可等更低。")
             else:
                 print(f"\n  💡 建議：繼續等，尚未到買點。")
 
             if latest.get("top3"):
                 print(f"\n  前3低價選項：")
                 for i, r in enumerate(latest["top3"], 1):
-                    adj  = effective_rating(r["price"], r["rating"], r.get("history_min"))
-                    icon = RATING_LABEL.get(adj, "")
-                    hmin = f"歷史低 {r['history_min']:,}" if r.get("history_min") else ""
-                    print(f"  {i}. TWD {r['price']:,} {icon}  "
-                          f"{r['airline']} {r['flight_no']}  {r['dep']}→{r['arr']}  {hmin}")
+                    adj      = effective_rating(r["price"], r["rating"], r.get("history_min"))
+                    icon     = RATING_LABEL.get(adj, "")
+                    stops_r  = "直飛" if r.get("stops", 0) == 0 else f"{r.get('stops')}停"
+                    hmin     = f"  歷史低 {r['history_min']:,}" if r.get("history_min") else ""
+                    print(f"  {i}. TWD {r['price']:,}  {icon}")
+                    print(f"     {r['airline']} {r['flight_no']}  "
+                          f"{r['dep']}→{r['arr']}  {stops_r}{hmin}")
 
     print(f"\n{'='*60}")
     print(f"  歷史記錄已存至 {HISTORY_FILE.name}（共 "

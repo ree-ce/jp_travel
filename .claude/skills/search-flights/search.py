@@ -193,8 +193,9 @@ def _parse_segment(seg: list, fallback_airline: str) -> Optional[dict]:
     if not from_ap or not to_ap:
         return None
 
-    dep_t = _scan(seg, _is_hhmm, 1)
-    arr_t = _scan(seg, _is_hhmm, 2)
+    # Exclude [0, 0] here too — same padding issue as leg-level parsing.
+    dep_t = _scan(seg, lambda x: _is_hhmm(x) and x != [0, 0], 1)
+    arr_t = _scan(seg, lambda x: _is_hhmm(x) and x != [0, 0], 2)
     dur   = _scan(seg, _is_duration)
 
     # Flight-number entry: ['IT', '214', ...] — first element is 2-3 char
@@ -294,13 +295,18 @@ def parse_offer(offer: list) -> Optional[dict]:
     arr_t   = _leg_hhmm(8) or _scan(leg, lambda x: _is_hhmm(x) and x != [0, 0], 2)
     dur     = _leg_dur(9)  or _scan(leg, _is_duration)
 
+    # Last-resort fallback: if leg-level times are still missing (e.g. IT240/FUK),
+    # borrow dep/arr from the parsed segments which use independent content-scan.
+    dep_str = _fmt_hhmm(dep_t) if dep_t else (segs[0]["dep"]  if segs else "?")
+    arr_str = _fmt_hhmm(arr_t) if arr_t else (segs[-1]["arr"] if segs else "?")
+
     return {
         "airline": airline_name,
         "airline_code": airline_code,
         "from": from_ap or "",
         "to": to_ap or "",
-        "dep": _fmt_hhmm(dep_t),
-        "arr": _fmt_hhmm(arr_t),
+        "dep": dep_str,
+        "arr": arr_str,
         "total_duration_min": dur or 0,
         "stops": max(0, len(segs) - 1),
         "segments": segs,
