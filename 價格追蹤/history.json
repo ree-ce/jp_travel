@@ -3073,6 +3073,27 @@
         "arr": "17:30",
         "price": 4401
       }
+    },
+    {
+      "checked_at": "2026-05-28T05:55:52.002497+00:00",
+      "type": "open_jaw",
+      "price": 8496,
+      "depart_date": "2026-11-09",
+      "return_date": "2026-11-13",
+      "inbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT212",
+        "dep": "14:40",
+        "arr": "17:55",
+        "price": 4099
+      },
+      "outbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT215",
+        "dep": "15:25",
+        "arr": "17:30",
+        "price": 4397
+      }
     }
   ]
 }
