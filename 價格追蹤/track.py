@@ -22,6 +22,7 @@ SEARCH_PY = BASE.parent / ".claude/skills/search-flights/search.py"
 TARGETS_FILE = BASE / "targets.json"
 HISTORY_FILE = BASE / "history.json"
 TMP_RESULTS = Path("/tmp/flight_results.json")
+TMP_ONEWAY  = Path("/tmp/flight_oneway.json")
 
 RATING_SCORE = {"超值": 1, "便宜": 2, "一般偏低": 3, "一般": 4, "偏高": 5, "高": 6}
 # Display as rank [1/6] so hierarchy is unambiguous
@@ -52,7 +53,51 @@ def save_history(history: dict):
         json.dump(history, f, ensure_ascii=False, indent=2)
 
 
-def query_target(target: dict) -> list:
+# ---------------------------------------------------------------------------
+# One-way / open-jaw helpers
+# ---------------------------------------------------------------------------
+
+def _query_oneway_leg(origin: str, dest: str, date_str: str) -> Optional[dict]:
+    """Query a single one-way leg; return cheapest result dict or None."""
+    cmd = ["python3", str(SEARCH_PY), "--oneway", origin, dest, date_str, date_str]
+    print(f"    → 單程查詢：{origin} → {dest} {date_str}...", end=" ", flush=True)
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    if result.returncode != 0:
+        print(f"❌ {result.stderr[:80]}")
+        return None
+    if not TMP_ONEWAY.exists():
+        print("❌ 找不到結果檔案")
+        return None
+    with open(TMP_ONEWAY, encoding="utf-8") as f:
+        data = json.load(f)
+    if not data:
+        print("❌ 查無結果")
+        return None
+    best = min(data, key=lambda r: r.get("price_ow", 999_999))
+    print(f"最低 TWD {best['price_ow']:,}（{best['flight_no']} {best['dep']}→{best['arr']}）")
+    return best
+
+
+def _query_open_jaw(target: dict) -> Optional[dict]:
+    """Query both legs of an open-jaw itinerary and return combined result."""
+    print(f"  查詢中：{target['name']} (開口票)")
+    leg_out = _query_oneway_leg(target["origin"], target["dest"],       target["depart_date"])
+    leg_ret = _query_oneway_leg(target["return_from"], target["origin"], target["return_date"])
+    if not leg_out or not leg_ret:
+        return None
+    combined = leg_out["price_ow"] + leg_ret["price_ow"]
+    print(f"  合計：TWD {leg_out['price_ow']:,} + TWD {leg_ret['price_ow']:,} = TWD {combined:,}")
+    return {"type": "open_jaw", "combined_price": combined, "leg_out": leg_out, "leg_ret": leg_ret}
+
+
+# ---------------------------------------------------------------------------
+# Round-trip query (original)
+# ---------------------------------------------------------------------------
+
+def query_target(target: dict):
+    if target.get("type") == "open_jaw":
+        return _query_open_jaw(target)
+
     cmd = [
         "python3", str(SEARCH_PY),
         target["origin"], target["dest"],
@@ -79,7 +124,42 @@ def best_result(results: list) -> Optional[dict]:
     return min(results, key=lambda r: r.get("price_rt", 999999))
 
 
-def record_snapshot(history: dict, target_id: str, results: list) -> dict:
+# ---------------------------------------------------------------------------
+# Snapshot recording
+# ---------------------------------------------------------------------------
+
+def _record_open_jaw_snapshot(history: dict, target_id: str, result: dict) -> dict:
+    """Record open-jaw snapshot. inbound = 去程(into Japan), outbound = 回程(out of Japan)."""
+    out = result["leg_out"]   # e.g. TPE→KIX
+    ret = result["leg_ret"]   # e.g. OKJ→TPE
+    snapshot = {
+        "checked_at": datetime.now(timezone.utc).isoformat(),
+        "price": result["combined_price"],
+        "depart_date": out["depart_date"],
+        "return_date": ret["depart_date"],
+        "inbound": {          # 去程 leg (inbound to destination country)
+            "airline":   out["airline"],
+            "flight_no": out["flight_no"],
+            "dep":       out["dep"],
+            "arr":       out["arr"],
+            "price":     out["price_ow"],
+        },
+        "outbound": {         # 回程 leg (outbound from destination country)
+            "airline":   ret["airline"],
+            "flight_no": ret["flight_no"],
+            "dep":       ret["dep"],
+            "arr":       ret["arr"],
+            "price":     ret["price_ow"],
+        },
+    }
+    history.setdefault(target_id, []).append(snapshot)
+    return history
+
+
+def record_snapshot(history: dict, target_id: str, results) -> dict:
+    if isinstance(results, dict) and results.get("type") == "open_jaw":
+        return _record_open_jaw_snapshot(history, target_id, results)
+
     best = best_result(results)
     if not best:
         return history
@@ -154,6 +234,49 @@ def days_ago(iso_str: str) -> str:
     return f"{delta}天前"
 
 
+# ---------------------------------------------------------------------------
+# Reporting
+# ---------------------------------------------------------------------------
+
+def _print_open_jaw_report(target: dict, records: list, history: dict):
+    tid = target["id"]
+    latest = records[-1]
+    prev   = prev_snapshot(history, tid)
+    atl    = all_time_low(history, tid)
+
+    print(f"  {target['origin']}→{target['dest']} {target['depart_date']}  ＋"
+          f"  {target['return_from']}→{target['origin']} {target['return_date']}")
+    print(f"  備注：{target['notes']}")
+
+    inb = latest["inbound"]
+    out = latest["outbound"]
+    print(f"\n  合計  TWD {latest['price']:,}")
+    print(f"  去程  {inb['airline']} {inb['flight_no']}  "
+          f"{inb['dep']}→{inb['arr']}  TWD {inb['price']:,}")
+    print(f"  回程  {out['airline']} {out['flight_no']}  "
+          f"{out['dep']}→{out['arr']}  TWD {out['price']:,}")
+
+    if prev:
+        diff = latest["price"] - prev["price"]
+        sign, color = ("↑", "漲") if diff > 0 else ("↓", "降")
+        print(f"  上次記錄  TWD {prev['price']:,}  ({sign}{color} {abs(diff):,}，{days_ago(prev['checked_at'])})")
+
+    if atl:
+        diff_atl = latest["price"] - atl
+        if diff_atl == 0:
+            print(f"  歷史最低  TWD {atl:,}  ← 目前即歷史低點！")
+        else:
+            print(f"  歷史最低  TWD {atl:,}  （距低點還差 TWD {diff_atl:,}）")
+
+    threshold = target.get("alert_threshold")
+    if threshold:
+        if latest["price"] <= threshold:
+            print(f"\n  🔥 已達目標價！TWD {latest['price']:,} ≤ TWD {threshold:,}，可出手！")
+        else:
+            gap = latest["price"] - threshold
+            print(f"\n  💡 建議：繼續等，距目標 TWD {threshold:,} 還差 TWD {gap:,}。")
+
+
 def print_report(targets: list, history: dict):
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
     print(f"\n{'='*60}")
@@ -164,13 +287,20 @@ def print_report(targets: list, history: dict):
         tid = target["id"]
         records = history.get(tid, [])
         print(f"\n【{target['name']}】")
-        print(f"  {target['origin']} → {target['dest']}  "
-              f"{target['depart_date']} 出發  {target['days']}天")
-        print(f"  備注：{target['notes']}")
 
         if not records:
             print("  （尚無查詢記錄）")
             continue
+
+        # Open-jaw targets have their own display logic
+        if target.get("type") == "open_jaw":
+            _print_open_jaw_report(target, records, history)
+            continue
+
+        # --- Round-trip display ---
+        print(f"  {target['origin']} → {target['dest']}  "
+              f"{target['depart_date']} 出發  {target['days']}天")
+        print(f"  備注：{target['notes']}")
 
         latest = records[-1]
         prev = prev_snapshot(history, tid)
@@ -191,6 +321,7 @@ def print_report(targets: list, history: dict):
             print(f"  上次記錄  TWD {prev['price']:,}  "
                   f"({sign}{color} {abs(diff):,}，{ago})")
 
+        diff_from_atl = 0
         if atl:
             diff_from_atl = latest["price"] - atl
             if diff_from_atl == 0:
@@ -211,7 +342,7 @@ def print_report(targets: list, history: dict):
         if rating == "超值":
             print(f"\n  💡 建議：超值票，現在可考慮出手。")
         elif rating == "便宜":
-            if diff_from_atl == 0 if atl else False:
+            if atl and diff_from_atl == 0:
                 print(f"\n  💡 建議：便宜且為歷史低點，可出手。")
             else:
                 print(f"\n  💡 建議：便宜，但還有空間可等更低。")
@@ -243,13 +374,21 @@ def print_history_only(targets: list, history: dict):
         if not records:
             print("  （尚無記錄）")
             continue
+        is_oj = target.get("type") == "open_jaw"
         for r in records:
             ago = days_ago(r["checked_at"])
-            adj = effective_rating(r["price"], r["rating"], r.get("history_min"))
-            icon = RATING_LABEL.get(adj, "")
             checked_local = datetime.fromisoformat(r["checked_at"]).strftime("%m/%d %H:%M")
-            print(f"  {checked_local} ({ago:>5})  TWD {r['price']:,}  "
-                  f"{icon}  {r['airline']} {r['flight_no']}")
+            if is_oj:
+                inb = r.get("inbound", {})
+                out = r.get("outbound", {})
+                print(f"  {checked_local} ({ago:>5})  合計 TWD {r['price']:,}  "
+                      f"去程 {inb.get('flight_no','?')} TWD {inb.get('price','?'):,}  "
+                      f"回程 {out.get('flight_no','?')} TWD {out.get('price','?'):,}")
+            else:
+                adj = effective_rating(r["price"], r.get("rating", "一般"), r.get("history_min"))
+                icon = RATING_LABEL.get(adj, "")
+                print(f"  {checked_local} ({ago:>5})  TWD {r['price']:,}  "
+                      f"{icon}  {r['airline']} {r['flight_no']}")
         atl = all_time_low(history, tid)
         print(f"  → 歷史最低：TWD {atl:,}")
     print()
@@ -281,7 +420,10 @@ def main():
         results = query_target(target)
         if results:
             history = record_snapshot(history, target["id"], results)
-            print(f"  ✓ 找到 {len(results)} 筆，最低 TWD {best_result(results)['price_rt']:,}")
+            if isinstance(results, dict):  # open_jaw
+                print(f"  ✓ 開口票合計 TWD {results['combined_price']:,}")
+            else:
+                print(f"  ✓ 找到 {len(results)} 筆，最低 TWD {best_result(results)['price_rt']:,}")
         else:
             print(f"  ✗ {target['name']} 查無結果")
 

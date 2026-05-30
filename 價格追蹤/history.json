@@ -1039,5 +1039,27 @@
         }
       ]
     }
+  ],
+  "shikoku_plan5": [
+    {
+      "checked_at": "2026-05-30T03:39:19.885680+00:00",
+      "price": 7466,
+      "depart_date": "2026-11-10",
+      "return_date": "2026-11-15",
+      "inbound": {
+        "airline": "樂桃航空",
+        "flight_no": "MM28",
+        "dep": "18:50",
+        "arr": "22:20",
+        "price": 3560
+      },
+      "outbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT215",
+        "dep": "15:25",
+        "arr": "17:30",
+        "price": 3906
+      }
+    }
   ]
 }
