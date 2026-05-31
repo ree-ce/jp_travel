@@ -99,7 +99,7 @@ jobs:
         run: |
           python3 - <<'PYEOF'
           import json, os, urllib.request, urllib.error, urllib.parse
-          from datetime import datetime, timezone, timedelta
+          from datetime import date, datetime, timezone, timedelta
 
           bot_token = os.environ.get("TELEGRAM_BOT_TOKEN", "")
           chat_id   = os.environ.get("TELEGRAM_CHAT_ID", "")
@@ -191,7 +191,12 @@ jobs:
                   lines.append(oj_rating(price, records))
               else:
                   depart_date = t.get("depart_date", "")
-                  return_date = latest.get("return_date", "")
+                  days        = t.get("days")
+                  # prefer stored return_date; fall back to depart + days
+                  return_date = latest.get("return_date") or (
+                      (date.fromisoformat(depart_date) + timedelta(days=days)).isoformat()
+                      if depart_date and days else ""
+                  )
                   raw_rating  = latest.get("rating", "")
                   history_min = latest.get("history_min")
                   eff_rating  = rt_effective_rating(price, raw_rating, history_min)
@@ -200,12 +205,15 @@ jobs:
                   arr_note    = " ⚠️?" if arr == "00:00" else ""
                   google_low  = history_min
                   google_str  = f"  Google低點 TWD {google_low:,}" if google_low else ""
+                  days_str    = f"  共{days}天" if days else ""
                   lines.append(f"去程 {latest['airline']} {latest['flight_no']}  {depart_date}  {latest['dep']}→{arr}{arr_note}")
                   ret_fn = latest.get("ret_flight_no")
                   if ret_fn:
                       ret_dep   = latest.get("ret_dep", "?")
                       ret_arr_t = latest.get("ret_arr", "?")
-                      lines.append(f"回程 {latest.get('ret_airline', '')} {ret_fn}  {return_date}  {ret_dep}→{ret_arr_t}")
+                      lines.append(f"回程 {latest.get('ret_airline', '')} {ret_fn}  {return_date}  {ret_dep}→{ret_arr_t}{days_str}")
+                  else:
+                      lines.append(f"回程 {return_date}{days_str}")
                   lines.append(f"{rating_str}{google_str}")
               lines.append("")
 
