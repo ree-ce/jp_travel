@@ -26,17 +26,15 @@ jobs:
       - name: Send Discord summary
         if: always()
         env:
-          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
-          DISCORD_CHANNEL_ID: ${{ vars.DISCORD_CHANNEL_ID }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           python3 - <<'PYEOF'
           import json, os, urllib.request, urllib.error
           from datetime import datetime, timezone
 
-          bot_token  = os.environ.get("DISCORD_BOT_TOKEN", "")
-          channel_id = os.environ.get("DISCORD_CHANNEL_ID", "")
-          if not bot_token or not channel_id:
-              print("DISCORD_BOT_TOKEN or DISCORD_CHANNEL_ID not set, skipping.")
+          webhook_url = os.environ.get("DISCORD_WEBHOOK_URL", "")
+          if not webhook_url:
+              print("DISCORD_WEBHOOK_URL not set, skipping.")
               exit(0)
 
           history = json.load(open("價格追蹤/history.json", encoding="utf-8"))
@@ -103,22 +101,18 @@ jobs:
               }]
           }
 
-          url  = f"https://discord.com/api/v10/channels/{channel_id}/messages"
           body = json.dumps(payload).encode("utf-8")
           req  = urllib.request.Request(
-              url,
+              webhook_url,
               data    = body,
-              headers = {
-                  "Content-Type":  "application/json",
-                  "Authorization": f"Bot {bot_token}",
-              },
+              headers = {"Content-Type": "application/json"},
               method  = "POST",
           )
           try:
               with urllib.request.urlopen(req) as resp:
                   print(f"Discord notified: HTTP {resp.status}")
           except urllib.error.HTTPError as e:
-              print(f"Discord API error: {e.code} {e.read().decode()}")
+              print(f"Discord webhook error: {e.code} {e.read().decode()}")
               exit(1)
           PYEOF
 
