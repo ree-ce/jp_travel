@@ -23,82 +23,6 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Send Telegram summary
-        if: always()
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ vars.TELEGRAM_CHAT_ID }}
-        run: |
-          python3 - <<'PYEOF'
-          import json, os, urllib.request, urllib.error, urllib.parse
-          from datetime import datetime, timezone
-
-          bot_token = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-          chat_id   = os.environ.get("TELEGRAM_CHAT_ID", "")
-          if not bot_token or not chat_id:
-              print("TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not set, skipping.")
-              exit(0)
-
-          history = json.load(open("價格追蹤/history.json", encoding="utf-8"))
-          targets = json.load(open("價格追蹤/targets.json", encoding="utf-8"))
-          today   = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-
-          lines = []
-          alert_names = []
-
-          for t in targets:
-              tid     = t["id"]
-              records = history.get(tid, [])
-              if not records:
-                  continue
-              latest    = records[-1]
-              price     = latest["price"]
-              threshold = t.get("alert_threshold")
-              is_oj     = t.get("type") == "open_jaw"
-
-              hit = threshold and price <= threshold
-              if hit:
-                  alert_names.append(t["name"])
-                  icon = "🔥"
-                  price_line = f"TWD {price:,}  ← 已達目標 ≤{threshold:,}！"
-              else:
-                  icon = "➖"
-                  price_line = f"TWD {price:,}" + (f"  (目標 ≤{threshold:,})" if threshold else "")
-
-              lines.append(f"{icon} <b>{t['name']}</b>")
-              lines.append(price_line)
-
-              if is_oj:
-                  inb = latest["inbound"]
-                  out = latest["outbound"]
-                  lines.append(f"去程 {inb['flight_no']} {latest['depart_date']} {inb['dep']}→{inb['arr']} TWD {inb['price']:,}")
-                  lines.append(f"回程 {out['flight_no']} {latest['return_date']} {out['dep']}→{out['arr']} TWD {out['price']:,}")
-              else:
-                  lines.append(f"{latest['airline']} {latest['flight_no']}  {latest['dep']}→{latest['arr']}  {latest.get('rating','')}")
-              lines.append("")
-
-          if alert_names:
-              header = f"✈️ <b>票價日報 {today}</b>\n🚨 警報觸發：" + "、".join(alert_names)
-          else:
-              header = f"✈️ <b>票價日報 {today}</b>\n今日掃描完成，尚無路線達目標價。"
-
-          text = header + "\n\n" + "\n".join(lines).strip()
-
-          url  = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-          data = urllib.parse.urlencode({
-              "chat_id":    chat_id,
-              "text":       text,
-              "parse_mode": "HTML",
-          }).encode("utf-8")
-          req = urllib.request.Request(url, data=data, method="POST")
-          try:
-              with urllib.request.urlopen(req) as resp:
-                  print(f"Telegram notified: HTTP {resp.status}")
-          except urllib.error.HTTPError as e:
-              print(f"Telegram error: {e.code} {e.read().decode()}")
-              exit(1)
-          PYEOF
-
       - name: Run price tracker
         id: scan
         run: |
@@ -166,3 +90,82 @@ jobs:
               labels: ['price-alert'],
             });
             console.log('Alert issue created!');
+
+      - name: Send Telegram summary
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ vars.TELEGRAM_CHAT_ID }}
+        run: |
+          python3 - <<'PYEOF'
+          import json, os, urllib.request, urllib.error, urllib.parse
+          from datetime import datetime, timezone, timedelta
+
+          bot_token = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+          chat_id   = os.environ.get("TELEGRAM_CHAT_ID", "")
+          if not bot_token or not chat_id:
+              print("TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not set, skipping.")
+              exit(0)
+
+          history = json.load(open("價格追蹤/history.json", encoding="utf-8"))
+          targets = json.load(open("價格追蹤/targets.json", encoding="utf-8"))
+
+          # 台灣時間 UTC+8
+          tw_time = datetime.now(timezone(timedelta(hours=8)))
+          timestamp = tw_time.strftime("%Y-%m-%d %H:%M")
+
+          lines = []
+          alert_names = []
+
+          for t in targets:
+              tid     = t["id"]
+              records = history.get(tid, [])
+              if not records:
+                  continue
+              latest    = records[-1]
+              price     = latest["price"]
+              threshold = t.get("alert_threshold")
+              is_oj     = t.get("type") == "open_jaw"
+
+              hit = threshold and price <= threshold
+              if hit:
+                  alert_names.append(t["name"])
+                  icon = "🔥"
+                  price_line = f"TWD {price:,}  ← 已達目標 ≤{threshold:,}！"
+              else:
+                  icon = "➖"
+                  price_line = f"TWD {price:,}" + (f"  (目標 ≤{threshold:,})" if threshold else "")
+
+              lines.append(f"{icon} <b>{t['name']}</b>")
+              lines.append(price_line)
+
+              if is_oj:
+                  inb = latest["inbound"]
+                  out = latest["outbound"]
+                  lines.append(f"去程 {inb['flight_no']} {latest['depart_date']} {inb['dep']}→{inb['arr']} TWD {inb['price']:,}")
+                  lines.append(f"回程 {out['flight_no']} {latest['return_date']} {out['dep']}→{out['arr']} TWD {out['price']:,}")
+              else:
+                  lines.append(f"{latest['airline']} {latest['flight_no']}  {latest['dep']}→{latest['arr']}  {latest.get('rating','')}")
+              lines.append("")
+
+          if alert_names:
+              header = f"✈️ <b>票價日報 {timestamp} (台灣時間)</b>\n🚨 警報觸發：" + "、".join(alert_names)
+          else:
+              header = f"✈️ <b>票價日報 {timestamp} (台灣時間)</b>\n今日掃描完成，尚無路線達目標價。"
+
+          text = header + "\n\n" + "\n".join(lines).strip()
+
+          url  = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+          data = urllib.parse.urlencode({
+              "chat_id":    chat_id,
+              "text":       text,
+              "parse_mode": "HTML",
+          }).encode("utf-8")
+          req = urllib.request.Request(url, data=data, method="POST")
+          try:
+              with urllib.request.urlopen(req) as resp:
+                  print(f"Telegram notified: HTTP {resp.status}")
+          except urllib.error.HTTPError as e:
+              print(f"Telegram error: {e.code} {e.read().decode()}")
+              exit(1)
+          PYEOF
