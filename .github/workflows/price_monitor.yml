@@ -93,3 +93,96 @@ jobs:
               labels: ['price-alert'],
             });
             console.log('Alert issue created!');
+
+      - name: Send Discord summary
+        if: always()
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          python3 - <<'PYEOF'
+          import json, os, urllib.request, urllib.error
+          from datetime import datetime, timezone
+
+          webhook_url = os.environ.get("DISCORD_WEBHOOK_URL", "")
+          if not webhook_url:
+              print("DISCORD_WEBHOOK_URL not set, skipping.")
+              exit(0)
+
+          history = json.load(open("價格追蹤/history.json", encoding="utf-8"))
+          targets = json.load(open("價格追蹤/targets.json", encoding="utf-8"))
+          today   = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+          fields = []
+          alert_names = []
+
+          for t in targets:
+              tid     = t["id"]
+              records = history.get(tid, [])
+              if not records:
+                  continue
+              latest    = records[-1]
+              price     = latest["price"]
+              threshold = t.get("alert_threshold")
+              is_oj     = t.get("type") == "open_jaw"
+
+              if is_oj:
+                  inb = latest["inbound"]
+                  out = latest["outbound"]
+                  detail = (
+                      f"去程 {inb['flight_no']} {latest['depart_date']} "
+                      f"{inb['dep']}→{inb['arr']} TWD {inb['price']:,}\n"
+                      f"回程 {out['flight_no']} {latest['return_date']} "
+                      f"{out['dep']}→{out['arr']} TWD {out['price']:,}"
+                  )
+              else:
+                  detail = (
+                      f"{latest['airline']} {latest['flight_no']}  "
+                      f"{latest['dep']}→{latest['arr']}  {latest.get('rating','')}"
+                  )
+
+              hit_threshold = threshold and price <= threshold
+              if hit_threshold:
+                  alert_names.append(t["name"])
+                  label = f"🔥 TWD {price:,}  ← 已達目標 ≤{threshold:,}！"
+              else:
+                  label = f"TWD {price:,}" + (f"  (目標 ≤{threshold:,})" if threshold else "")
+
+              fields.append({
+                  "name": t["name"],
+                  "value": f"{label}\n{detail}",
+                  "inline": False,
+              })
+
+          title  = f"✈️ 票價日報 {today}"
+          color  = 0xFF4444 if alert_names else 0x5865F2   # 紅=警報, 藍=一般
+
+          if alert_names:
+              description = "🚨 **警報觸發！以下路線已達目標價：**\n" + "\n".join(f"• {n}" for n in alert_names)
+          else:
+              description = "今日掃描完成，尚無路線達目標價。"
+
+          payload = {
+              "embeds": [{
+                  "title":       title,
+                  "description": description,
+                  "color":       color,
+                  "fields":      fields,
+                  "footer":      {"text": "jp_travel price monitor"},
+                  "timestamp":   datetime.now(timezone.utc).isoformat(),
+              }]
+          }
+
+          body = json.dumps(payload).encode("utf-8")
+          req  = urllib.request.Request(
+              webhook_url,
+              data    = body,
+              headers = {"Content-Type": "application/json"},
+              method  = "POST",
+          )
+          try:
+              with urllib.request.urlopen(req) as resp:
+                  print(f"Discord notified: HTTP {resp.status}")
+          except urllib.error.HTTPError as e:
+              print(f"Discord webhook error: {e.code} {e.read().decode()}")
+              exit(1)
+          PYEOF

@@ -506,6 +506,1422 @@
           "history_min": 9634
         }
       ]
+    },
+    {
+      "checked_at": "2026-05-30T06:23:20.337411+00:00",
+      "price": 9763,
+      "airline": "酷航",
+      "flight_no": "TR874",
+      "dep": "15:30",
+      "arr": "00:00",
+      "rating": "便宜",
+      "history_min": 8651,
+      "top3": [
+        {
+          "airline": "酷航",
+          "flight_no": "TR874",
+          "dep": "15:30",
+          "arr": "00:00",
+          "price": 9763,
+          "rating": "便宜",
+          "history_min": 8651
+        },
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT700",
+          "dep": "15:30",
+          "arr": "19:55",
+          "price": 10493,
+          "rating": "便宜",
+          "history_min": 8381
+        },
+        {
+          "airline": "捷星日本航空",
+          "flight_no": "GK14",
+          "dep": "13:10",
+          "arr": "17:35",
+          "price": 10697,
+          "rating": "便宜",
+          "history_min": 9491
+        }
+      ]
+    }
+  ],
+  "shikoku_plan5": [
+    {
+      "checked_at": "2026-05-30T03:39:19.885680+00:00",
+      "price": 7466,
+      "depart_date": "2026-11-10",
+      "return_date": "2026-11-15",
+      "inbound": {
+        "airline": "樂桃航空",
+        "flight_no": "MM28",
+        "dep": "18:50",
+        "arr": "22:20",
+        "price": 3560
+      },
+      "outbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT215",
+        "dep": "15:25",
+        "arr": "17:30",
+        "price": 3906
+      }
+    },
+    {
+      "checked_at": "2026-05-30T06:24:12.283178+00:00",
+      "price": 7466,
+      "depart_date": "2026-11-10",
+      "return_date": "2026-11-15",
+      "inbound": {
+        "airline": "樂桃航空",
+        "flight_no": "MM28",
+        "dep": "18:50",
+        "arr": "22:20",
+        "price": 3560
+      },
+      "outbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT215",
+        "dep": "15:25",
+        "arr": "17:30",
+        "price": 3906
+      }
+    }
+  ],
+  "kyushu_ashiya_yabakei": [
+    {
+      "checked_at": "2026-05-12T07:32:54.657857+00:00",
+      "price": 10887,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "10:00",
+      "rating": "便宜",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "10:00",
+          "price": 10887,
+          "rating": "便宜",
+          "history_min": 9400
+        },
+        {
+          "airline": "星宇航空",
+          "flight_no": "JX840",
+          "dep": "14:45",
+          "arr": "18:00",
+          "price": 14634,
+          "rating": "?",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-12T14:42:00.770733+00:00",
+      "price": 10887,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "10:00",
+      "rating": "便宜",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "10:00",
+          "price": 10887,
+          "rating": "便宜",
+          "history_min": 9400
+        },
+        {
+          "airline": "星宇航空",
+          "flight_no": "JX840",
+          "dep": "14:45",
+          "arr": "18:00",
+          "price": 14634,
+          "rating": "?",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-13T14:37:19.420307+00:00",
+      "price": 10887,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "10:00",
+      "rating": "便宜",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "10:00",
+          "price": 10887,
+          "rating": "便宜",
+          "history_min": 9400
+        },
+        {
+          "airline": "星宇航空",
+          "flight_no": "JX840",
+          "dep": "14:45",
+          "arr": "18:00",
+          "price": 14634,
+          "rating": "?",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-14T02:37:39.470306+00:00",
+      "price": 10887,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "10:00",
+      "rating": "便宜",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "10:00",
+          "price": 10887,
+          "rating": "便宜",
+          "history_min": 9400
+        },
+        {
+          "airline": "星宇航空",
+          "flight_no": "JX840",
+          "dep": "14:45",
+          "arr": "18:00",
+          "price": 14648,
+          "rating": "?",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-14T13:06:33.549827+00:00",
+      "price": 10887,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "10:00",
+      "rating": "便宜",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "10:00",
+          "price": 10887,
+          "rating": "便宜",
+          "history_min": 9400
+        },
+        {
+          "airline": "星宇航空",
+          "flight_no": "JX840",
+          "dep": "14:45",
+          "arr": "18:00",
+          "price": 14018,
+          "rating": "?",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-16T07:01:21.128168+00:00",
+      "price": 10887,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "10:00",
+      "rating": "便宜",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "10:00",
+          "price": 10887,
+          "rating": "便宜",
+          "history_min": 9400
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-21T16:13:58.841095+00:00",
+      "price": 10887,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "10:00",
+      "rating": "?",
+      "history_min": null,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "10:00",
+          "price": 10887,
+          "rating": "?",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-22T14:42:44.538872+00:00",
+      "price": 10887,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "00:00",
+      "rating": "便宜",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "00:00",
+          "price": 10887,
+          "rating": "便宜",
+          "history_min": 9400
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-22T14:59:28.269440+00:00",
+      "price": 10887,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "00:00",
+      "rating": "便宜",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "00:00",
+          "price": 10887,
+          "rating": "便宜",
+          "history_min": 9400
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-23T05:40:48.609022+00:00",
+      "price": 10887,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "00:00",
+      "rating": "便宜",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "00:00",
+          "price": 10887,
+          "rating": "便宜",
+          "history_min": 9400
+        },
+        {
+          "airline": "星宇航空",
+          "flight_no": "JX840",
+          "dep": "14:45",
+          "arr": "00:00",
+          "price": 13748,
+          "rating": "超值",
+          "history_min": null
+        },
+        {
+          "airline": "長榮航空",
+          "flight_no": "BR102",
+          "dep": "16:25",
+          "arr": "19:55",
+          "price": 14530,
+          "rating": "超值",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-23T13:18:42.556813+00:00",
+      "price": 11387,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "00:00",
+      "rating": "一般偏低",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "00:00",
+          "price": 11387,
+          "rating": "一般偏低",
+          "history_min": 9400
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-24T01:07:56.103292+00:00",
+      "price": 11387,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "00:00",
+      "rating": "一般偏低",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "00:00",
+          "price": 11387,
+          "rating": "一般偏低",
+          "history_min": 9400
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-30T06:24:08.267681+00:00",
+      "price": 11887,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "00:00",
+      "rating": "一般偏低",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "00:00",
+          "price": 11887,
+          "rating": "一般偏低",
+          "history_min": 9400
+        },
+        {
+          "airline": "中華航空",
+          "flight_no": "CI116",
+          "dep": "16:25",
+          "arr": "19:35",
+          "price": 14049,
+          "rating": "超值",
+          "history_min": null
+        },
+        {
+          "airline": "長榮航空",
+          "flight_no": "BR102",
+          "dep": "16:25",
+          "arr": "19:55",
+          "price": 14512,
+          "rating": "超值",
+          "history_min": null
+        }
+      ]
+    }
+  ],
+  "kyushu_miyaken_takachiho": [
+    {
+      "checked_at": "2026-05-12T14:42:16.476362+00:00",
+      "price": 11097,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "10:00",
+      "rating": "一般偏低",
+      "history_min": 9900,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "10:00",
+          "price": 11097,
+          "rating": "一般偏低",
+          "history_min": 9900
+        },
+        {
+          "airline": "星宇航空",
+          "flight_no": "JX840",
+          "dep": "14:45",
+          "arr": "18:00",
+          "price": 14619,
+          "rating": "超值",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-13T14:37:36.056584+00:00",
+      "price": 11093,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "10:00",
+      "rating": "一般偏低",
+      "history_min": 9900,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "10:00",
+          "price": 11093,
+          "rating": "一般偏低",
+          "history_min": 9900
+        },
+        {
+          "airline": "星宇航空",
+          "flight_no": "JX840",
+          "dep": "14:45",
+          "arr": "18:00",
+          "price": 14616,
+          "rating": "超值",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-14T02:38:02.800056+00:00",
+      "price": 11087,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "10:00",
+      "rating": "一般偏低",
+      "history_min": 9900,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "10:00",
+          "price": 11087,
+          "rating": "一般偏低",
+          "history_min": 9900
+        },
+        {
+          "airline": "星宇航空",
+          "flight_no": "JX840",
+          "dep": "14:45",
+          "arr": "18:00",
+          "price": 14618,
+          "rating": "超值",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-14T13:06:49.297956+00:00",
+      "price": 11087,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "10:00",
+      "rating": "一般偏低",
+      "history_min": 9900,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "10:00",
+          "price": 11087,
+          "rating": "一般偏低",
+          "history_min": 9900
+        },
+        {
+          "airline": "星宇航空",
+          "flight_no": "JX840",
+          "dep": "14:45",
+          "arr": "18:00",
+          "price": 14619,
+          "rating": "超值",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-16T07:01:48.932163+00:00",
+      "price": 11387,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "10:00",
+      "rating": "一般偏低",
+      "history_min": 9900,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "10:00",
+          "price": 11387,
+          "rating": "一般偏低",
+          "history_min": 9900
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-22T14:43:27.257596+00:00",
+      "price": 11387,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "00:00",
+      "rating": "一般偏低",
+      "history_min": 9900,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "00:00",
+          "price": 11387,
+          "rating": "一般偏低",
+          "history_min": 9900
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-22T15:00:05.028254+00:00",
+      "price": 11387,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "00:00",
+      "rating": "一般偏低",
+      "history_min": 9900,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "00:00",
+          "price": 11387,
+          "rating": "一般偏低",
+          "history_min": 9900
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-23T05:41:08.509359+00:00",
+      "price": 11387,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "00:00",
+      "rating": "一般偏低",
+      "history_min": 9900,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "00:00",
+          "price": 11387,
+          "rating": "一般偏低",
+          "history_min": 9900
+        },
+        {
+          "airline": "星宇航空",
+          "flight_no": "JX840",
+          "dep": "14:45",
+          "arr": "00:00",
+          "price": 13748,
+          "rating": "超值",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-23T13:18:58.317856+00:00",
+      "price": 11387,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "00:00",
+      "rating": "一般偏低",
+      "history_min": 9900,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "00:00",
+          "price": 11387,
+          "rating": "一般偏低",
+          "history_min": 9900
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-24T01:08:12.015590+00:00",
+      "price": 11387,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "00:00",
+      "rating": "一般偏低",
+      "history_min": 9900,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "00:00",
+          "price": 11387,
+          "rating": "一般偏低",
+          "history_min": 9900
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-30T06:24:30.542818+00:00",
+      "price": 11887,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "00:00",
+      "rating": "一般偏低",
+      "history_min": 9900,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "00:00",
+          "price": 11887,
+          "rating": "一般偏低",
+          "history_min": 9900
+        },
+        {
+          "airline": "星宇航空",
+          "flight_no": "JX840",
+          "dep": "14:45",
+          "arr": "00:00",
+          "price": 13729,
+          "rating": "?",
+          "history_min": null
+        }
+      ]
+    }
+  ],
+  "kyushu_yatsushiro_hanabi": [
+    {
+      "checked_at": "2026-05-12T14:41:48.529511+00:00",
+      "price": 10487,
+      "airline": "台灣虎航",
+      "flight_no": "IT720",
+      "dep": "14:25",
+      "arr": "17:50",
+      "rating": "超值",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT720",
+          "dep": "14:25",
+          "arr": "17:50",
+          "price": 10487,
+          "rating": "超值",
+          "history_min": 9400
+        },
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:15",
+          "arr": "09:35",
+          "price": 12187,
+          "rating": "超值",
+          "history_min": 9400
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-13T14:37:09.688550+00:00",
+      "price": 10487,
+      "airline": "台灣虎航",
+      "flight_no": "IT720",
+      "dep": "14:25",
+      "arr": "17:50",
+      "rating": "超值",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT720",
+          "dep": "14:25",
+          "arr": "17:50",
+          "price": 10487,
+          "rating": "超值",
+          "history_min": 9400
+        },
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:15",
+          "arr": "09:35",
+          "price": 12187,
+          "rating": "超值",
+          "history_min": 9400
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-14T02:37:26.926837+00:00",
+      "price": 12787,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:15",
+      "arr": "09:35",
+      "rating": "便宜",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:15",
+          "arr": "09:35",
+          "price": 12787,
+          "rating": "便宜",
+          "history_min": 9400
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-14T13:06:17.478997+00:00",
+      "price": 10487,
+      "airline": "台灣虎航",
+      "flight_no": "IT720",
+      "dep": "14:25",
+      "arr": "17:50",
+      "rating": "超值",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT720",
+          "dep": "14:25",
+          "arr": "17:50",
+          "price": 10487,
+          "rating": "超值",
+          "history_min": 9400
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-16T07:01:12.392753+00:00",
+      "price": 10487,
+      "airline": "台灣虎航",
+      "flight_no": "IT720",
+      "dep": "14:25",
+      "arr": "17:50",
+      "rating": "超值",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT720",
+          "dep": "14:25",
+          "arr": "17:50",
+          "price": 10487,
+          "rating": "超值",
+          "history_min": 9400
+        },
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:15",
+          "arr": "09:35",
+          "price": 12187,
+          "rating": "超值",
+          "history_min": 9400
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-21T16:13:32.765401+00:00",
+      "price": 11087,
+      "airline": "台灣虎航",
+      "flight_no": "IT720",
+      "dep": "14:25",
+      "arr": "17:50",
+      "rating": "?",
+      "history_min": null,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT720",
+          "dep": "14:25",
+          "arr": "17:50",
+          "price": 11087,
+          "rating": "?",
+          "history_min": null
+        },
+        {
+          "airline": "中華航空",
+          "flight_no": "CI128",
+          "dep": "14:40",
+          "arr": "18:05",
+          "price": 12834,
+          "rating": "?",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-22T14:42:32.766728+00:00",
+      "price": 9987,
+      "airline": "台灣虎航",
+      "flight_no": "IT720",
+      "dep": "14:25",
+      "arr": "17:50",
+      "rating": "超值",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT720",
+          "dep": "14:25",
+          "arr": "17:50",
+          "price": 9987,
+          "rating": "超值",
+          "history_min": 9400
+        },
+        {
+          "airline": "中華航空",
+          "flight_no": "CI128",
+          "dep": "14:40",
+          "arr": "18:05",
+          "price": 12834,
+          "rating": "?",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-22T14:59:18.624943+00:00",
+      "price": 9987,
+      "airline": "台灣虎航",
+      "flight_no": "IT720",
+      "dep": "14:25",
+      "arr": "17:50",
+      "rating": "超值",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT720",
+          "dep": "14:25",
+          "arr": "17:50",
+          "price": 9987,
+          "rating": "超值",
+          "history_min": 9400
+        },
+        {
+          "airline": "中華航空",
+          "flight_no": "CI128",
+          "dep": "14:40",
+          "arr": "18:05",
+          "price": 12834,
+          "rating": "?",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-23T05:40:25.496493+00:00",
+      "price": 9987,
+      "airline": "台灣虎航",
+      "flight_no": "IT720",
+      "dep": "14:25",
+      "arr": "17:50",
+      "rating": "超值",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT720",
+          "dep": "14:25",
+          "arr": "17:50",
+          "price": 9987,
+          "rating": "超值",
+          "history_min": 9400
+        },
+        {
+          "airline": "中華航空",
+          "flight_no": "CI128",
+          "dep": "14:40",
+          "arr": "18:05",
+          "price": 12824,
+          "rating": "?",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-23T13:18:36.381660+00:00",
+      "price": 9987,
+      "airline": "台灣虎航",
+      "flight_no": "IT720",
+      "dep": "14:25",
+      "arr": "17:50",
+      "rating": "超值",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT720",
+          "dep": "14:25",
+          "arr": "17:50",
+          "price": 9987,
+          "rating": "超值",
+          "history_min": 9400
+        },
+        {
+          "airline": "中華航空",
+          "flight_no": "CI128",
+          "dep": "14:40",
+          "arr": "18:05",
+          "price": 12824,
+          "rating": "?",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-24T01:07:44.132085+00:00",
+      "price": 9987,
+      "airline": "台灣虎航",
+      "flight_no": "IT720",
+      "dep": "14:25",
+      "arr": "17:50",
+      "rating": "超值",
+      "history_min": 9400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT720",
+          "dep": "14:25",
+          "arr": "17:50",
+          "price": 9987,
+          "rating": "超值",
+          "history_min": 9400
+        },
+        {
+          "airline": "中華航空",
+          "flight_no": "CI128",
+          "dep": "14:40",
+          "arr": "18:05",
+          "price": 12824,
+          "rating": "?",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-30T06:23:48.315003+00:00",
+      "price": 11687,
+      "airline": "台灣虎航",
+      "flight_no": "IT720",
+      "dep": "14:25",
+      "arr": "17:50",
+      "rating": "超值",
+      "history_min": 9900,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT720",
+          "dep": "14:25",
+          "arr": "17:50",
+          "price": 11687,
+          "rating": "超值",
+          "history_min": 9900
+        },
+        {
+          "airline": "中華航空",
+          "flight_no": "CI116",
+          "dep": "16:40",
+          "arr": "00:00",
+          "price": 13437,
+          "rating": "超值",
+          "history_min": null
+        }
+      ]
+    }
+  ],
+  "shikoku_saijo_matsuri": [
+    {
+      "checked_at": "2026-05-16T07:01:37.778407+00:00",
+      "price": 7917,
+      "airline": "捷星日本航空",
+      "flight_no": "GK50",
+      "dep": "02:30",
+      "arr": "06:05",
+      "rating": "超值",
+      "history_min": 8475,
+      "top3": [
+        {
+          "airline": "捷星日本航空",
+          "flight_no": "GK50",
+          "dep": "02:30",
+          "arr": "06:05",
+          "price": 7917,
+          "rating": "超值",
+          "history_min": 8475
+        },
+        {
+          "airline": "樂桃航空",
+          "flight_no": "MM24",
+          "dep": "09:30",
+          "arr": "13:20",
+          "price": 8654,
+          "rating": "便宜",
+          "history_min": 9237
+        },
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT212",
+          "dep": "15:15",
+          "arr": "19:00",
+          "price": 8701,
+          "rating": "便宜",
+          "history_min": 9297
+        }
+      ]
+    }
+  ],
+  "shikoku_openjaw": [
+    {
+      "checked_at": "2026-05-22T14:44:01.778399+00:00",
+      "type": "open_jaw",
+      "price": 8508,
+      "depart_date": "2026-11-09",
+      "return_date": "2026-11-13",
+      "inbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT212",
+        "dep": "14:40",
+        "arr": "17:55",
+        "price": 4099
+      },
+      "outbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT215",
+        "dep": "15:25",
+        "arr": "17:30",
+        "price": 4409
+      }
+    },
+    {
+      "checked_at": "2026-05-22T15:00:40.193851+00:00",
+      "type": "open_jaw",
+      "price": 8508,
+      "depart_date": "2026-11-09",
+      "return_date": "2026-11-13",
+      "inbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT212",
+        "dep": "14:40",
+        "arr": "17:55",
+        "price": 4099
+      },
+      "outbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT215",
+        "dep": "15:25",
+        "arr": "17:30",
+        "price": 4409
+      }
+    },
+    {
+      "checked_at": "2026-05-23T05:41:43.768097+00:00",
+      "type": "open_jaw",
+      "price": 8504,
+      "depart_date": "2026-11-09",
+      "return_date": "2026-11-13",
+      "inbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT212",
+        "dep": "14:40",
+        "arr": "17:55",
+        "price": 4099
+      },
+      "outbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT215",
+        "dep": "15:25",
+        "arr": "17:30",
+        "price": 4405
+      }
+    },
+    {
+      "checked_at": "2026-05-23T13:19:31.802171+00:00",
+      "type": "open_jaw",
+      "price": 8505,
+      "depart_date": "2026-11-09",
+      "return_date": "2026-11-13",
+      "inbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT212",
+        "dep": "14:40",
+        "arr": "17:55",
+        "price": 4099
+      },
+      "outbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT215",
+        "dep": "15:25",
+        "arr": "17:30",
+        "price": 4406
+      }
+    },
+    {
+      "checked_at": "2026-05-24T01:08:45.003311+00:00",
+      "type": "open_jaw",
+      "price": 8505,
+      "depart_date": "2026-11-09",
+      "return_date": "2026-11-13",
+      "inbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT212",
+        "dep": "14:40",
+        "arr": "17:55",
+        "price": 4099
+      },
+      "outbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT215",
+        "dep": "15:25",
+        "arr": "17:30",
+        "price": 4406
+      }
+    }
+  ],
+  "shikoku_koyo": [
+    {
+      "checked_at": "2026-05-21T16:14:15.556178+00:00",
+      "price": 7801,
+      "airline": "台灣虎航",
+      "flight_no": "IT212",
+      "dep": "14:40",
+      "arr": "17:55",
+      "rating": "?",
+      "history_min": null,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT212",
+          "dep": "14:40",
+          "arr": "17:55",
+          "price": 7801,
+          "rating": "?",
+          "history_min": null
+        },
+        {
+          "airline": "捷星日本航空",
+          "flight_no": "GK50",
+          "dep": "02:30",
+          "arr": "06:00",
+          "price": 11725,
+          "rating": "?",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-22T14:42:59.656556+00:00",
+      "price": 7901,
+      "airline": "台灣虎航",
+      "flight_no": "IT212",
+      "dep": "14:40",
+      "arr": "17:55",
+      "rating": "?",
+      "history_min": null,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT212",
+          "dep": "14:40",
+          "arr": "17:55",
+          "price": 7901,
+          "rating": "?",
+          "history_min": null
+        },
+        {
+          "airline": "捷星日本航空",
+          "flight_no": "GK50",
+          "dep": "02:30",
+          "arr": "00:00",
+          "price": 9555,
+          "rating": "超值",
+          "history_min": null
+        },
+        {
+          "airline": "星宇航空",
+          "flight_no": "JX820",
+          "dep": "07:40",
+          "arr": "11:10",
+          "price": 13228,
+          "rating": "便宜",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-22T14:59:42.920618+00:00",
+      "price": 7901,
+      "airline": "台灣虎航",
+      "flight_no": "IT212",
+      "dep": "14:40",
+      "arr": "17:55",
+      "rating": "超值",
+      "history_min": 7401,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT212",
+          "dep": "14:40",
+          "arr": "17:55",
+          "price": 7901,
+          "rating": "超值",
+          "history_min": 7401
+        },
+        {
+          "airline": "捷星日本航空",
+          "flight_no": "GK50",
+          "dep": "02:30",
+          "arr": "00:00",
+          "price": 9555,
+          "rating": "超值",
+          "history_min": null
+        },
+        {
+          "airline": "星宇航空",
+          "flight_no": "JX820",
+          "dep": "07:40",
+          "arr": "11:10",
+          "price": 13228,
+          "rating": "便宜",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-23T05:40:58.776655+00:00",
+      "price": 8201,
+      "airline": "台灣虎航",
+      "flight_no": "IT212",
+      "dep": "14:40",
+      "arr": "17:55",
+      "rating": "便宜",
+      "history_min": 7401,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT212",
+          "dep": "14:40",
+          "arr": "17:55",
+          "price": 8201,
+          "rating": "便宜",
+          "history_min": 7401
+        },
+        {
+          "airline": "捷星日本航空",
+          "flight_no": "GK50",
+          "dep": "02:30",
+          "arr": "00:00",
+          "price": 11923,
+          "rating": "?",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-23T13:18:50.376625+00:00",
+      "price": 8201,
+      "airline": "台灣虎航",
+      "flight_no": "IT212",
+      "dep": "14:40",
+      "arr": "17:55",
+      "rating": "便宜",
+      "history_min": 7401,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT212",
+          "dep": "14:40",
+          "arr": "17:55",
+          "price": 8201,
+          "rating": "便宜",
+          "history_min": 7401
+        },
+        {
+          "airline": "捷星日本航空",
+          "flight_no": "GK50",
+          "dep": "02:30",
+          "arr": "00:00",
+          "price": 11923,
+          "rating": "?",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-05-24T01:08:04.992665+00:00",
+      "price": 8201,
+      "airline": "台灣虎航",
+      "flight_no": "IT212",
+      "dep": "14:40",
+      "arr": "17:55",
+      "rating": "便宜",
+      "history_min": 7401,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT212",
+          "dep": "14:40",
+          "arr": "17:55",
+          "price": 8201,
+          "rating": "便宜",
+          "history_min": 7401
+        },
+        {
+          "airline": "捷星日本航空",
+          "flight_no": "GK50",
+          "dep": "02:30",
+          "arr": "00:00",
+          "price": 11923,
+          "rating": "?",
+          "history_min": null
+        }
+      ]
     }
   ],
   "plan3_osaka": [
@@ -1015,1242 +2431,45 @@
           "history_min": 8976
         }
       ]
-    }
-  ],
-  "kyushu_ashiya_yabakei": [
-    {
-      "checked_at": "2026-05-12T07:32:54.657857+00:00",
-      "price": 10887,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "10:00",
-      "rating": "便宜",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "10:00",
-          "price": 10887,
-          "rating": "便宜",
-          "history_min": 9400
-        },
-        {
-          "airline": "星宇航空",
-          "flight_no": "JX840",
-          "dep": "14:45",
-          "arr": "18:00",
-          "price": 14634,
-          "rating": "?",
-          "history_min": null
-        }
-      ]
     },
     {
-      "checked_at": "2026-05-12T14:42:00.770733+00:00",
-      "price": 10887,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "10:00",
-      "rating": "便宜",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "10:00",
-          "price": 10887,
-          "rating": "便宜",
-          "history_min": 9400
-        },
-        {
-          "airline": "星宇航空",
-          "flight_no": "JX840",
-          "dep": "14:45",
-          "arr": "18:00",
-          "price": 14634,
-          "rating": "?",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-13T14:37:19.420307+00:00",
-      "price": 10887,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "10:00",
-      "rating": "便宜",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "10:00",
-          "price": 10887,
-          "rating": "便宜",
-          "history_min": 9400
-        },
-        {
-          "airline": "星宇航空",
-          "flight_no": "JX840",
-          "dep": "14:45",
-          "arr": "18:00",
-          "price": 14634,
-          "rating": "?",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-14T02:37:39.470306+00:00",
-      "price": 10887,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "10:00",
-      "rating": "便宜",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "10:00",
-          "price": 10887,
-          "rating": "便宜",
-          "history_min": 9400
-        },
-        {
-          "airline": "星宇航空",
-          "flight_no": "JX840",
-          "dep": "14:45",
-          "arr": "18:00",
-          "price": 14648,
-          "rating": "?",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-14T13:06:33.549827+00:00",
-      "price": 10887,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "10:00",
-      "rating": "便宜",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "10:00",
-          "price": 10887,
-          "rating": "便宜",
-          "history_min": 9400
-        },
-        {
-          "airline": "星宇航空",
-          "flight_no": "JX840",
-          "dep": "14:45",
-          "arr": "18:00",
-          "price": 14018,
-          "rating": "?",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-16T07:01:21.128168+00:00",
-      "price": 10887,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "10:00",
-      "rating": "便宜",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "10:00",
-          "price": 10887,
-          "rating": "便宜",
-          "history_min": 9400
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-21T16:13:58.841095+00:00",
-      "price": 10887,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "10:00",
-      "rating": "?",
-      "history_min": null,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "10:00",
-          "price": 10887,
-          "rating": "?",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-22T14:42:44.538872+00:00",
-      "price": 10887,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "00:00",
-      "rating": "便宜",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "00:00",
-          "price": 10887,
-          "rating": "便宜",
-          "history_min": 9400
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-22T14:59:28.269440+00:00",
-      "price": 10887,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "00:00",
-      "rating": "便宜",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "00:00",
-          "price": 10887,
-          "rating": "便宜",
-          "history_min": 9400
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-23T05:40:48.609022+00:00",
-      "price": 10887,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "00:00",
-      "rating": "便宜",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "00:00",
-          "price": 10887,
-          "rating": "便宜",
-          "history_min": 9400
-        },
-        {
-          "airline": "星宇航空",
-          "flight_no": "JX840",
-          "dep": "14:45",
-          "arr": "00:00",
-          "price": 13748,
-          "rating": "超值",
-          "history_min": null
-        },
-        {
-          "airline": "長榮航空",
-          "flight_no": "BR102",
-          "dep": "16:25",
-          "arr": "19:55",
-          "price": 14530,
-          "rating": "超值",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-23T13:18:42.556813+00:00",
-      "price": 11387,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "00:00",
-      "rating": "一般偏低",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "00:00",
-          "price": 11387,
-          "rating": "一般偏低",
-          "history_min": 9400
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-24T01:07:56.103292+00:00",
-      "price": 11387,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "00:00",
-      "rating": "一般偏低",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "00:00",
-          "price": 11387,
-          "rating": "一般偏低",
-          "history_min": 9400
-        }
-      ]
-    }
-  ],
-  "kyushu_yatsushiro_hanabi": [
-    {
-      "checked_at": "2026-05-12T14:41:48.529511+00:00",
-      "price": 10487,
-      "airline": "台灣虎航",
-      "flight_no": "IT720",
-      "dep": "14:25",
-      "arr": "17:50",
+      "checked_at": "2026-05-30T06:23:36.440692+00:00",
+      "price": 8627,
+      "airline": "樂桃航空",
+      "flight_no": "MM26",
+      "dep": "13:40",
+      "arr": "17:25",
       "rating": "超值",
-      "history_min": 9400,
+      "history_min": 7772,
       "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT720",
-          "dep": "14:25",
-          "arr": "17:50",
-          "price": 10487,
-          "rating": "超值",
-          "history_min": 9400
-        },
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:15",
-          "arr": "09:35",
-          "price": 12187,
-          "rating": "超值",
-          "history_min": 9400
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-13T14:37:09.688550+00:00",
-      "price": 10487,
-      "airline": "台灣虎航",
-      "flight_no": "IT720",
-      "dep": "14:25",
-      "arr": "17:50",
-      "rating": "超值",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT720",
-          "dep": "14:25",
-          "arr": "17:50",
-          "price": 10487,
-          "rating": "超值",
-          "history_min": 9400
-        },
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:15",
-          "arr": "09:35",
-          "price": 12187,
-          "rating": "超值",
-          "history_min": 9400
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-14T02:37:26.926837+00:00",
-      "price": 12787,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:15",
-      "arr": "09:35",
-      "rating": "便宜",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:15",
-          "arr": "09:35",
-          "price": 12787,
-          "rating": "便宜",
-          "history_min": 9400
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-14T13:06:17.478997+00:00",
-      "price": 10487,
-      "airline": "台灣虎航",
-      "flight_no": "IT720",
-      "dep": "14:25",
-      "arr": "17:50",
-      "rating": "超值",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT720",
-          "dep": "14:25",
-          "arr": "17:50",
-          "price": 10487,
-          "rating": "超值",
-          "history_min": 9400
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-16T07:01:12.392753+00:00",
-      "price": 10487,
-      "airline": "台灣虎航",
-      "flight_no": "IT720",
-      "dep": "14:25",
-      "arr": "17:50",
-      "rating": "超值",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT720",
-          "dep": "14:25",
-          "arr": "17:50",
-          "price": 10487,
-          "rating": "超值",
-          "history_min": 9400
-        },
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:15",
-          "arr": "09:35",
-          "price": 12187,
-          "rating": "超值",
-          "history_min": 9400
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-21T16:13:32.765401+00:00",
-      "price": 11087,
-      "airline": "台灣虎航",
-      "flight_no": "IT720",
-      "dep": "14:25",
-      "arr": "17:50",
-      "rating": "?",
-      "history_min": null,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT720",
-          "dep": "14:25",
-          "arr": "17:50",
-          "price": 11087,
-          "rating": "?",
-          "history_min": null
-        },
-        {
-          "airline": "中華航空",
-          "flight_no": "CI128",
-          "dep": "14:40",
-          "arr": "18:05",
-          "price": 12834,
-          "rating": "?",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-22T14:42:32.766728+00:00",
-      "price": 9987,
-      "airline": "台灣虎航",
-      "flight_no": "IT720",
-      "dep": "14:25",
-      "arr": "17:50",
-      "rating": "超值",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT720",
-          "dep": "14:25",
-          "arr": "17:50",
-          "price": 9987,
-          "rating": "超值",
-          "history_min": 9400
-        },
-        {
-          "airline": "中華航空",
-          "flight_no": "CI128",
-          "dep": "14:40",
-          "arr": "18:05",
-          "price": 12834,
-          "rating": "?",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-22T14:59:18.624943+00:00",
-      "price": 9987,
-      "airline": "台灣虎航",
-      "flight_no": "IT720",
-      "dep": "14:25",
-      "arr": "17:50",
-      "rating": "超值",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT720",
-          "dep": "14:25",
-          "arr": "17:50",
-          "price": 9987,
-          "rating": "超值",
-          "history_min": 9400
-        },
-        {
-          "airline": "中華航空",
-          "flight_no": "CI128",
-          "dep": "14:40",
-          "arr": "18:05",
-          "price": 12834,
-          "rating": "?",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-23T05:40:25.496493+00:00",
-      "price": 9987,
-      "airline": "台灣虎航",
-      "flight_no": "IT720",
-      "dep": "14:25",
-      "arr": "17:50",
-      "rating": "超值",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT720",
-          "dep": "14:25",
-          "arr": "17:50",
-          "price": 9987,
-          "rating": "超值",
-          "history_min": 9400
-        },
-        {
-          "airline": "中華航空",
-          "flight_no": "CI128",
-          "dep": "14:40",
-          "arr": "18:05",
-          "price": 12824,
-          "rating": "?",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-23T13:18:36.381660+00:00",
-      "price": 9987,
-      "airline": "台灣虎航",
-      "flight_no": "IT720",
-      "dep": "14:25",
-      "arr": "17:50",
-      "rating": "超值",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT720",
-          "dep": "14:25",
-          "arr": "17:50",
-          "price": 9987,
-          "rating": "超值",
-          "history_min": 9400
-        },
-        {
-          "airline": "中華航空",
-          "flight_no": "CI128",
-          "dep": "14:40",
-          "arr": "18:05",
-          "price": 12824,
-          "rating": "?",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-24T01:07:44.132085+00:00",
-      "price": 9987,
-      "airline": "台灣虎航",
-      "flight_no": "IT720",
-      "dep": "14:25",
-      "arr": "17:50",
-      "rating": "超值",
-      "history_min": 9400,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT720",
-          "dep": "14:25",
-          "arr": "17:50",
-          "price": 9987,
-          "rating": "超值",
-          "history_min": 9400
-        },
-        {
-          "airline": "中華航空",
-          "flight_no": "CI128",
-          "dep": "14:40",
-          "arr": "18:05",
-          "price": 12824,
-          "rating": "?",
-          "history_min": null
-        }
-      ]
-    }
-  ],
-  "kyushu_miyaken_takachiho": [
-    {
-      "checked_at": "2026-05-12T14:42:16.476362+00:00",
-      "price": 11097,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "10:00",
-      "rating": "一般偏低",
-      "history_min": 9900,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "10:00",
-          "price": 11097,
-          "rating": "一般偏低",
-          "history_min": 9900
-        },
-        {
-          "airline": "星宇航空",
-          "flight_no": "JX840",
-          "dep": "14:45",
-          "arr": "18:00",
-          "price": 14619,
-          "rating": "超值",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-13T14:37:36.056584+00:00",
-      "price": 11093,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "10:00",
-      "rating": "一般偏低",
-      "history_min": 9900,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "10:00",
-          "price": 11093,
-          "rating": "一般偏低",
-          "history_min": 9900
-        },
-        {
-          "airline": "星宇航空",
-          "flight_no": "JX840",
-          "dep": "14:45",
-          "arr": "18:00",
-          "price": 14616,
-          "rating": "超值",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-14T02:38:02.800056+00:00",
-      "price": 11087,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "10:00",
-      "rating": "一般偏低",
-      "history_min": 9900,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "10:00",
-          "price": 11087,
-          "rating": "一般偏低",
-          "history_min": 9900
-        },
-        {
-          "airline": "星宇航空",
-          "flight_no": "JX840",
-          "dep": "14:45",
-          "arr": "18:00",
-          "price": 14618,
-          "rating": "超值",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-14T13:06:49.297956+00:00",
-      "price": 11087,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "10:00",
-      "rating": "一般偏低",
-      "history_min": 9900,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "10:00",
-          "price": 11087,
-          "rating": "一般偏低",
-          "history_min": 9900
-        },
-        {
-          "airline": "星宇航空",
-          "flight_no": "JX840",
-          "dep": "14:45",
-          "arr": "18:00",
-          "price": 14619,
-          "rating": "超值",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-16T07:01:48.932163+00:00",
-      "price": 11387,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "10:00",
-      "rating": "一般偏低",
-      "history_min": 9900,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "10:00",
-          "price": 11387,
-          "rating": "一般偏低",
-          "history_min": 9900
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-22T14:43:27.257596+00:00",
-      "price": 11387,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "00:00",
-      "rating": "一般偏低",
-      "history_min": 9900,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "00:00",
-          "price": 11387,
-          "rating": "一般偏低",
-          "history_min": 9900
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-22T15:00:05.028254+00:00",
-      "price": 11387,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "00:00",
-      "rating": "一般偏低",
-      "history_min": 9900,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "00:00",
-          "price": 11387,
-          "rating": "一般偏低",
-          "history_min": 9900
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-23T05:41:08.509359+00:00",
-      "price": 11387,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "00:00",
-      "rating": "一般偏低",
-      "history_min": 9900,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "00:00",
-          "price": 11387,
-          "rating": "一般偏低",
-          "history_min": 9900
-        },
-        {
-          "airline": "星宇航空",
-          "flight_no": "JX840",
-          "dep": "14:45",
-          "arr": "00:00",
-          "price": 13748,
-          "rating": "超值",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-23T13:18:58.317856+00:00",
-      "price": 11387,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "00:00",
-      "rating": "一般偏低",
-      "history_min": 9900,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "00:00",
-          "price": 11387,
-          "rating": "一般偏低",
-          "history_min": 9900
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-24T01:08:12.015590+00:00",
-      "price": 11387,
-      "airline": "台灣虎航",
-      "flight_no": "IT240",
-      "dep": "06:45",
-      "arr": "00:00",
-      "rating": "一般偏低",
-      "history_min": 9900,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT240",
-          "dep": "06:45",
-          "arr": "00:00",
-          "price": 11387,
-          "rating": "一般偏低",
-          "history_min": 9900
-        }
-      ]
-    }
-  ],
-  "shikoku_saijo_matsuri": [
-    {
-      "checked_at": "2026-05-16T07:01:37.778407+00:00",
-      "price": 7917,
-      "airline": "捷星日本航空",
-      "flight_no": "GK50",
-      "dep": "02:30",
-      "arr": "06:05",
-      "rating": "超值",
-      "history_min": 8475,
-      "top3": [
-        {
-          "airline": "捷星日本航空",
-          "flight_no": "GK50",
-          "dep": "02:30",
-          "arr": "06:05",
-          "price": 7917,
-          "rating": "超值",
-          "history_min": 8475
-        },
         {
           "airline": "樂桃航空",
-          "flight_no": "MM24",
-          "dep": "09:30",
-          "arr": "13:20",
-          "price": 8654,
-          "rating": "便宜",
-          "history_min": 9237
+          "flight_no": "MM26",
+          "dep": "13:40",
+          "arr": "17:25",
+          "price": 8627,
+          "rating": "超值",
+          "history_min": 7772
+        },
+        {
+          "airline": "捷星日本航空",
+          "flight_no": "GK54",
+          "dep": "18:20",
+          "arr": "00:00",
+          "price": 8670,
+          "rating": "超值",
+          "history_min": 7993
         },
         {
           "airline": "台灣虎航",
           "flight_no": "IT212",
           "dep": "15:15",
-          "arr": "19:00",
-          "price": 8701,
-          "rating": "便宜",
-          "history_min": 9297
-        }
-      ]
-    }
-  ],
-  "shikoku_koyo": [
-    {
-      "checked_at": "2026-05-21T16:14:15.556178+00:00",
-      "price": 7801,
-      "airline": "台灣虎航",
-      "flight_no": "IT212",
-      "dep": "14:40",
-      "arr": "17:55",
-      "rating": "?",
-      "history_min": null,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT212",
-          "dep": "14:40",
-          "arr": "17:55",
-          "price": 7801,
-          "rating": "?",
-          "history_min": null
-        },
-        {
-          "airline": "捷星日本航空",
-          "flight_no": "GK50",
-          "dep": "02:30",
-          "arr": "06:00",
-          "price": 11725,
-          "rating": "?",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-22T14:42:59.656556+00:00",
-      "price": 7901,
-      "airline": "台灣虎航",
-      "flight_no": "IT212",
-      "dep": "14:40",
-      "arr": "17:55",
-      "rating": "?",
-      "history_min": null,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT212",
-          "dep": "14:40",
-          "arr": "17:55",
-          "price": 7901,
-          "rating": "?",
-          "history_min": null
-        },
-        {
-          "airline": "捷星日本航空",
-          "flight_no": "GK50",
-          "dep": "02:30",
           "arr": "00:00",
-          "price": 9555,
+          "price": 9666,
           "rating": "超值",
-          "history_min": null
-        },
-        {
-          "airline": "星宇航空",
-          "flight_no": "JX820",
-          "dep": "07:40",
-          "arr": "11:10",
-          "price": 13228,
-          "rating": "便宜",
-          "history_min": null
+          "history_min": 8982
         }
       ]
-    },
-    {
-      "checked_at": "2026-05-22T14:59:42.920618+00:00",
-      "price": 7901,
-      "airline": "台灣虎航",
-      "flight_no": "IT212",
-      "dep": "14:40",
-      "arr": "17:55",
-      "rating": "超值",
-      "history_min": 7401,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT212",
-          "dep": "14:40",
-          "arr": "17:55",
-          "price": 7901,
-          "rating": "超值",
-          "history_min": 7401
-        },
-        {
-          "airline": "捷星日本航空",
-          "flight_no": "GK50",
-          "dep": "02:30",
-          "arr": "00:00",
-          "price": 9555,
-          "rating": "超值",
-          "history_min": null
-        },
-        {
-          "airline": "星宇航空",
-          "flight_no": "JX820",
-          "dep": "07:40",
-          "arr": "11:10",
-          "price": 13228,
-          "rating": "便宜",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-23T05:40:58.776655+00:00",
-      "price": 8201,
-      "airline": "台灣虎航",
-      "flight_no": "IT212",
-      "dep": "14:40",
-      "arr": "17:55",
-      "rating": "便宜",
-      "history_min": 7401,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT212",
-          "dep": "14:40",
-          "arr": "17:55",
-          "price": 8201,
-          "rating": "便宜",
-          "history_min": 7401
-        },
-        {
-          "airline": "捷星日本航空",
-          "flight_no": "GK50",
-          "dep": "02:30",
-          "arr": "00:00",
-          "price": 11923,
-          "rating": "?",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-23T13:18:50.376625+00:00",
-      "price": 8201,
-      "airline": "台灣虎航",
-      "flight_no": "IT212",
-      "dep": "14:40",
-      "arr": "17:55",
-      "rating": "便宜",
-      "history_min": 7401,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT212",
-          "dep": "14:40",
-          "arr": "17:55",
-          "price": 8201,
-          "rating": "便宜",
-          "history_min": 7401
-        },
-        {
-          "airline": "捷星日本航空",
-          "flight_no": "GK50",
-          "dep": "02:30",
-          "arr": "00:00",
-          "price": 11923,
-          "rating": "?",
-          "history_min": null
-        }
-      ]
-    },
-    {
-      "checked_at": "2026-05-24T01:08:04.992665+00:00",
-      "price": 8201,
-      "airline": "台灣虎航",
-      "flight_no": "IT212",
-      "dep": "14:40",
-      "arr": "17:55",
-      "rating": "便宜",
-      "history_min": 7401,
-      "top3": [
-        {
-          "airline": "台灣虎航",
-          "flight_no": "IT212",
-          "dep": "14:40",
-          "arr": "17:55",
-          "price": 8201,
-          "rating": "便宜",
-          "history_min": 7401
-        },
-        {
-          "airline": "捷星日本航空",
-          "flight_no": "GK50",
-          "dep": "02:30",
-          "arr": "00:00",
-          "price": 11923,
-          "rating": "?",
-          "history_min": null
-        }
-      ]
-    }
-  ],
-  "shikoku_openjaw": [
-    {
-      "checked_at": "2026-05-22T14:44:01.778399+00:00",
-      "type": "open_jaw",
-      "price": 8508,
-      "depart_date": "2026-11-09",
-      "return_date": "2026-11-13",
-      "inbound": {
-        "airline": "台灣虎航",
-        "flight_no": "IT212",
-        "dep": "14:40",
-        "arr": "17:55",
-        "price": 4099
-      },
-      "outbound": {
-        "airline": "台灣虎航",
-        "flight_no": "IT215",
-        "dep": "15:25",
-        "arr": "17:30",
-        "price": 4409
-      }
-    },
-    {
-      "checked_at": "2026-05-22T15:00:40.193851+00:00",
-      "type": "open_jaw",
-      "price": 8508,
-      "depart_date": "2026-11-09",
-      "return_date": "2026-11-13",
-      "inbound": {
-        "airline": "台灣虎航",
-        "flight_no": "IT212",
-        "dep": "14:40",
-        "arr": "17:55",
-        "price": 4099
-      },
-      "outbound": {
-        "airline": "台灣虎航",
-        "flight_no": "IT215",
-        "dep": "15:25",
-        "arr": "17:30",
-        "price": 4409
-      }
-    },
-    {
-      "checked_at": "2026-05-23T05:41:43.768097+00:00",
-      "type": "open_jaw",
-      "price": 8504,
-      "depart_date": "2026-11-09",
-      "return_date": "2026-11-13",
-      "inbound": {
-        "airline": "台灣虎航",
-        "flight_no": "IT212",
-        "dep": "14:40",
-        "arr": "17:55",
-        "price": 4099
-      },
-      "outbound": {
-        "airline": "台灣虎航",
-        "flight_no": "IT215",
-        "dep": "15:25",
-        "arr": "17:30",
-        "price": 4405
-      }
-    },
-    {
-      "checked_at": "2026-05-23T13:19:31.802171+00:00",
-      "type": "open_jaw",
-      "price": 8505,
-      "depart_date": "2026-11-09",
-      "return_date": "2026-11-13",
-      "inbound": {
-        "airline": "台灣虎航",
-        "flight_no": "IT212",
-        "dep": "14:40",
-        "arr": "17:55",
-        "price": 4099
-      },
-      "outbound": {
-        "airline": "台灣虎航",
-        "flight_no": "IT215",
-        "dep": "15:25",
-        "arr": "17:30",
-        "price": 4406
-      }
-    },
-    {
-      "checked_at": "2026-05-24T01:08:45.003311+00:00",
-      "type": "open_jaw",
-      "price": 8505,
-      "depart_date": "2026-11-09",
-      "return_date": "2026-11-13",
-      "inbound": {
-        "airline": "台灣虎航",
-        "flight_no": "IT212",
-        "dep": "14:40",
-        "arr": "17:55",
-        "price": 4099
-      },
-      "outbound": {
-        "airline": "台灣虎航",
-        "flight_no": "IT215",
-        "dep": "15:25",
-        "arr": "17:30",
-        "price": 4406
-      }
     }
   ]
 }

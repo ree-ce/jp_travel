@@ -37,13 +37,16 @@
     "notes": "芦屋基地航空祭11/15（ブルーインパルス確定）＋深耶馬渓一目八景（11/上〜中旬ピーク★★★★★）。芦屋→耶馬渓 車1.5h圏内"
   },
   {
-    "id": "shikoku_koyo",
-    "name": "四國：祖谷渓紅葉＋鳴門大漩渦＋金刀比羅宮",
+    "id": "shikoku_plan5",
+    "type": "open_jaw",
+    "name": "方案5：四國 KIX進OKJ出",
     "origin": "TPE",
     "dest": "KIX",
-    "depart_date": "2026-11-09",
-    "days": 5,
-    "notes": "祖谷渓かずら橋紅葉（11/上旬ピーク）＋大歩危・小歩危（11/中旬ピーク）＋鳴門大漩渦（観潮船）＋大塚国際美術館＋金刀比羅宮＋丸亀城。明石海峽大橋Bridge World（要7月以降預約）"
+    "return_from": "OKJ",
+    "depart_date": "2026-11-10",
+    "return_date": "2026-11-15",
+    "alert_threshold": 8500,
+    "notes": "IT212 TPE→KIX(14:40→17:55) + IT215 OKJ→TPE(15:25→17:30)。Bridge World→高松4泊→岡山→OKJ"
   },
   {
     "id": "kyushu_miyaken_takachiho",
