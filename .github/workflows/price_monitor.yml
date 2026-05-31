@@ -114,6 +114,15 @@ jobs:
           tw_time = datetime.now(timezone(timedelta(hours=8)))
           timestamp = tw_time.strftime("%Y-%m-%d %H:%M")
 
+          RATING_LABEL = {
+              "超值":     "🔥 [1/6] 超值",
+              "便宜":     "✅ [2/6] 便宜",
+              "一般偏低": "🟡 [3/6] 一般偏低",
+              "一般":     "➖ [4/6] 一般",
+              "偏高":     "🔺 [5/6] 偏高",
+              "高":       "❌ [6/6] 高",
+          }
+
           lines = []
           alert_names = []
 
@@ -145,7 +154,10 @@ jobs:
                   lines.append(f"去程 {inb['flight_no']} {latest['depart_date']} {inb['dep']}→{inb['arr']} TWD {inb['price']:,}")
                   lines.append(f"回程 {out['flight_no']} {latest['return_date']} {out['dep']}→{out['arr']} TWD {out['price']:,}")
               else:
-                  lines.append(f"{latest['airline']} {latest['flight_no']}  {latest['dep']}→{latest['arr']}  {latest.get('rating','')}")
+                  raw_rating = latest.get("rating", "")
+                  rating_str = RATING_LABEL.get(raw_rating, raw_rating)
+                  lines.append(f"{latest['airline']} {latest['flight_no']}  {latest['dep']}→{latest['arr']}")
+                  lines.append(rating_str)
               lines.append("")
 
           if alert_names:
