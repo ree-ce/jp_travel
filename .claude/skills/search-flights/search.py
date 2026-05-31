@@ -180,7 +180,7 @@ def _scan(lst, pred, n=1):
 
 
 def _fmt_hhmm(t) -> str:
-    return "%02d:%02d" % (t[0], t[1]) if _is_hhmm(t) else "00:00"
+    return "%02d:%02d" % (t[0], t[1]) if _is_hhmm(t) else "?"
 
 
 def _parse_segment(seg: list, fallback_airline: str) -> Optional[dict]:
