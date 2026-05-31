@@ -123,6 +123,26 @@ jobs:
               "高":       "❌ [6/6] 高",
           }
 
+          def oj_rating(price, records):
+              prices = [r["price"] for r in records if r.get("price")]
+              if len(prices) < 2:
+                  return "❓ 資料不足（僅 {} 筆）".format(len(prices))
+              atl = min(prices)
+              if price <= atl:
+                  return "🔥 [1/6] 超值（歷史低點 TWD {:,}）".format(atl)
+              gap = (price - atl) / atl
+              if gap <= 0.05:
+                  label = "✅ [2/6] 便宜"
+              elif gap <= 0.15:
+                  label = "🟡 [3/6] 一般偏低"
+              elif gap <= 0.30:
+                  label = "➖ [4/6] 一般"
+              elif gap <= 0.50:
+                  label = "🔺 [5/6] 偏高"
+              else:
+                  label = "❌ [6/6] 高"
+              return "{} （歷史低點 TWD {:,}，差 +{:.0f}%）".format(label, atl, gap * 100)
+
           lines = []
           alert_names = []
 
@@ -153,6 +173,7 @@ jobs:
                   out = latest["outbound"]
                   lines.append(f"去程 {inb['flight_no']} {latest['depart_date']} {inb['dep']}→{inb['arr']} TWD {inb['price']:,}")
                   lines.append(f"回程 {out['flight_no']} {latest['return_date']} {out['dep']}→{out['arr']} TWD {out['price']:,}")
+                  lines.append(oj_rating(price, records))
               else:
                   raw_rating = latest.get("rating", "")
                   rating_str = RATING_LABEL.get(raw_rating, raw_rating)
