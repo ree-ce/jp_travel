@@ -183,11 +183,14 @@ jobs:
               lines.append(f"{icon} <b>{t['name']}</b>")
               lines.append(price_line)
 
+              def mmdd(iso):
+                  return iso[5:].replace("-", "/") if iso and len(iso) == 10 else (iso or "")
+
               if is_oj:
                   inb = latest["inbound"]
                   out = latest["outbound"]
-                  lines.append(f"去程 {inb['flight_no']} {latest['depart_date']} {inb['dep']}→{inb['arr']} TWD {inb['price']:,}")
-                  lines.append(f"回程 {out['flight_no']} {latest['return_date']} {out['dep']}→{out['arr']} TWD {out['price']:,}")
+                  lines.append(f"去 {inb['flight_no']}  {mmdd(latest['depart_date'])}  {inb['dep']}→{inb['arr']}  {inb['price']:,}")
+                  lines.append(f"回 {out['flight_no']}  {mmdd(latest['return_date'])}  {out['dep']}→{out['arr']}  {out['price']:,}")
                   lines.append(oj_rating(price, records))
               else:
                   depart_date = t.get("depart_date", "")
@@ -202,18 +205,21 @@ jobs:
                   eff_rating  = rt_effective_rating(price, raw_rating, history_min)
                   rating_str  = RATING_LABEL.get(eff_rating, eff_rating)
                   arr         = latest['arr']
-                  arr_note    = " ⚠️?" if arr == "00:00" else ""
+                  arr_note    = "⚠️" if arr == "00:00" else ""
                   google_low  = history_min
                   google_str  = f"  Google低點 TWD {google_low:,}" if google_low else ""
                   days_str    = f"  共{days}天" if days else ""
-                  lines.append(f"去程 {latest['airline']} {latest['flight_no']}  {depart_date}  {latest['dep']}→{arr}{arr_note}")
+                  out_line    = f"去 {latest['flight_no']}  {mmdd(depart_date)}  {latest['dep']}→{arr}"
+                  if arr_note:
+                      out_line += arr_note
+                  lines.append(out_line)
                   ret_fn = latest.get("ret_flight_no")
                   if ret_fn:
                       ret_dep   = latest.get("ret_dep", "?")
                       ret_arr_t = latest.get("ret_arr", "?")
-                      lines.append(f"回程 {latest.get('ret_airline', '')} {ret_fn}  {return_date}  {ret_dep}→{ret_arr_t}{days_str}")
+                      lines.append(f"回 {ret_fn}  {mmdd(return_date)}  {ret_dep}→{ret_arr_t}{days_str}")
                   else:
-                      lines.append(f"回程 {return_date}{days_str}")
+                      lines.append(f"回 {mmdd(return_date)}{days_str}")
                   lines.append(f"{rating_str}{google_str}")
               lines.append("")
 
