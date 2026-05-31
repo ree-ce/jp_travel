@@ -97,15 +97,17 @@ jobs:
       - name: Send Discord summary
         if: always()
         env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
         run: |
           python3 - <<'PYEOF'
           import json, os, urllib.request, urllib.error
           from datetime import datetime, timezone
 
-          webhook_url = os.environ.get("DISCORD_WEBHOOK_URL", "")
-          if not webhook_url:
-              print("DISCORD_WEBHOOK_URL not set, skipping.")
+          bot_token  = os.environ.get("DISCORD_BOT_TOKEN", "")
+          channel_id = os.environ.get("DISCORD_CHANNEL_ID", "")
+          if not bot_token or not channel_id:
+              print("DISCORD_BOT_TOKEN or DISCORD_CHANNEL_ID not set, skipping.")
               exit(0)
 
           history = json.load(open("價格追蹤/history.json", encoding="utf-8"))
@@ -154,7 +156,7 @@ jobs:
               })
 
           title  = f"✈️ 票價日報 {today}"
-          color  = 0xFF4444 if alert_names else 0x5865F2   # 紅=警報, 藍=一般
+          color  = 0xFF4444 if alert_names else 0x5865F2
 
           if alert_names:
               description = "🚨 **警報觸發！以下路線已達目標價：**\n" + "\n".join(f"• {n}" for n in alert_names)
@@ -172,17 +174,21 @@ jobs:
               }]
           }
 
+          url  = f"https://discord.com/api/v10/channels/{channel_id}/messages"
           body = json.dumps(payload).encode("utf-8")
           req  = urllib.request.Request(
-              webhook_url,
+              url,
               data    = body,
-              headers = {"Content-Type": "application/json"},
+              headers = {
+                  "Content-Type":  "application/json",
+                  "Authorization": f"Bot {bot_token}",
+              },
               method  = "POST",
           )
           try:
               with urllib.request.urlopen(req) as resp:
                   print(f"Discord notified: HTTP {resp.status}")
           except urllib.error.HTTPError as e:
-              print(f"Discord webhook error: {e.code} {e.read().decode()}")
+              print(f"Discord API error: {e.code} {e.read().decode()}")
               exit(1)
           PYEOF
