@@ -49,15 +49,6 @@
     "notes": "IT212 TPE→KIX(14:40→17:55) + IT215 OKJ→TPE(15:25→17:30)。Bridge World→高松4泊→岡山→OKJ"
   },
   {
-    "id": "kyushu_miyaken_takachiho",
-    "name": "九州C：八代妙見祭＋高千穂峡紅葉",
-    "origin": "TPE",
-    "dest": "FUK",
-    "depart_date": "2026-11-20",
-    "days": 6,
-    "notes": "八代妙見祭11/22〜23（UNESCO無形文化遺産）＋雲仙仁田峠紅葉（10/中〜11/下旬★★★★、活火山平成新山×紅葉の異質な組み合わせ、ロープウェイあり）。八代→雲仙 車2〜2.5h圏内"
-  },
-  {
     "id": "shikoku_openjaw",
     "name": "四國楓葉：KIX進＋OKJ出（開口票）",
     "type": "open_jaw",

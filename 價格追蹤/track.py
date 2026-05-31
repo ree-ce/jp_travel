@@ -57,10 +57,16 @@ def save_history(history: dict):
 # One-way / open-jaw helpers
 # ---------------------------------------------------------------------------
 
-def _query_oneway_leg(origin: str, dest: str, date_str: str) -> Optional[dict]:
-    """Query a single one-way leg; return cheapest result dict or None."""
-    cmd = ["python3", str(SEARCH_PY), "--oneway", origin, dest, date_str, date_str]
-    print(f"    → 單程查詢：{origin} → {dest} {date_str}...", end=" ", flush=True)
+def _query_oneway_leg(origin: str, dest: str, date_start: str,
+                      date_end: Optional[str] = None,
+                      airlines: Optional[str] = None) -> Optional[dict]:
+    """Query a single one-way leg over a date range; return cheapest result dict or None."""
+    end = date_end or date_start
+    cmd = ["python3", str(SEARCH_PY), "--oneway", origin, dest, date_start, end]
+    if airlines:
+        cmd.append(airlines)
+    label = f"{date_start}" if end == date_start else f"{date_start}~{end}"
+    print(f"    → 單程查詢：{origin} → {dest} {label}...", end=" ", flush=True)
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
         print(f"❌ {result.stderr[:80]}")
@@ -79,9 +85,9 @@ def _query_oneway_leg(origin: str, dest: str, date_str: str) -> Optional[dict]:
 
 
 def _query_open_jaw(target: dict) -> Optional[dict]:
-    """Query both legs of an open-jaw itinerary and return combined result."""
+    """Query both legs of an open-jaw itinerary (fixed dates)."""
     print(f"  查詢中：{target['name']} (開口票)")
-    leg_out = _query_oneway_leg(target["origin"], target["dest"],       target["depart_date"])
+    leg_out = _query_oneway_leg(target["origin"], target["dest"], target["depart_date"])
     leg_ret = _query_oneway_leg(target["return_from"], target["origin"], target["return_date"])
     if not leg_out or not leg_ret:
         return None
@@ -90,12 +96,34 @@ def _query_open_jaw(target: dict) -> Optional[dict]:
     return {"type": "open_jaw", "combined_price": combined, "leg_out": leg_out, "leg_ret": leg_ret}
 
 
+def _query_open_jaw_range(target: dict) -> Optional[dict]:
+    """Query open-jaw with flexible date ranges (nested inbound/outbound format).
+    Finds cheapest flight independently for each leg across the specified date range.
+    """
+    inb = target["inbound"]
+    out = target["outbound"]
+    print(f"  查詢中：{target['name']} (開口票，日期區間)")
+    leg_in  = _query_oneway_leg(inb["origin"], inb["dest"],
+                                inb["date_start"], inb.get("date_end"),
+                                inb.get("airlines"))
+    leg_out = _query_oneway_leg(out["origin"], out["dest"],
+                                out["date_start"], out.get("date_end"),
+                                out.get("airlines"))
+    if not leg_in or not leg_out:
+        return None
+    combined = leg_in["price_ow"] + leg_out["price_ow"]
+    print(f"  合計：TWD {leg_in['price_ow']:,} + TWD {leg_out['price_ow']:,} = TWD {combined:,}")
+    return {"type": "open_jaw", "combined_price": combined, "leg_out": leg_in, "leg_ret": leg_out}
+
+
 # ---------------------------------------------------------------------------
 # Round-trip query (original)
 # ---------------------------------------------------------------------------
 
 def query_target(target: dict):
     if target.get("type") == "open_jaw":
+        if "inbound" in target:
+            return _query_open_jaw_range(target)
         return _query_open_jaw(target)
 
     cmd = [
@@ -427,15 +455,18 @@ def main():
 
     print(f"\n開始查詢 {len(targets)} 個目標路線...\n")
     for target in targets:
-        results = query_target(target)
-        if results:
-            history = record_snapshot(history, target["id"], results)
-            if isinstance(results, dict):  # open_jaw
-                print(f"  ✓ 開口票合計 TWD {results['combined_price']:,}")
+        try:
+            results = query_target(target)
+            if results:
+                history = record_snapshot(history, target["id"], results)
+                if isinstance(results, dict):  # open_jaw
+                    print(f"  ✓ 開口票合計 TWD {results['combined_price']:,}")
+                else:
+                    print(f"  ✓ 找到 {len(results)} 筆，最低 TWD {best_result(results)['price_rt']:,}")
             else:
-                print(f"  ✓ 找到 {len(results)} 筆，最低 TWD {best_result(results)['price_rt']:,}")
-        else:
-            print(f"  ✗ {target['name']} 查無結果")
+                print(f"  ✗ {target['name']} 查無結果")
+        except Exception as e:
+            print(f"  ❌ {target['name']} 查詢異常：{e}")
 
     save_history(history)
     print_report(targets, history)
