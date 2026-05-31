@@ -122,6 +122,21 @@ jobs:
               "偏高":     "🔺 [5/6] 偏高",
               "高":       "❌ [6/6] 高",
           }
+          RATING_SCORE = {"超值": 1, "便宜": 2, "一般偏低": 3, "一般": 4, "偏高": 5, "高": 6}
+          SCORE_TO_KEY = {v: k for k, v in RATING_SCORE.items()}
+
+          def rt_effective_rating(price, raw_rating, history_min):
+              if not history_min or price <= history_min:
+                  return raw_rating
+              gap = (price - history_min) / history_min
+              google_score = RATING_SCORE.get(raw_rating, 4)
+              if gap > 0.15:
+                  floor_score = 3
+              elif gap > 0.05:
+                  floor_score = 2
+              else:
+                  return raw_rating
+              return SCORE_TO_KEY[max(google_score, floor_score)]
 
           def oj_rating(price, records):
               prices = [r["price"] for r in records if r.get("price")]
@@ -176,13 +191,21 @@ jobs:
                   lines.append(oj_rating(price, records))
               else:
                   depart_date = t.get("depart_date", "")
+                  return_date = latest.get("return_date", "")
                   raw_rating  = latest.get("rating", "")
-                  rating_str  = RATING_LABEL.get(raw_rating, raw_rating)
-                  arr = latest['arr']
-                  arr_note = " ⚠️次日?" if arr == "00:00" else ""
-                  google_low = latest.get("history_min")
-                  google_str = f"  Google低點 TWD {google_low:,}" if google_low else ""
-                  lines.append(f"{latest['airline']} {latest['flight_no']}  {depart_date}  {latest['dep']}→{arr}{arr_note}")
+                  history_min = latest.get("history_min")
+                  eff_rating  = rt_effective_rating(price, raw_rating, history_min)
+                  rating_str  = RATING_LABEL.get(eff_rating, eff_rating)
+                  arr         = latest['arr']
+                  arr_note    = " ⚠️?" if arr == "00:00" else ""
+                  google_low  = history_min
+                  google_str  = f"  Google低點 TWD {google_low:,}" if google_low else ""
+                  lines.append(f"去程 {latest['airline']} {latest['flight_no']}  {depart_date}  {latest['dep']}→{arr}{arr_note}")
+                  ret_fn = latest.get("ret_flight_no")
+                  if ret_fn:
+                      ret_dep   = latest.get("ret_dep", "?")
+                      ret_arr_t = latest.get("ret_arr", "?")
+                      lines.append(f"回程 {latest.get('ret_airline', '')} {ret_fn}  {return_date}  {ret_dep}→{ret_arr_t}")
                   lines.append(f"{rating_str}{google_str}")
               lines.append("")
 

@@ -163,6 +163,7 @@ def record_snapshot(history: dict, target_id: str, results) -> dict:
     best = best_result(results)
     if not best:
         return history
+    ret = (best.get("return_options") or [None])[0]
     snapshot = {
         "checked_at": datetime.now(timezone.utc).isoformat(),
         "price": best["price_rt"],
@@ -170,6 +171,11 @@ def record_snapshot(history: dict, target_id: str, results) -> dict:
         "flight_no": best["flight_no"],
         "dep": best["dep"],
         "arr": best["arr"],
+        "return_date": best.get("return_date"),
+        "ret_airline": ret["airline"] if ret else None,
+        "ret_flight_no": ret["flight_no"] if ret else None,
+        "ret_dep": ret["dep"] if ret else None,
+        "ret_arr": ret["arr"] if ret else None,
         "rating": best["rating_label"],
         "history_min": best.get("history_min"),
         "top3": [
@@ -312,6 +318,10 @@ def print_report(targets: list, history: dict):
               f"{rating_icon}  "
               f"{latest['airline']} {latest['flight_no']}  "
               f"{latest['dep']}→{latest['arr']}")
+        if latest.get("ret_flight_no"):
+            print(f"  回程       {latest.get('ret_airline', '')} {latest['ret_flight_no']}  "
+                  f"{latest.get('return_date', '')}  "
+                  f"{latest.get('ret_dep', '?')}→{latest.get('ret_arr', '?')}")
 
         if prev:
             diff = latest["price"] - prev["price"]
