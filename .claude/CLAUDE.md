@@ -1,5 +1,8 @@
 # JP Travel Project Configuration
 
+## Git Workflow
+- **Always commit and push directly to `master`**. Never create feature branches.
+
 ## Project Overview
 - **Path**: `/Users/reece_chen/Documents/Claude/Projects/JP Travel`
 - **Purpose**: Comprehensive Japanese travel planning with flights, events, accommodations, and photo spots
