@@ -175,10 +175,15 @@ jobs:
                   lines.append(f"回程 {out['flight_no']} {latest['return_date']} {out['dep']}→{out['arr']} TWD {out['price']:,}")
                   lines.append(oj_rating(price, records))
               else:
-                  raw_rating = latest.get("rating", "")
-                  rating_str = RATING_LABEL.get(raw_rating, raw_rating)
-                  lines.append(f"{latest['airline']} {latest['flight_no']}  {latest['dep']}→{latest['arr']}")
-                  lines.append(rating_str)
+                  depart_date = t.get("depart_date", "")
+                  raw_rating  = latest.get("rating", "")
+                  rating_str  = RATING_LABEL.get(raw_rating, raw_rating)
+                  arr = latest['arr']
+                  arr_note = " ⚠️次日?" if arr == "00:00" else ""
+                  google_low = latest.get("history_min")
+                  google_str = f"  Google低點 TWD {google_low:,}" if google_low else ""
+                  lines.append(f"{latest['airline']} {latest['flight_no']}  {depart_date}  {latest['dep']}→{arr}{arr_note}")
+                  lines.append(f"{rating_str}{google_str}")
               lines.append("")
 
           if alert_names:
