@@ -64,7 +64,8 @@ def _query_oneway_leg(origin: str, dest: str, date_start: str,
     end = date_end or date_start
     cmd = ["python3", str(SEARCH_PY), "--oneway", origin, dest, date_start, end]
     if airlines:
-        cmd.append(airlines)
+        # --oneway expects: [budget] [airlines] — must pass budget to hold the position
+        cmd.extend(["15000", airlines])
     label = f"{date_start}" if end == date_start else f"{date_start}~{end}"
     print(f"    → 單程查詢：{origin} → {dest} {label}...", end=" ", flush=True)
     result = subprocess.run(cmd, capture_output=True, text=True)
