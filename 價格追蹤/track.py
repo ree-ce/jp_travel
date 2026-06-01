@@ -13,7 +13,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional
 
@@ -98,23 +98,58 @@ def _query_open_jaw(target: dict) -> Optional[dict]:
 
 
 def _query_open_jaw_range(target: dict) -> Optional[dict]:
-    """Query open-jaw with flexible date ranges (nested inbound/outbound format).
-    Finds cheapest flight independently for each leg across the specified date range.
+    """Query open-jaw with flexible inbound range, maintaining fixed trip_days duration.
+
+    For each depart date D in inbound range, pairs it with return date D+trip_days,
+    skipping pairs where the return falls outside the outbound date range.
+    Returns the cheapest (depart, return) pair found.
     """
-    inb = target["inbound"]
-    out = target["outbound"]
-    print(f"  查詢中：{target['name']} (開口票，日期區間)")
-    leg_in  = _query_oneway_leg(inb["origin"], inb["dest"],
-                                inb["date_start"], inb.get("date_end"),
-                                inb.get("airlines"))
-    leg_out = _query_oneway_leg(out["origin"], out["dest"],
-                                out["date_start"], out.get("date_end"),
-                                out.get("airlines"))
-    if not leg_in or not leg_out:
+    inb       = target["inbound"]
+    out       = target["outbound"]
+    trip_days = target.get("trip_days", 5)
+
+    inb_start = date.fromisoformat(inb["date_start"])
+    inb_end   = date.fromisoformat(inb["date_end"])
+    out_start = date.fromisoformat(out["date_start"])
+    out_end   = date.fromisoformat(out["date_end"])
+
+    inb_airlines = inb.get("airlines")
+    out_airlines = out.get("airlines")
+
+    total = (inb_end - inb_start).days + 1
+    print(f"  查詢中：{target['name']} (開口票，{trip_days}夜，掃 {total} 組日期)")
+
+    best_combined = None
+    best_leg_in   = None
+    best_leg_out  = None
+
+    current = inb_start
+    while current <= inb_end:
+        return_date = current + timedelta(days=trip_days)
+        if return_date < out_start or return_date > out_end:
+            current += timedelta(days=1)
+            continue
+
+        leg_in  = _query_oneway_leg(inb["origin"], inb["dest"],
+                                    current.isoformat(), None, inb_airlines)
+        leg_out = _query_oneway_leg(out["origin"], out["dest"],
+                                    return_date.isoformat(), None, out_airlines)
+
+        if leg_in and leg_out:
+            combined = leg_in["price_ow"] + leg_out["price_ow"]
+            if best_combined is None or combined < best_combined:
+                best_combined = combined
+                best_leg_in   = leg_in
+                best_leg_out  = leg_out
+
+        current += timedelta(days=1)
+
+    if best_combined is None:
         return None
-    combined = leg_in["price_ow"] + leg_out["price_ow"]
-    print(f"  合計：TWD {leg_in['price_ow']:,} + TWD {leg_out['price_ow']:,} = TWD {combined:,}")
-    return {"type": "open_jaw", "combined_price": combined, "leg_out": leg_in, "leg_ret": leg_out}
+
+    print(f"  最優組合：TWD {best_leg_in['price_ow']:,} + TWD {best_leg_out['price_ow']:,} = TWD {best_combined:,}")
+    return {"type": "open_jaw", "combined_price": best_combined,
+            "leg_out": best_leg_in, "leg_ret": best_leg_out}
 
 
 # ---------------------------------------------------------------------------
