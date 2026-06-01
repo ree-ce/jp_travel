@@ -60,7 +60,7 @@
       "dest":   "KIX",
       "date_start": "2026-11-09",
       "date_end":   "2026-11-17",
-      "airlines": "CI,BR,JX,IT,GK"
+      "airlines": "CI,BR,JX,IT,GK,MM"
     },
     "outbound": {
       "origin": "OKJ",
