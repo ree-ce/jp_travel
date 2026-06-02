@@ -314,8 +314,16 @@ def _print_open_jaw_report(target: dict, records: list, history: dict):
     prev   = prev_snapshot(history, tid)
     atl    = all_time_low(history, tid)
 
-    print(f"  {target['origin']}→{target['dest']} {target['depart_date']}  ＋"
-          f"  {target['return_from']}→{target['origin']} {target['return_date']}")
+    if "inbound" in target:
+        inb_cfg = target["inbound"]
+        out_cfg = target["outbound"]
+        depart_date = latest.get("depart_date", "?")
+        return_date = latest.get("return_date", "?")
+        print(f"  {inb_cfg['origin']}→{inb_cfg['dest']} {depart_date}  ＋"
+              f"  {out_cfg['origin']}→{out_cfg['dest']} {return_date}")
+    else:
+        print(f"  {target['origin']}→{target['dest']} {target['depart_date']}  ＋"
+              f"  {target['return_from']}→{target['origin']} {target['return_date']}")
     print(f"  備注：{target['notes']}")
 
     inb = latest["inbound"]
