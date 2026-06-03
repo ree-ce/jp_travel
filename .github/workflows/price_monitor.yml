@@ -2,10 +2,10 @@ name: Flight Price Monitor
 
 on:
   schedule:
-    # 每天 09:07 & 21:07 台灣時間（UTC+8 → UTC 01:07 / 13:07）
+    # 每天 02:07 & 14:07 台灣時間（UTC+8 → UTC 18:07 / 06:07）
     # 避開整點：GitHub Actions 整點壅塞，容易 delay 或 skip
-    - cron: '7 1 * * *'
-    - cron: '7 13 * * *'
+    - cron: '7 18 * * *'
+    - cron: '7 6 * * *'
   workflow_dispatch:   # 也可手動在 Actions 頁面觸發
 
 jobs:
