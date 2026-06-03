@@ -157,10 +157,14 @@ def _is_iata(x) -> bool:
 
 
 def _is_hhmm(x) -> bool:
-    """[h, m] time pair, e.g. [14, 40]."""
-    return (isinstance(x, list) and len(x) == 2
-            and isinstance(x[0], int) and isinstance(x[1], int)
-            and 0 <= x[0] <= 23 and 0 <= x[1] <= 59)
+    """[h, m] or [h] (on-the-hour) time pair, e.g. [14, 40] or [10]."""
+    if not isinstance(x, list) or not x or not isinstance(x[0], int):
+        return False
+    if not (0 <= x[0] <= 23):
+        return False
+    if len(x) == 1:
+        return True   # [h] means h:00 — Google omits the :00 minute
+    return len(x) == 2 and isinstance(x[1], int) and 0 <= x[1] <= 59
 
 
 def _is_duration(x) -> bool:
@@ -180,7 +184,9 @@ def _scan(lst, pred, n=1):
 
 
 def _fmt_hhmm(t) -> str:
-    return "%02d:%02d" % (t[0], t[1]) if _is_hhmm(t) else "?"
+    if not _is_hhmm(t):
+        return "?"
+    return "%02d:%02d" % (t[0], t[1] if len(t) >= 2 else 0)
 
 
 def _parse_segment(seg: list, fallback_airline: str) -> Optional[dict]:
