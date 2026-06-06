@@ -297,10 +297,9 @@ Day 5          高松 → Marine Liner → 岡山 → OKJ
 | 英語版 | https://www.jb-honshi.co.jp/english/bridgeworld/ |
 | Instagram | [@akashi_bridgeworld](https://www.instagram.com/akashi_bridgeworld/)（荒天キャンセル通知あり）|
 
-#### ⚠️ 集合場所（重要：要確認）
-> **研究結果によると、集合場所は淡路島側 4A アンカレイジ入口（道の駅あわじ付近、兵庫県淡路市岩屋）** が近年の開催地点として報告されているが、年によって神戸側（舞子）に変わることもある。**予約確定後、公式サイトで必ず確認すること。**
->
-> 淡路島側の場合：神戸側（舞子）から高速バスまたは別交通手段で淡路島へ移動が必要。Day 2 の動線は再検討の可能性あり。
+#### 集合場所
+> **神戸側（舞子）・橋の科学館付近**（JR 舞子駅 徒歩 5 分）
+> 公式アクセスページ：https://www.jb-honshi.co.jp/bridgeworld/access.html
 
 #### 參觀路線
 ```
@@ -896,7 +895,7 @@ IT215 15:25 発に対して → 14:50 発のバスに乗る（OKJ 15:25着、タ
 ## 注意事項
 
 - Bridge World 為戶外活動，颳風下雨取消（全額退款），行程需有備用方案。取消通知在前日 19:00 前或當日 Instagram [@akashi_bridgeworld](https://www.instagram.com/akashi_bridgeworld/) 發布
-- **Bridge World 集合場所要確認**：近年実績は淡路島側アンカレイジ（道の駅あわじ付近）だが、年によって変わる可能性。予約確定後に公式サイトで確認し、Day 2 の動線を再調整すること
+- Bridge World 集合場所は**神戸側・舞子（橋の科学館付近）** — 元々の Day 2 動線のまま問題なし（https://www.jb-honshi.co.jp/bridgeworld/access.html で確認済）
 - Bridge World 最低年龄 12歲，攜帶相機需使用掛繩（頸帶），無掛繩相機禁止帶上塔頂
 - 全程無廁所（アンカレイジ出発前に必ず済ませること）
 - 鳴門渦潮必須配合潮汐時刻，出發前確認當天転流時間（非高低潮本身，而是前後 30 分最強）
