@@ -298,7 +298,16 @@ Day 5          高松 → Marine Liner → 岡山 → OKJ
 | Instagram | [@akashi_bridgeworld](https://www.instagram.com/akashi_bridgeworld/)（荒天キャンセル通知あり）|
 
 #### 集合場所
-> **神戸側（舞子）・橋の科学館付近**（JR 舞子駅 徒歩 5 分）
+**橋の科学館**（〒655-0047 神戸市垂水区東舞子町4-114）
+
+| 交通 | 所要 |
+|------|------|
+| JR 神戸線「舞子駅」| 徒歩 約 5 分 |
+| 山陽電鉄「舞子公園駅」| 徒歩 約 7 分 |
+| 高速バス「高速舞子」バス停 | 徒歩 約 7 分 |
+
+> ⚠️ **高速バスの下り線（→淡路・四国方面）は「高速舞子」で降車不可。**
+> Bridge World 終了後に高速舞子から高松行きバスに**乗車する**のは問題なし。
 > 公式アクセスページ：https://www.jb-honshi.co.jp/bridgeworld/access.html
 
 #### 參觀路線
