@@ -45,22 +45,21 @@
     "return_from": "OKJ",
     "depart_date": "2026-11-10",
     "return_date": "2026-11-15",
-    "alert_threshold": 7500,
+    "alert_threshold": 8000,
     "notes": "IT212 TPE→KIX(14:40→17:55) + IT215 OKJ→TPE(15:25→17:30)。Bridge World→高松4泊→岡山→OKJ"
   },
   {
     "id": "shikoku_openjaw",
-    "name": "四國楓葉（彈性）：KIX進OKJ出 11/09~11/22 最低組合",
+    "name": "四國楓葉（廉航彈性）：KIX進OKJ出 11/09~11/22 最低組合",
     "type": "open_jaw",
     "trip_days": 5,
-    "budget": 12000,
     "notes": "寒霞渓11月中旬盛期、鳴門大漩渦（觀潮船）、明石海峡大橋、小豆島",
     "inbound": {
       "origin": "TPE",
       "dest":   "KIX",
       "date_start": "2026-11-09",
       "date_end":   "2026-11-17",
-      "airlines": "CI,BR,JX,IT,GK,MM"
+      "airlines": "IT,GK,MM"
     },
     "outbound": {
       "origin": "OKJ",
@@ -69,6 +68,28 @@
       "date_end":   "2026-11-22",
       "airlines": "IT"
     },
-    "alert_threshold": 7500
+    "alert_threshold": 8000
+  },
+  {
+    "id": "shikoku_openjaw_fsc",
+    "name": "四國楓葉（傳統航空彈性）：KIX進OKJ出 CI/BR/JX進＋IT回",
+    "type": "open_jaw",
+    "trip_days": 5,
+    "notes": "寒霞渓11月中旬盛期、鳴門大漩渦（觀潮船）、明石海峡大橋、小豆島",
+    "inbound": {
+      "origin": "TPE",
+      "dest":   "KIX",
+      "date_start": "2026-11-09",
+      "date_end":   "2026-11-17",
+      "airlines": "CI,BR,JX"
+    },
+    "outbound": {
+      "origin": "OKJ",
+      "dest":   "TPE",
+      "date_start": "2026-11-13",
+      "date_end":   "2026-11-22",
+      "airlines": "IT"
+    },
+    "alert_threshold": 12000
   }
 ]
