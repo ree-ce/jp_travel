@@ -45,7 +45,7 @@
     "return_from": "OKJ",
     "depart_date": "2026-11-10",
     "return_date": "2026-11-15",
-    "alert_threshold": 8500,
+    "alert_threshold": 7500,
     "notes": "IT212 TPE→KIX(14:40→17:55) + IT215 OKJ→TPE(15:25→17:30)。Bridge World→高松4泊→岡山→OKJ"
   },
   {
@@ -69,6 +69,6 @@
       "date_end":   "2026-11-22",
       "airlines": "IT"
     },
-    "alert_threshold": 8500
+    "alert_threshold": 7500
   }
 ]
