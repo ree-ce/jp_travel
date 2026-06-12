@@ -229,7 +229,7 @@ jobs:
                   raw_rating  = latest.get("rating", "")
                   history_min = latest.get("history_min")
                   eff_rating  = rt_effective_rating(price, raw_rating, history_min)
-                  rating_str  = RATING_LABEL.get(eff_rating, eff_rating)
+                  rating_str  = RATING_LABEL.get(eff_rating, "")
                   arr         = latest['arr']
                   arr_note    = "⚠️" if arr == "00:00" else ""
                   google_low  = history_min
@@ -246,7 +246,8 @@ jobs:
                       lines.append(f"回 {ret_fn}  {mmdd(return_date)}  {ret_dep}→{ret_arr_t}{days_str}")
                   else:
                       lines.append(f"回 {mmdd(return_date)}{days_str}")
-                  lines.append(f"{rating_str}{google_str}")
+                  if rating_str or google_str:
+                      lines.append(f"{rating_str}{google_str}")
               lines.append("")
 
           if alert_names:
