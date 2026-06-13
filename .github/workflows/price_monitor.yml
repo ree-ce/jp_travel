@@ -54,19 +54,6 @@ jobs:
               fs.readFileSync('價格追蹤/targets.json', 'utf8')
             );
 
-            const LCC_CODES = new Set(["IT", "MM", "GK", "TR"]);
-            const FSC_CODES = new Set(["CI", "BR", "JX"]);
-            function ojThreshold(t, latest) {
-              const lcc = t.alert_threshold_lcc, fsc = t.alert_threshold_fsc;
-              if (lcc || fsc) {
-                const code = ((latest.inbound && latest.inbound.flight_no) || "").slice(0, 2).toUpperCase();
-                if (LCC_CODES.has(code)) return lcc;
-                if (FSC_CODES.has(code)) return fsc;
-                return lcc || fsc;
-              }
-              return t.alert_threshold;
-            }
-
             const alerts = [];
             for (const t of targets) {
               if (t.type !== 'open_jaw') continue;
@@ -74,7 +61,7 @@ jobs:
               if (!records || records.length === 0) continue;
 
               const latest    = records[records.length - 1];
-              const threshold = ojThreshold(t, latest);
+              const threshold = t.alert_threshold;
               if (!threshold || latest.price > threshold) continue;
 
               alerts.push(
@@ -175,18 +162,6 @@ jobs:
           lines = []
           alert_names = []
 
-          LCC_CODES = {"IT", "MM", "GK", "TR"}
-          FSC_CODES = {"CI", "BR", "JX"}
-          def oj_threshold(t, latest):
-              lcc_th = t.get("alert_threshold_lcc")
-              fsc_th = t.get("alert_threshold_fsc")
-              if lcc_th or fsc_th:
-                  code = ((latest.get("inbound") or {}).get("flight_no") or "")[:2].upper()
-                  if code in LCC_CODES: return lcc_th
-                  if code in FSC_CODES: return fsc_th
-                  return lcc_th or fsc_th
-              return t.get("alert_threshold")
-
           for t in targets:
               tid     = t["id"]
               records = history.get(tid, [])
@@ -195,7 +170,7 @@ jobs:
               latest    = records[-1]
               price     = latest["price"]
               is_oj     = t.get("type") == "open_jaw"
-              threshold = oj_threshold(t, latest) if is_oj else t.get("alert_threshold")
+              threshold = t.get("alert_threshold")
 
               hit = threshold and price <= threshold
               if hit:

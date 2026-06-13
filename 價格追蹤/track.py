@@ -24,9 +24,6 @@ HISTORY_FILE = BASE / "history.json"
 TMP_RESULTS = Path("/tmp/flight_results.json")
 TMP_ONEWAY  = Path("/tmp/flight_oneway.json")
 
-LCC_CODES = {"IT", "MM", "GK", "TR"}
-FSC_CODES = {"CI", "BR", "JX"}
-
 RATING_SCORE = {"超值": 1, "便宜": 2, "一般偏低": 3, "一般": 4, "偏高": 5, "高": 6}
 # Display as rank [1/6] so hierarchy is unambiguous
 RATING_LABEL = {
@@ -311,20 +308,6 @@ def days_ago(iso_str: str) -> str:
 # Reporting
 # ---------------------------------------------------------------------------
 
-def _oj_threshold(target: dict, latest: dict) -> Optional[int]:
-    """Return the applicable alert threshold, respecting dual LCC/FSC tiers."""
-    lcc_th = target.get("alert_threshold_lcc")
-    fsc_th = target.get("alert_threshold_fsc")
-    if lcc_th or fsc_th:
-        code = (latest.get("inbound", {}).get("flight_no") or "")[:2].upper()
-        if code in LCC_CODES:
-            return lcc_th
-        if code in FSC_CODES:
-            return fsc_th
-        return lcc_th or fsc_th
-    return target.get("alert_threshold")
-
-
 def _print_open_jaw_report(target: dict, records: list, history: dict):
     tid = target["id"]
     latest = records[-1]
@@ -363,7 +346,7 @@ def _print_open_jaw_report(target: dict, records: list, history: dict):
         else:
             print(f"  歷史最低  TWD {atl:,}  （距低點還差 TWD {diff_atl:,}）")
 
-    threshold = _oj_threshold(target, latest)
+    threshold = target.get("alert_threshold")
     if threshold:
         if latest["price"] <= threshold:
             print(f"\n  🔥 已達目標價！TWD {latest['price']:,} ≤ TWD {threshold:,}，可出手！")
