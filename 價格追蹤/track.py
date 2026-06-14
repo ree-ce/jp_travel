@@ -182,7 +182,7 @@ def query_target(target: dict):
     if target.get("airlines"):
         cmd.extend(["15000", target["airlines"]])
     print(f"  查詢中：{target['name']} ({target['origin']} → {target['dest']} "
-          f"{target['depart_date']} {target['days']}天)...")
+          f"{date_start}~{date_end} {target['days']}天)...")
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
         print(f"  ❌ 查詢失敗：{result.stderr[:100]}")
@@ -192,7 +192,20 @@ def query_target(target: dict):
         return []
     with open(TMP_RESULTS, encoding="utf-8") as f:
         data = json.load(f)
-    return data if isinstance(data, list) else []
+    results = data if isinstance(data, list) else []
+
+    # Supplement return-leg details when Google doesn't provide return_options.
+    best = best_result(results)
+    if best and not (best.get("return_options") or []):
+        ret_date = best.get("return_date")
+        ret_origin = best.get("to", "")   # actual destination airport, e.g. "NRT"
+        if ret_date and ret_origin:
+            print(f"    → 補查回程：{ret_origin} → {target['origin']} {ret_date}...", end=" ", flush=True)
+            ret_leg = _query_oneway_leg(ret_origin, target["origin"], ret_date, None, target.get("airlines"))
+            if ret_leg:
+                best["return_options"] = [ret_leg]
+
+    return results
 
 
 def best_result(results: list) -> Optional[dict]:
