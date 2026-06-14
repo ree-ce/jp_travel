@@ -192,6 +192,8 @@ jobs:
                       lines.append(f"去 {inb['flight_no']}  {mmdd(latest['depart_date'])}  {inb['dep']}→{inb['arr']}  {inb['price']:,}")
                       lines.append(f"回 {out['flight_no']}  {mmdd(latest['return_date'])}  {out['dep']}→{out['arr']}  {out['price']:,}")
                       lines.append(oj_rating(price, records))
+                  elif t.get("type") == "oneway":
+                      lines.append(f"{latest['flight_no']}  {mmdd(latest['depart_date'])}  {latest['dep']}→{latest['arr']}")
                   else:
                       depart_date = t.get("depart_date", "")
                       days        = t.get("days")

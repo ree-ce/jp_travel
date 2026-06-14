@@ -40,18 +40,26 @@
     "notes": "芦屋基地航空祭11/15（ブルーインパルス確定）＋深耶馬渓一目八景（11/上〜中旬ピーク★★★★★）。芦屋→耶馬渓 車1.5h圏内"
   },
   {
-    "id": "shikoku_plan5",
-    "type": "open_jaw",
-    "name": "方案5：四國 KIX進OKJ出",
+    "id": "shikoku_tak_rt",
+    "name": "四國高松來回（TAK）",
     "origin": "TPE",
-    "dest": "KIX",
-    "return_from": "OKJ",
-    "depart_date": "2026-11-10",
-    "return_date": "2026-11-15",
-    "inbound_airlines": "IT,MM,GK",
-    "outbound_airlines": "IT",
+    "dest": "TAK",
+    "date_start": "2026-11-09",
+    "date_end": "2026-11-17",
+    "days": 5,
     "alert_threshold": 8000,
-    "notes": "IT212 TPE→KIX(14:40→17:55) + IT215 OKJ→TPE(15:25→17:30)。Bridge World→高松4泊→岡山→OKJ"
+    "notes": "高松空港直飛，寒霞渓11月中旬盛期、鳴門大漩渦"
+  },
+  {
+    "id": "shikoku_ojk_ow",
+    "type": "oneway",
+    "name": "岡山→台北 單程（OKJ）",
+    "origin": "OKJ",
+    "dest": "TPE",
+    "date_start": "2026-11-13",
+    "date_end": "2026-11-22",
+    "alert_threshold": 5000,
+    "notes": "IT215 OKJ→TPE 15:25→17:30，開口票回程腿"
   },
   {
     "id": "shikoku_openjaw",
@@ -124,19 +132,17 @@
     "notes": "芦屋基地航空祭11/15＋深耶馬渓一目八景"
   },
   {
-    "id": "shikoku_plan5_fsc",
-    "type": "open_jaw",
-    "name": "方案5（傳統航空）：四國 KIX進OKJ出",
+    "id": "shikoku_tak_rt_fsc",
+    "name": "四國高松來回（TAK）傳統航空",
     "origin": "TPE",
-    "dest": "KIX",
-    "return_from": "OKJ",
-    "depart_date": "2026-11-10",
-    "return_date": "2026-11-15",
-    "inbound_airlines": "CI,BR,JX",
-    "outbound_airlines": "IT",
+    "dest": "TAK",
+    "date_start": "2026-11-09",
+    "date_end": "2026-11-17",
+    "days": 5,
+    "airlines": "CI,BR,JX",
     "tier": "fsc",
     "alert_threshold": 12000,
-    "notes": "CI/BR/JX TPE→KIX + IT215 OKJ→TPE。Bridge World→高松4泊→岡山→OKJ"
+    "notes": "高松空港直飛，寒霞渓11月中旬盛期、鳴門大漩渦"
   },
   {
     "id": "shikoku_openjaw_fsc",

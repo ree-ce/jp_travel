@@ -164,10 +164,19 @@ def query_target(target: dict):
             return _query_open_jaw_range(target)
         return _query_open_jaw(target)
 
+    if target.get("type") == "oneway":
+        return _query_oneway_leg(
+            target["origin"], target["dest"],
+            target["date_start"], target.get("date_end"),
+            target.get("airlines"),
+        )
+
+    date_start = target.get("date_start", target["depart_date"])
+    date_end   = target.get("date_end", date_start)
     cmd = [
         "python3", str(SEARCH_PY),
         target["origin"], target["dest"],
-        target["depart_date"], target["depart_date"],
+        date_start, date_end,
         str(target["days"]),
     ]
     if target.get("airlines"):
@@ -227,6 +236,19 @@ def _record_open_jaw_snapshot(history: dict, target_id: str, result: dict) -> di
 def record_snapshot(history: dict, target_id: str, results) -> dict:
     if isinstance(results, dict) and results.get("type") == "open_jaw":
         return _record_open_jaw_snapshot(history, target_id, results)
+
+    # One-way leg result from _query_oneway_leg
+    if isinstance(results, dict) and "price_ow" in results:
+        snapshot = {
+            "checked_at":  datetime.now(timezone.utc).isoformat(),
+            "price":       results["price_ow"],
+            "flight_no":   results.get("flight_no", "?"),
+            "dep":         results.get("dep", "?"),
+            "arr":         results.get("arr", "?"),
+            "depart_date": results.get("depart_date", ""),
+        }
+        history.setdefault(target_id, []).append(snapshot)
+        return history
 
     best = best_result(results)
     if not best:
@@ -374,14 +396,43 @@ def print_report(targets: list, history: dict):
             print("  （尚無查詢記錄）")
             continue
 
-        # Open-jaw targets have their own display logic
         if target.get("type") == "open_jaw":
             _print_open_jaw_report(target, records, history)
             continue
 
+        if target.get("type") == "oneway":
+            latest = records[-1]
+            prev   = prev_snapshot(history, tid)
+            atl    = all_time_low(history, tid)
+            print(f"  {target['origin']}→{target['dest']}  "
+                  f"{target.get('date_start','')}~{target.get('date_end','')}")
+            print(f"  備注：{target['notes']}")
+            print(f"\n  現在最低  TWD {latest['price']:,}")
+            print(f"  {latest['flight_no']}  {latest['depart_date']}  "
+                  f"{latest['dep']}→{latest['arr']}")
+            if prev:
+                diff = latest["price"] - prev["price"]
+                sign, color = ("↑", "漲") if diff > 0 else ("↓", "降")
+                print(f"  上次記錄  TWD {prev['price']:,}  "
+                      f"({sign}{color} {abs(diff):,}，{days_ago(prev['checked_at'])})")
+            if atl:
+                diff_atl = latest["price"] - atl
+                if diff_atl == 0:
+                    print(f"  歷史最低  TWD {atl:,}  ← 目前即歷史低點！")
+                else:
+                    print(f"  歷史最低  TWD {atl:,}  （距低點還差 TWD {diff_atl:,}）")
+            threshold = target.get("alert_threshold")
+            if threshold:
+                if latest["price"] <= threshold:
+                    print(f"\n  🔥 已達目標價！TWD {latest['price']:,} ≤ TWD {threshold:,}，可出手！")
+                else:
+                    print(f"\n  💡 距目標 TWD {threshold:,} 還差 TWD {latest['price']-threshold:,}。")
+            continue
+
         # --- Round-trip display ---
+        depart_date = target.get("date_start", target.get("depart_date", ""))
         print(f"  {target['origin']} → {target['dest']}  "
-              f"{target['depart_date']} 出發  {target['days']}天")
+              f"{depart_date} 出發  {target['days']}天")
         print(f"  備注：{target['notes']}")
 
         latest = records[-1]
