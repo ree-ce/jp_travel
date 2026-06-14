@@ -811,6 +811,26 @@
         "arr": "17:30",
         "price": 4914
       }
+    },
+    {
+      "checked_at": "2026-06-14T09:53:04.824027+00:00",
+      "price": 7998,
+      "depart_date": "2026-11-10",
+      "return_date": "2026-11-15",
+      "inbound": {
+        "airline": "樂桃航空",
+        "flight_no": "MM28",
+        "dep": "18:50",
+        "arr": "22:20",
+        "price": 3560
+      },
+      "outbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT215",
+        "dep": "15:25",
+        "arr": "17:30",
+        "price": 4438
+      }
     }
   ],
   "shikoku_koyo": [
@@ -7903,6 +7923,41 @@
           "history_min": 9073
         }
       ]
+    },
+    {
+      "checked_at": "2026-06-14T09:52:06.018254+00:00",
+      "price": 11208,
+      "airline": "台灣虎航",
+      "flight_no": "IT700",
+      "dep": "15:30",
+      "arr": "19:55",
+      "return_date": "2026-10-25",
+      "ret_airline": null,
+      "ret_flight_no": null,
+      "ret_dep": null,
+      "ret_arr": null,
+      "rating": "?",
+      "history_min": null,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT700",
+          "dep": "15:30",
+          "arr": "19:55",
+          "price": 11208,
+          "rating": "?",
+          "history_min": null
+        },
+        {
+          "airline": "酷航",
+          "flight_no": "TR866",
+          "dep": "06:45",
+          "arr": "11:15",
+          "price": 11663,
+          "rating": "便宜",
+          "history_min": 10235
+        }
+      ]
     }
   ],
   "kyushu_yatsushiro_hanabi": [
@@ -9394,6 +9449,16 @@
         "arr": "17:30",
         "price": 4401
       }
+    }
+  ],
+  "shikoku_ojk_ow": [
+    {
+      "checked_at": "2026-06-14T09:52:29.400035+00:00",
+      "price": 4438,
+      "flight_no": "IT215",
+      "dep": "15:25",
+      "arr": "17:30",
+      "depart_date": "2026-11-14"
     }
   ]
 }
