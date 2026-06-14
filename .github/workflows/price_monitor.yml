@@ -159,90 +159,97 @@ jobs:
                   label = "❌ [6/6] 高"
               return "{} （歷史低點 TWD {:,}，差 +{:.0f}%）".format(label, atl, gap * 100)
 
-          lines = []
-          alert_names = []
+          def mmdd(iso):
+              return iso[5:].replace("-", "/") if iso and len(iso) == 10 else (iso or "")
 
-          for t in targets:
-              tid     = t["id"]
-              records = history.get(tid, [])
-              if not records:
-                  continue
-              latest    = records[-1]
-              price     = latest["price"]
-              is_oj     = t.get("type") == "open_jaw"
-              threshold = t.get("alert_threshold")
+          def render_group(group_targets):
+              lines, alerts = [], []
+              for t in group_targets:
+                  tid     = t["id"]
+                  records = history.get(tid, [])
+                  if not records:
+                      continue
+                  latest    = records[-1]
+                  price     = latest["price"]
+                  is_oj     = t.get("type") == "open_jaw"
+                  threshold = t.get("alert_threshold")
 
-              hit = threshold and price <= threshold
-              if hit:
-                  alert_names.append(t["name"])
-                  icon = "🔥"
-                  price_line = f"TWD {price:,}  ← 已達目標 ≤{threshold:,}！"
-              else:
-                  icon = "➖"
-                  price_line = f"TWD {price:,}" + (f"  (目標 ≤{threshold:,})" if threshold else "")
-
-              lines.append(f"{icon} <b>{t['name']}</b>")
-              lines.append(price_line)
-
-              def mmdd(iso):
-                  return iso[5:].replace("-", "/") if iso and len(iso) == 10 else (iso or "")
-
-              if is_oj:
-                  inb = latest["inbound"]
-                  out = latest["outbound"]
-                  lines.append(f"去 {inb['flight_no']}  {mmdd(latest['depart_date'])}  {inb['dep']}→{inb['arr']}  {inb['price']:,}")
-                  lines.append(f"回 {out['flight_no']}  {mmdd(latest['return_date'])}  {out['dep']}→{out['arr']}  {out['price']:,}")
-                  lines.append(oj_rating(price, records))
-              else:
-                  depart_date = t.get("depart_date", "")
-                  days        = t.get("days")
-                  # prefer stored return_date; fall back to depart + days
-                  return_date = latest.get("return_date") or (
-                      (date.fromisoformat(depart_date) + timedelta(days=days)).isoformat()
-                      if depart_date and days else ""
-                  )
-                  raw_rating  = latest.get("rating", "")
-                  history_min = latest.get("history_min")
-                  eff_rating  = rt_effective_rating(price, raw_rating, history_min)
-                  rating_str  = RATING_LABEL.get(eff_rating, "")
-                  arr         = latest['arr']
-                  arr_note    = "⚠️" if arr == "00:00" else ""
-                  google_low  = history_min
-                  google_str  = f"  Google低點 TWD {google_low:,}" if google_low else ""
-                  days_str    = f"  共{days}天" if days else ""
-                  out_line    = f"去 {latest['flight_no']}  {mmdd(depart_date)}  {latest['dep']}→{arr}"
-                  if arr_note:
-                      out_line += arr_note
-                  lines.append(out_line)
-                  ret_fn = latest.get("ret_flight_no")
-                  if ret_fn:
-                      ret_dep   = latest.get("ret_dep", "?")
-                      ret_arr_t = latest.get("ret_arr", "?")
-                      lines.append(f"回 {ret_fn}  {mmdd(return_date)}  {ret_dep}→{ret_arr_t}{days_str}")
+                  hit = threshold and price <= threshold
+                  if hit:
+                      alerts.append(t["name"])
+                      icon = "🔥"
+                      price_line = f"TWD {price:,}  ← 已達目標 ≤{threshold:,}！"
                   else:
-                      lines.append(f"回 {mmdd(return_date)}{days_str}")
-                  if rating_str or google_str:
-                      lines.append(f"{rating_str}{google_str}")
-              lines.append("")
+                      icon = "➖"
+                      price_line = f"TWD {price:,}" + (f"  (目標 ≤{threshold:,})" if threshold else "")
 
-          if alert_names:
-              header = f"✈️ <b>票價日報 {timestamp} (台灣時間)</b>\n🚨 警報觸發：" + "、".join(alert_names)
-          else:
-              header = f"✈️ <b>票價日報 {timestamp} (台灣時間)</b>\n今日掃描完成，尚無路線達目標價。"
+                  lines.append(f"{icon} <b>{t['name']}</b>")
+                  lines.append(price_line)
 
-          text = header + "\n\n" + "\n".join(lines).strip()
+                  if is_oj:
+                      inb = latest["inbound"]
+                      out = latest["outbound"]
+                      lines.append(f"去 {inb['flight_no']}  {mmdd(latest['depart_date'])}  {inb['dep']}→{inb['arr']}  {inb['price']:,}")
+                      lines.append(f"回 {out['flight_no']}  {mmdd(latest['return_date'])}  {out['dep']}→{out['arr']}  {out['price']:,}")
+                      lines.append(oj_rating(price, records))
+                  else:
+                      depart_date = t.get("depart_date", "")
+                      days        = t.get("days")
+                      return_date = latest.get("return_date") or (
+                          (date.fromisoformat(depart_date) + timedelta(days=days)).isoformat()
+                          if depart_date and days else ""
+                      )
+                      raw_rating  = latest.get("rating", "")
+                      history_min = latest.get("history_min")
+                      eff_rating  = rt_effective_rating(price, raw_rating, history_min)
+                      rating_str  = RATING_LABEL.get(eff_rating, "")
+                      arr         = latest['arr']
+                      arr_note    = "⚠️" if arr == "00:00" else ""
+                      google_str  = f"  Google低點 TWD {history_min:,}" if history_min else ""
+                      days_str    = f"  共{days}天" if days else ""
+                      out_line    = f"去 {latest['flight_no']}  {mmdd(depart_date)}  {latest['dep']}→{arr}"
+                      if arr_note:
+                          out_line += arr_note
+                      lines.append(out_line)
+                      ret_fn = latest.get("ret_flight_no")
+                      if ret_fn:
+                          lines.append(f"回 {ret_fn}  {mmdd(return_date)}  {latest.get('ret_dep','?')}→{latest.get('ret_arr','?')}{days_str}")
+                      else:
+                          lines.append(f"回 {mmdd(return_date)}{days_str}")
+                      if rating_str or google_str:
+                          lines.append(f"{rating_str}{google_str}")
+                  lines.append("")
+              return lines, alerts
 
-          url  = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-          data = urllib.parse.urlencode({
-              "chat_id":    chat_id,
-              "text":       text,
-              "parse_mode": "HTML",
-          }).encode("utf-8")
-          req = urllib.request.Request(url, data=data, method="POST")
-          try:
-              with urllib.request.urlopen(req) as resp:
-                  print(f"Telegram notified: HTTP {resp.status}")
-          except urllib.error.HTTPError as e:
-              print(f"Telegram error: {e.code} {e.read().decode()}")
-              exit(1)
+          def send_tg(text):
+              url  = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+              data = urllib.parse.urlencode({
+                  "chat_id": chat_id, "text": text, "parse_mode": "HTML",
+              }).encode("utf-8")
+              req = urllib.request.Request(url, data=data, method="POST")
+              try:
+                  with urllib.request.urlopen(req) as resp:
+                      print(f"Telegram notified: HTTP {resp.status}")
+              except urllib.error.HTTPError as e:
+                  print(f"Telegram error: {e.code} {e.read().decode()}")
+                  exit(1)
+
+          lcc_targets = [t for t in targets if t.get("tier", "lcc") == "lcc"]
+          fsc_targets = [t for t in targets if t.get("tier") == "fsc"]
+
+          lcc_lines, lcc_alerts = render_group(lcc_targets)
+          if lcc_lines:
+              if lcc_alerts:
+                  hdr = f"✈️ <b>廉航票價日報 {timestamp}</b>\n🚨 警報：" + "、".join(lcc_alerts)
+              else:
+                  hdr = f"✈️ <b>廉航票價日報 {timestamp}</b>\n掃描完成，尚無達目標價。"
+              send_tg(hdr + "\n\n" + "\n".join(lcc_lines).strip())
+
+          fsc_lines, fsc_alerts = render_group(fsc_targets)
+          if fsc_lines:
+              if fsc_alerts:
+                  hdr = f"✈️ <b>傳統航空票價日報 {timestamp}</b>\n🚨 警報：" + "、".join(fsc_alerts)
+              else:
+                  hdr = f"✈️ <b>傳統航空票價日報 {timestamp}</b>\n掃描完成，尚無達目標價。"
+              send_tg(hdr + "\n\n" + "\n".join(fsc_lines).strip())
           PYEOF

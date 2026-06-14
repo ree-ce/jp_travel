@@ -88,8 +88,10 @@ def _query_oneway_leg(origin: str, dest: str, date_start: str,
 def _query_open_jaw(target: dict) -> Optional[dict]:
     """Query both legs of an open-jaw itinerary (fixed dates)."""
     print(f"  查詢中：{target['name']} (開口票)")
-    leg_out = _query_oneway_leg(target["origin"], target["dest"], target["depart_date"])
-    leg_ret = _query_oneway_leg(target["return_from"], target["origin"], target["return_date"])
+    inb_airlines = target.get("inbound_airlines")
+    out_airlines = target.get("outbound_airlines")
+    leg_out = _query_oneway_leg(target["origin"], target["dest"], target["depart_date"], None, inb_airlines)
+    leg_ret = _query_oneway_leg(target["return_from"], target["origin"], target["return_date"], None, out_airlines)
     if not leg_out or not leg_ret:
         return None
     combined = leg_out["price_ow"] + leg_ret["price_ow"]
@@ -168,6 +170,8 @@ def query_target(target: dict):
         target["depart_date"], target["depart_date"],
         str(target["days"]),
     ]
+    if target.get("airlines"):
+        cmd.extend(["15000", target["airlines"]])
     print(f"  查詢中：{target['name']} ({target['origin']} → {target['dest']} "
           f"{target['depart_date']} {target['days']}天)...")
     result = subprocess.run(cmd, capture_output=True, text=True)

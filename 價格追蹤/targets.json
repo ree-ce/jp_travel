@@ -6,6 +6,7 @@
     "dest": "NRT,HND",
     "depart_date": "2026-10-20",
     "days": 6,
+    "airlines": "IT,TR,MM",
     "notes": "東京灣大花火10/24（★★★★★）、足尾銅山廢墟、日光"
   },
   {
@@ -15,9 +16,9 @@
     "dest": "KIX",
     "depart_date": "2026-10-15",
     "days": 5,
+    "airlines": "IT,TR,MM",
     "notes": "淀川花火10/17、神戶港花火10/19〜23"
-  }
-  ,
+  },
   {
     "id": "kyushu_yatsushiro_hanabi",
     "name": "九州A：やつしろ全国花火競技大会＋由布岳金鱗湖",
@@ -25,6 +26,7 @@
     "dest": "FUK",
     "depart_date": "2026-10-15",
     "days": 5,
+    "airlines": "IT,TR,MM",
     "notes": "やつしろ全国花火競技大会10/17（日本三大競技花火）＋くじゅう連山坊ガツル高原紅葉（10/上〜11/中旬、ドウダンツツジ山肌×御池水面倒影）。八代→くじゅう 車1.5〜2h圏内"
   },
   {
@@ -34,6 +36,7 @@
     "dest": "FUK",
     "depart_date": "2026-11-13",
     "days": 5,
+    "airlines": "IT,TR,MM",
     "notes": "芦屋基地航空祭11/15（ブルーインパルス確定）＋深耶馬渓一目八景（11/上〜中旬ピーク★★★★★）。芦屋→耶馬渓 車1.5h圏内"
   },
   {
@@ -45,6 +48,8 @@
     "return_from": "OKJ",
     "depart_date": "2026-11-10",
     "return_date": "2026-11-15",
+    "inbound_airlines": "IT,MM,GK",
+    "outbound_airlines": "IT",
     "alert_threshold": 8000,
     "notes": "IT212 TPE→KIX(14:40→17:55) + IT215 OKJ→TPE(15:25→17:30)。Bridge World→高松4泊→岡山→OKJ"
   },
@@ -71,10 +76,74 @@
     "alert_threshold": 8000
   },
   {
+    "id": "plan1_tokyo_fsc",
+    "name": "方案一（傳統航空）：東京灣大花火",
+    "origin": "TPE",
+    "dest": "NRT,HND",
+    "depart_date": "2026-10-20",
+    "days": 6,
+    "airlines": "CI,BR,JX",
+    "tier": "fsc",
+    "alert_threshold": 12000,
+    "notes": "東京灣大花火10/24（★★★★★）、足尾銅山廢墟、日光"
+  },
+  {
+    "id": "plan3_osaka_fsc",
+    "name": "方案三（傳統航空）：大阪淀川+神戶花火",
+    "origin": "TPE",
+    "dest": "KIX",
+    "depart_date": "2026-10-15",
+    "days": 5,
+    "airlines": "CI,BR,JX",
+    "tier": "fsc",
+    "alert_threshold": 12000,
+    "notes": "淀川花火10/17、神戶港花火10/19〜23"
+  },
+  {
+    "id": "kyushu_yatsushiro_fsc",
+    "name": "九州A（傳統航空）：やつしろ花火＋由布岳",
+    "origin": "TPE",
+    "dest": "FUK",
+    "depart_date": "2026-10-15",
+    "days": 5,
+    "airlines": "CI,BR,JX",
+    "tier": "fsc",
+    "alert_threshold": 12000,
+    "notes": "やつしろ全国花火競技大会10/17＋くじゅう連山紅葉"
+  },
+  {
+    "id": "kyushu_ashiya_fsc",
+    "name": "九州B（傳統航空）：芦屋航空祭＋深耶馬渓",
+    "origin": "TPE",
+    "dest": "FUK",
+    "depart_date": "2026-11-13",
+    "days": 5,
+    "airlines": "CI,BR,JX",
+    "tier": "fsc",
+    "alert_threshold": 12000,
+    "notes": "芦屋基地航空祭11/15＋深耶馬渓一目八景"
+  },
+  {
+    "id": "shikoku_plan5_fsc",
+    "type": "open_jaw",
+    "name": "方案5（傳統航空）：四國 KIX進OKJ出",
+    "origin": "TPE",
+    "dest": "KIX",
+    "return_from": "OKJ",
+    "depart_date": "2026-11-10",
+    "return_date": "2026-11-15",
+    "inbound_airlines": "CI,BR,JX",
+    "outbound_airlines": "IT",
+    "tier": "fsc",
+    "alert_threshold": 12000,
+    "notes": "CI/BR/JX TPE→KIX + IT215 OKJ→TPE。Bridge World→高松4泊→岡山→OKJ"
+  },
+  {
     "id": "shikoku_openjaw_fsc",
     "name": "四國楓葉（傳統航空彈性）：KIX進OKJ出 CI/BR/JX進＋IT回",
     "type": "open_jaw",
     "trip_days": 5,
+    "tier": "fsc",
     "notes": "寒霞渓11月中旬盛期、鳴門大漩渦（觀潮船）、明石海峡大橋、小豆島",
     "inbound": {
       "origin": "TPE",
