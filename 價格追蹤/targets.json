@@ -92,6 +92,7 @@
     "days": 6,
     "airlines": "CI,BR,JX",
     "tier": "fsc",
+    "budget": 20000,
     "alert_threshold": 12000,
     "notes": "東京灣大花火10/24（★★★★★）、足尾銅山廢墟、日光"
   },
@@ -104,6 +105,7 @@
     "days": 5,
     "airlines": "CI,BR,JX",
     "tier": "fsc",
+    "budget": 20000,
     "alert_threshold": 12000,
     "notes": "淀川花火10/17、神戶港花火10/19〜23"
   },
@@ -116,6 +118,7 @@
     "days": 5,
     "airlines": "CI,BR,JX",
     "tier": "fsc",
+    "budget": 20000,
     "alert_threshold": 12000,
     "notes": "やつしろ全国花火競技大会10/17＋くじゅう連山紅葉"
   },
@@ -128,6 +131,7 @@
     "days": 5,
     "airlines": "CI,BR,JX",
     "tier": "fsc",
+    "budget": 20000,
     "alert_threshold": 12000,
     "notes": "芦屋基地航空祭11/15＋深耶馬渓一目八景"
   },
@@ -141,6 +145,7 @@
     "days": 5,
     "airlines": "CI,BR,JX",
     "tier": "fsc",
+    "budget": 20000,
     "alert_threshold": 12000,
     "notes": "高松空港直飛，寒霞渓11月中旬盛期、鳴門大漩渦"
   },

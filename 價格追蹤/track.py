@@ -180,7 +180,7 @@ def query_target(target: dict):
         str(target["days"]),
     ]
     if target.get("airlines"):
-        cmd.extend(["15000", target["airlines"]])
+        cmd.extend([str(target.get("budget", 15000)), target["airlines"]])
     print(f"  查詢中：{target['name']} ({target['origin']} → {target['dest']} "
           f"{date_start}~{date_end} {target['days']}天)...")
     result = subprocess.run(cmd, capture_output=True, text=True)
