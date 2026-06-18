@@ -171,8 +171,8 @@ def query_target(target: dict):
             target.get("airlines"),
         )
 
-    date_start = target.get("date_start", target["depart_date"])
-    date_end   = target.get("date_end", date_start)
+    date_start = target.get("date_start") or target["depart_date"]
+    date_end   = target.get("date_end") or date_start
     cmd = [
         "python3", str(SEARCH_PY),
         target["origin"], target["dest"],
