@@ -99,6 +99,7 @@ Current activity database:
 9. **JAXA公開** (`jaxa_openday_2026.json`) — Space agency facility tours
 10. **モータースポーツ** (`motorsports_2026.json`) — Racing events (F1, Super GT, etc.)
 11. **工場見学** (`factory_tours.json`) — Industrial tours (Toyota, Mitsubishi, etc.)
+12. **展望台** (`observation_decks.json`) — Observation decks & night view spots across Japan (26 spots; free=true entries are free admission)
 
 ## Itinerary Planning
 
