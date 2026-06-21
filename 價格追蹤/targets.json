@@ -20,14 +20,15 @@
     "notes": "淀川花火10/17、神戶港花火10/19〜23"
   },
   {
-    "id": "kyushu_yatsushiro_hanabi",
-    "name": "九州A：やつしろ全国花火競技大会＋由布岳金鱗湖",
+    "id": "kyushu_kagoshima_hanabi",
+    "name": "九州A：鹿兒島錦江灣花火＋桜島",
     "origin": "TPE",
     "dest": "FUK",
-    "depart_date": "2026-10-15",
+    "date_start": "2026-08-25",
+    "date_end": "2026-08-27",
     "days": 5,
     "airlines": "IT,TR,MM",
-    "notes": "やつしろ全国花火競技大会10/17（日本三大競技花火）＋くじゅう連山坊ガツル高原紅葉（10/上〜11/中旬、ドウダンツツジ山肌×御池水面倒影）。八代→くじゅう 車1.5〜2h圏内"
+    "notes": "鹿児島錦江湾サマーナイト大花火8/29（第24回・桜島活火山背景・絶景）＋桜島溶岩遊歩道・湯之平展望所。FUK→鹿児島 新幹線1.5h"
   },
   {
     "id": "kyushu_ashiya_yabakei",
@@ -110,17 +111,18 @@
     "notes": "淀川花火10/17、神戶港花火10/19〜23"
   },
   {
-    "id": "kyushu_yatsushiro_fsc",
-    "name": "九州A（傳統航空）：やつしろ花火＋由布岳",
+    "id": "kyushu_kagoshima_fsc",
+    "name": "九州A（傳統航空）：鹿兒島錦江灣花火＋桜島",
     "origin": "TPE",
     "dest": "FUK",
-    "depart_date": "2026-10-15",
+    "date_start": "2026-08-25",
+    "date_end": "2026-08-27",
     "days": 5,
     "airlines": "CI,BR,JX",
     "tier": "fsc",
     "budget": 20000,
     "alert_threshold": 12000,
-    "notes": "やつしろ全国花火競技大会10/17＋くじゅう連山紅葉"
+    "notes": "鹿児島錦江湾サマーナイト大花火8/29（第24回・桜島活火山背景）＋桜島溶岩遊歩道・湯之平展望所。FUK→鹿児島 新幹線1.5h"
   },
   {
     "id": "kyushu_ashiya_fsc",
