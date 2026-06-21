@@ -40,21 +40,6 @@
       "source": "台東区ホームページ・東京都公式"
     },
     {
-      "id": "HB003",
-      "name_ja": "天神祭奉納花火",
-      "name_zh": "天神祭奉納花火",
-      "date": "2026-07-25",
-      "day_of_week": "土",
-      "time": "21:00頃",
-      "location_ja": "大川（大阪市北区・都島区）",
-      "location_zh": "大阪市 大川（天滿橋附近）",
-      "region": "関西",
-      "fireworks_count": 5000,
-      "confirmed": true,
-      "notes": "天神祭「船渡御」搭配奉納花火，與隅田川同日，需二選一。日本三大祭典之一",
-      "access": "地下鉄谷町線天満橋駅すぐ"
-    },
-    {
       "id": "HB004",
       "name_ja": "第51回 江戸川区花火大会",
       "name_zh": "江戶川區花火大會（第51屆）",
@@ -157,24 +142,6 @@
       "access": "JR・近鉄伊勢市駅より路線バス「二見」行き（約30分）。または近鉄宇治山田駅よりタクシー",
       "source": "https://www.city.ise.mie.jp/hanabi/notice/index.html",
       "priority": "★★★★★ 伊勢神宮+花火+三重旅行と完全一致"
-    },
-    {
-      "id": "HB010",
-      "name_ja": "きほく燈籠祭（紀北燈籠祭）",
-      "name_zh": "紀北燈籠節",
-      "date": "2026-07-25",
-      "day_of_week": "土",
-      "time": "15:00〜21:00（花火は夜間）",
-      "location_ja": "三重県北牟婁郡紀北町（海山区銚子川河口付近）",
-      "location_zh": "三重縣紀北町 銚子川河口",
-      "region": "中部",
-      "fireworks_count": 3000,
-      "confirmed": true,
-      "confirmed_note": "確認済み。出典：touroumaturi.com（公式サイト）",
-      "notes": "「海のねぶた」とも呼ばれる海上大燈籠と3,000発の花火が融合。巨大彩雲孔雀燈籠が海面に浮かぶ光景が唯一無二。同日の隅田川花火・天神祭（大阪）・ふくろい遠州とは二択になる",
-      "access": "JR紀勢本線 相賀駅・船津駅より車15分。名古屋から特急で約2時間",
-      "source": "https://touroumaturi.com/",
-      "priority": "★★★★★ 海上燈籠×花火の唯一無二の体験"
     },
     {
       "id": "HB011",
@@ -287,37 +254,6 @@
       "priority": "★★★★★ 洞窟からの花火・世界遺産と同日・三重の極致"
     },
     {
-      "id": "HB017",
-      "name_ja": "熱海海上花火大会（2026年シリーズ）",
-      "name_zh": "熱海海上花火大會（2026年系列）",
-      "date_series": [
-        "2026-07-20 (月・祝)",
-        "2026-07-26 (日)",
-        "2026-08-05 (水)",
-        "2026-08-09 (日)",
-        "2026-08-18 (火)",
-        "2026-08-24 (月)",
-        "2026-09-13 (日)",
-        "2026-10-12 (月・祝)",
-        "2026-10-25 (日)",
-        "2026-11-08 (日)",
-        "2026-11-23 (月・祝)",
-        "2026-12-06 (日)",
-        "2026-12-25 (金)"
-      ],
-      "time": "20:15〜20:40",
-      "location_ja": "熱海湾（静岡県熱海市）",
-      "location_zh": "靜岡縣熱海市 熱海灣",
-      "region": "中部",
-      "fireworks_count": 7000,
-      "confirmed": true,
-      "confirmed_note": "確認済み。出典：ataminews.gr.jp/notices/352（公式観光協会）、city.atami.lg.jp",
-      "notes": "年間約15回開催の通年シリーズ花火。三方を山に囲まれた熱海湾で轟音が反響する「山の壁への反射」が特徴。20分の短時間だが密度が高い。東京から新幹線こだまで約45分",
-      "access": "JR東海道本線・新幹線 熱海駅徒歩10分",
-      "source": "https://www.ataminews.gr.jp/notices/352",
-      "priority": "★★★★ 年間15回・東京から日帰り可能・熱海温泉とセット"
-    },
-    {
       "id": "HB018",
       "name_ja": "東京湾大華火祭 2026（復活開催）",
       "name_zh": "東京灣大華火祭 2026（11年振り復活）",
@@ -334,23 +270,6 @@
       "access": "都営大江戸線 勝どき駅徒歩15分。またはゆりかもめ 豊洲駅",
       "source": "https://www.city.chuo.lg.jp/a0013/r8tokyohanabifestival.html",
       "priority": "★★★★★ 11年振り復活・東京湾の夜景×花火"
-    },
-    {
-      "id": "HB019",
-      "name_ja": "河口湖冬花火（2027年シリーズ）",
-      "name_zh": "河口湖冬花火（2027年系列）",
-      "date_note": "例年1月中旬〜2月下旬の土・日・祝に複数回開催。2026年シリーズは1/24〜2/23（土日祝）確認済み。2027年日程未発表",
-      "time": "20:30〜20:45頃",
-      "location_ja": "河口湖畔（山梨県南都留郡富士河口湖町）",
-      "location_zh": "山梨縣富士河口湖町 河口湖湖畔",
-      "region": "中部",
-      "fireworks_count": 500,
-      "confirmed": false,
-      "confirmed_note": "2027年シリーズ未発表。参考：2026年シリーズは1/24（土）〜2/23（月・祝）の土日祝に開催確認済み（出典：hanabi.walkerplus.com）。2027年は例年同パターンで1月中旬頃から開始予想",
-      "notes": "冬の河口湖・富士山とのコラボ花火。雪景色の富士山をバックに打ち上がる花火は絶景。打ち上げ数は少ないが写真映えする。富士山撮影スポット（FJ001-FJ004）への旅行と組み合わせ可能",
-      "access": "富士急行線 河口湖駅よりバスまたはタクシー。またはレンタカー推奨",
-      "source": "https://hanabi.walkerplus.com/detail/ar0419e528485/",
-      "priority": "★★★★ 冬の富士山撮影+花火の組み合わせ"
     },
     {
       "id": "HB020",
@@ -497,46 +416,6 @@
       "highlights": "熊本市最大級。江津湖の水面反射と花火の組み合わせ"
     },
     {
-      "id": "HB027",
-      "name_ja": "芦屋花火大会 2026",
-      "name_zh": "芦屋花火大會 2026",
-      "date": "2026-07-25",
-      "day_of_week": "土",
-      "time": "未定",
-      "location_ja": "福岡県芦屋町",
-      "location_zh": "福岡縣芦屋町",
-      "region": "九州",
-      "fireworks_count": 5000,
-      "confirmed": true,
-      "confirmed_note": "ウォーカープラス九州ランキング6位掲載（2026年6月21日更新）・花火.cloudデータベース掲載確認。出典: https://hanabi.walkerplus.com/ranking/ar1040/",
-      "past_event": false,
-      "priority": "★★★ 全長250mナイアガラが目玉・例年8万人",
-      "notes": "全長250mのダイナミックなナイアガラが名物。約5,000発。例年の人出: 約8万人。芦屋基地（航空祭11/15開催）の近くで旅程組み合わせ可",
-      "access": "JR鹿児島本線「遠賀川駅」よりバス",
-      "source": "https://hanabi.walkerplus.com/ranking/ar1040/",
-      "highlights": "全長250mナイアガラ瀑布花火"
-    },
-    {
-      "id": "HB028",
-      "name_ja": "べっぷ火の海まつり 納涼花火大会 2026",
-      "name_zh": "別府火之海祭 納涼花火大會 2026",
-      "date": "2026-07-26",
-      "day_of_week": "日",
-      "time": "未定",
-      "location_ja": "大分県別府市・別府スパビーチ沖",
-      "location_zh": "大分縣別府市 別府Spa Beach沖",
-      "region": "九州",
-      "fireworks_count": 8888,
-      "confirmed": true,
-      "confirmed_note": "ウォーカープラス九州ランキング3位掲載（2026年6月21日更新）。べっぷ火の海まつりは7/25〜26開催、花火大会は7/26(日)。出典: https://hanabi.walkerplus.com/ranking/ar1040/",
-      "past_event": false,
-      "priority": "★★★ 別府湾×海上花火8888発・例年5万人",
-      "notes": "べっぷ火の海まつり（7/25-26）のフィナーレを飾る花火。8,888発。例年の人出: 5万人。別府スパビーチ沖から別府湾を背景に打ち上げ。別府温泉・地獄巡りとの観光組み合わせ最適",
-      "access": "JR日豊本線「別府駅」から別府スパビーチ方面",
-      "source": "https://hanabi.walkerplus.com/ranking/ar1040/",
-      "highlights": "別府湾バックの海上花火・温泉地の夜景との融合"
-    },
-    {
       "id": "HB029",
       "name_ja": "鹿児島錦江湾サマーナイト大花火 2026（第24回）",
       "name_zh": "鹿兒島錦江灣夏夜大花火 2026（第24屆）",
@@ -555,26 +434,6 @@
       "access": "鹿児島中央駅より市電・バス",
       "source": "https://hanabi.cloud/html/KyushuOkinawa/index.html",
       "highlights": "活火山・桜島をバックに錦江湾から打ち上げる絶景花火"
-    },
-    {
-      "id": "HB030",
-      "name_ja": "第102回 飯塚納涼花火大会",
-      "name_zh": "飯塚納涼花火大會（第102屆）",
-      "date": "2026-09-25",
-      "day_of_week": "金",
-      "time": "20:00〜21:30",
-      "location_ja": "福岡県飯塚市",
-      "location_zh": "福岡縣飯塚市",
-      "region": "九州",
-      "fireworks_count": 7000,
-      "confirmed": true,
-      "confirmed_note": "花火.cloudデータベースに第102回・日時掲載確認。出典: https://hanabi.cloud/html/KyushuOkinawa/fukuoka/index.html",
-      "past_event": false,
-      "priority": "★★ 100年超の歴史を持つ伝統花火・平日開催",
-      "notes": "100年以上の歴史を持つ伝統花火大会。約7,000発。平日（金曜）開催のため混雑が少ない",
-      "access": "JR筑豊本線「飯塚駅」周辺",
-      "source": "https://hanabi.cloud/html/KyushuOkinawa/fukuoka/index.html",
-      "highlights": "102回目という圧倒的な歴史の重み"
     },
     {
       "id": "HB032",
@@ -603,8 +462,14 @@
       "date_start": "2026-07-25",
       "date_end": "2026-07-26",
       "key_dates": [
-        { "date": "2026-07-25", "day_of_week": "土" },
-        { "date": "2026-07-26", "day_of_week": "日" }
+        {
+          "date": "2026-07-25",
+          "day_of_week": "土"
+        },
+        {
+          "date": "2026-07-26",
+          "day_of_week": "日"
+        }
       ],
       "time": "未定",
       "location_ja": "長崎市・水辺の森公園・長崎港周辺",
@@ -721,27 +586,6 @@
       "highlights": "山笠+花火+ナイアガラの滝・三位一体の演出"
     },
     {
-      "id": "HB038",
-      "name_ja": "第54回 宮若納涼花火大会 2026",
-      "name_zh": "第54回 宮若納涼花火大會 2026",
-      "date": "2026-07-20",
-      "day_of_week": "月",
-      "holiday": "海の日",
-      "time": "未定",
-      "location_ja": "福岡県宮若市・本城橋下流左岸堤防（犬鳴川）",
-      "location_zh": "福岡縣宮若市 本城橋下流左岸堤防（犬鳴川）",
-      "region": "九州",
-      "fireworks_count": 3000,
-      "confirmed": true,
-      "confirmed_note": "ウォーカープラス九州ランキング7位掲載（2026年6月21日更新）・2026年7月20日（祝）と明記。出典: https://hanabi.walkerplus.com/ranking/ar1040/",
-      "past_event": false,
-      "priority": "★★ 犬鳴川で打ち上がる約3,000発・海の日祝日開催",
-      "notes": "犬鳴川の夜空を彩る約3,000発。例年の人出: 1万5,000人。海の日（祝日）開催。有料席あり・屋台あり",
-      "access": "JR筑豊本線「宮田駅」またはバス利用",
-      "source": "https://hanabi.walkerplus.com/ranking/ar1040/",
-      "highlights": "犬鳴川沿いの風情ある花火・祝日開催で行きやすい"
-    },
-    {
       "id": "HB039",
       "name_ja": "2026 志布志みなとまつり 花火大会",
       "name_zh": "2026 志布志港祭 花火大會",
@@ -801,5 +645,6 @@
       "source": "https://hanabi.walkerplus.com/ranking/ar1040/",
       "highlights": "秋の松浦川花火・唐津くんちとの組み合わせで唐津2回訪問プランが可能"
     }
-  ]
+  ],
+  "filter_note": "掲載基準：打ち上げ数が不明（null）または10,000発以上のイベントのみ収録。10,000発未満の確定イベントは除外。"
 }
