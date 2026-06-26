@@ -1111,6 +1111,26 @@
         "arr": "17:30",
         "price": 3893
       }
+    },
+    {
+      "checked_at": "2026-06-26T09:48:06.284830+00:00",
+      "price": 7464,
+      "depart_date": "2026-11-14",
+      "return_date": "2026-11-19",
+      "inbound": {
+        "airline": "樂桃航空",
+        "flight_no": "MM26",
+        "dep": "13:40",
+        "arr": "17:10",
+        "price": 3560
+      },
+      "outbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT215",
+        "dep": "15:25",
+        "arr": "17:30",
+        "price": 3904
+      }
     }
   ],
   "shikoku_koyo": [
@@ -6680,6 +6700,32 @@
           "history_min": 9900
         }
       ]
+    },
+    {
+      "checked_at": "2026-06-26T09:46:18.073660+00:00",
+      "price": 12886,
+      "airline": "台灣虎航",
+      "flight_no": "IT240",
+      "dep": "06:45",
+      "arr": "10:00",
+      "return_date": "2026-11-17",
+      "ret_airline": "台灣虎航",
+      "ret_flight_no": "IT241",
+      "ret_dep": "10:55",
+      "ret_arr": "12:40",
+      "rating": "一般偏低",
+      "history_min": 10400,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT240",
+          "dep": "06:45",
+          "arr": "10:00",
+          "price": 12886,
+          "rating": "一般偏低",
+          "history_min": 10400
+        }
+      ]
     }
   ],
   "shikoku_saijo_matsuri": [
@@ -9120,6 +9166,32 @@
           "history_min": 10231
         }
       ]
+    },
+    {
+      "checked_at": "2026-06-26T09:45:55.521117+00:00",
+      "price": 11808,
+      "airline": "酷航",
+      "flight_no": "TR866",
+      "dep": "06:45",
+      "arr": "11:15",
+      "return_date": "2026-10-25",
+      "ret_airline": "酷航",
+      "ret_flight_no": "TR875",
+      "ret_dep": "19:55",
+      "ret_arr": "23:10",
+      "rating": "便宜",
+      "history_min": 10231,
+      "top3": [
+        {
+          "airline": "酷航",
+          "flight_no": "TR866",
+          "dep": "06:45",
+          "arr": "11:15",
+          "price": 11808,
+          "rating": "便宜",
+          "history_min": 10231
+        }
+      ]
     }
   ],
   "kyushu_yatsushiro_hanabi": [
@@ -11047,6 +11119,26 @@
         "arr": "17:30",
         "price": 3895
       }
+    },
+    {
+      "checked_at": "2026-06-26T09:52:38.923375+00:00",
+      "price": 13020,
+      "depart_date": "2026-11-14",
+      "return_date": "2026-11-19",
+      "inbound": {
+        "airline": "中華航空",
+        "flight_no": "CI152",
+        "dep": "09:45",
+        "arr": "13:20",
+        "price": 9116
+      },
+      "outbound": {
+        "airline": "台灣虎航",
+        "flight_no": "IT215",
+        "dep": "15:25",
+        "arr": "17:30",
+        "price": 3904
+      }
     }
   ],
   "shikoku_ojk_ow": [
@@ -11181,6 +11273,14 @@
     {
       "checked_at": "2026-06-25T20:14:00.978101+00:00",
       "price": 3893,
+      "flight_no": "IT215",
+      "dep": "15:25",
+      "arr": "17:30",
+      "depart_date": "2026-11-19"
+    },
+    {
+      "checked_at": "2026-06-26T09:47:29.149105+00:00",
+      "price": 3904,
       "flight_no": "IT215",
       "dep": "15:25",
       "arr": "17:30",
@@ -11498,6 +11598,50 @@
     },
     {
       "checked_at": "2026-06-25T20:15:02.629313+00:00",
+      "price": 15089,
+      "airline": "中華航空",
+      "flight_no": "CI108",
+      "dep": "14:35",
+      "arr": "19:00",
+      "return_date": "2026-10-25",
+      "ret_airline": "中華航空",
+      "ret_flight_no": "CI107",
+      "ret_dep": "09:20",
+      "ret_arr": "12:30",
+      "rating": "一般",
+      "history_min": null,
+      "top3": [
+        {
+          "airline": "中華航空",
+          "flight_no": "CI108",
+          "dep": "14:35",
+          "arr": "19:00",
+          "price": 15089,
+          "rating": "一般",
+          "history_min": null
+        },
+        {
+          "airline": "中華航空",
+          "flight_no": "CI106",
+          "dep": "16:30",
+          "arr": "20:55",
+          "price": 15089,
+          "rating": "一般",
+          "history_min": null
+        },
+        {
+          "airline": "星宇航空",
+          "flight_no": "JX804",
+          "dep": "15:00",
+          "arr": "19:25",
+          "price": 19040,
+          "rating": "便宜",
+          "history_min": 19015
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-06-26T09:48:23.634058+00:00",
       "price": 15089,
       "airline": "中華航空",
       "flight_no": "CI108",
@@ -11940,6 +12084,50 @@
     },
     {
       "checked_at": "2026-06-25T20:15:30.734921+00:00",
+      "price": 17135,
+      "airline": "長榮航空",
+      "flight_no": "BR130",
+      "dep": "13:35",
+      "arr": "17:15",
+      "return_date": "2026-10-19",
+      "ret_airline": "星宇航空",
+      "ret_flight_no": "JX821",
+      "ret_dep": "13:25",
+      "ret_arr": "15:20",
+      "rating": "超值",
+      "history_min": 16334,
+      "top3": [
+        {
+          "airline": "長榮航空",
+          "flight_no": "BR130",
+          "dep": "13:35",
+          "arr": "17:15",
+          "price": 17135,
+          "rating": "超值",
+          "history_min": 16334
+        },
+        {
+          "airline": "星宇航空",
+          "flight_no": "JX822",
+          "dep": "10:15",
+          "arr": "14:00",
+          "price": 17787,
+          "rating": "偏高",
+          "history_min": null
+        },
+        {
+          "airline": "星宇航空",
+          "flight_no": "JX820",
+          "dep": "08:30",
+          "arr": "12:15",
+          "price": 17788,
+          "rating": "偏高",
+          "history_min": null
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-06-26T09:48:47.966520+00:00",
       "price": 17135,
       "airline": "長榮航空",
       "flight_no": "BR130",
@@ -12435,6 +12623,32 @@
     },
     {
       "checked_at": "2026-06-25T20:16:44.679860+00:00",
+      "price": 14628,
+      "airline": "中華航空",
+      "flight_no": "CI116",
+      "dep": "16:25",
+      "arr": "19:35",
+      "return_date": "2026-11-17",
+      "ret_airline": "中華航空",
+      "ret_flight_no": "CI111",
+      "ret_dep": "11:00",
+      "ret_arr": "12:35",
+      "rating": "便宜",
+      "history_min": 13313,
+      "top3": [
+        {
+          "airline": "中華航空",
+          "flight_no": "CI116",
+          "dep": "16:25",
+          "arr": "19:35",
+          "price": 14628,
+          "rating": "便宜",
+          "history_min": 13313
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-06-26T09:49:35.572659+00:00",
       "price": 14628,
       "airline": "中華航空",
       "flight_no": "CI116",
@@ -12970,6 +13184,50 @@
           "history_min": 14384
         }
       ]
+    },
+    {
+      "checked_at": "2026-06-26T09:52:02.691296+00:00",
+      "price": 16543,
+      "airline": "中華航空",
+      "flight_no": "CI278",
+      "dep": "07:00",
+      "arr": "10:20",
+      "return_date": "2026-11-20",
+      "ret_airline": "中華航空",
+      "ret_flight_no": "CI279",
+      "ret_dep": "11:20",
+      "ret_arr": "13:35",
+      "rating": "便宜",
+      "history_min": 13818,
+      "top3": [
+        {
+          "airline": "中華航空",
+          "flight_no": "CI278",
+          "dep": "07:00",
+          "arr": "10:20",
+          "price": 16543,
+          "rating": "便宜",
+          "history_min": 13818
+        },
+        {
+          "airline": "中華航空",
+          "flight_no": "CI178",
+          "dep": "14:30",
+          "arr": "17:55",
+          "price": 16908,
+          "rating": "超值",
+          "history_min": 15719
+        },
+        {
+          "airline": "中華航空",
+          "flight_no": "CI178",
+          "dep": "14:30",
+          "arr": "17:55",
+          "price": 18024,
+          "rating": "一般偏低",
+          "history_min": 17654
+        }
+      ]
     }
   ],
   "kyushu_kagoshima_hanabi": [
@@ -13174,6 +13432,50 @@
           "history_min": 11100
         }
       ]
+    },
+    {
+      "checked_at": "2026-06-26T09:46:11.631196+00:00",
+      "price": 11086,
+      "airline": "台灣虎航",
+      "flight_no": "IT720",
+      "dep": "13:25",
+      "arr": "16:55",
+      "return_date": "2026-08-29",
+      "ret_airline": "台灣虎航",
+      "ret_flight_no": "IT241",
+      "ret_dep": "10:55",
+      "ret_arr": "12:25",
+      "rating": "一般偏低",
+      "history_min": 11086,
+      "top3": [
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT720",
+          "dep": "13:25",
+          "arr": "16:55",
+          "price": 11086,
+          "rating": "一般偏低",
+          "history_min": 11086
+        },
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT720",
+          "dep": "14:25",
+          "arr": "17:50",
+          "price": 11686,
+          "rating": "便宜",
+          "history_min": 11086
+        },
+        {
+          "airline": "台灣虎航",
+          "flight_no": "IT720",
+          "dep": "14:15",
+          "arr": "17:50",
+          "price": 13186,
+          "rating": "一般",
+          "history_min": 11700
+        }
+      ]
     }
   ],
   "kyushu_kagoshima_fsc": [
@@ -13350,6 +13652,50 @@
           "price": 14628,
           "rating": "偏高",
           "history_min": 56500
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-06-26T09:49:23.026232+00:00",
+      "price": 13860,
+      "airline": "中華航空",
+      "flight_no": "CI116",
+      "dep": "16:40",
+      "arr": "20:00",
+      "return_date": "2026-08-31",
+      "ret_airline": "中華航空",
+      "ret_flight_no": "CI111",
+      "ret_dep": "11:00",
+      "ret_arr": "12:30",
+      "rating": "便宜",
+      "history_min": 14614,
+      "top3": [
+        {
+          "airline": "中華航空",
+          "flight_no": "CI116",
+          "dep": "16:40",
+          "arr": "20:00",
+          "price": 13860,
+          "rating": "便宜",
+          "history_min": 14614
+        },
+        {
+          "airline": "中華航空",
+          "flight_no": "CI116",
+          "dep": "16:40",
+          "arr": "20:00",
+          "price": 14628,
+          "rating": "偏高",
+          "history_min": 56500
+        },
+        {
+          "airline": "中華航空",
+          "flight_no": "CI116",
+          "dep": "16:40",
+          "arr": "20:00",
+          "price": 16588,
+          "rating": "一般偏低",
+          "history_min": 14609
         }
       ]
     }
