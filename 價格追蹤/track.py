@@ -299,18 +299,20 @@ def record_snapshot(history: dict, target_id: str, results) -> dict:
 
 
 def effective_rating(price: int, google_rating: str, history_min: Optional[int]) -> str:
-    """Downgrade Google's rating when current price is significantly above the historical low.
+    """Adjust Google's rating based on relationship to the historical floor.
 
-    Google rates vs typical price range; history_min is the actual floor seen recently.
-    A ticket can't be '超值' if it's 11% above the cheapest it's been.
+    Google rates vs typical price range; history_min is Google's displayed floor.
 
-    Thresholds (gap = (price - history_min) / history_min):
-      <= 5%  : trust Google's rating (nearly at the floor)
-       5-15% : cap at 便宜 [2/6]   — decent, but not exceptional
-      > 15%  : cap at 一般偏低 [3/6] — still room to drop
+    Rules:
+      price <= history_min : force 超值 — at or below the floor is always exceptional
+      gap <= 5%            : trust Google's rating (nearly at the floor)
+      gap  5–15%           : cap at 便宜 [2/6]   — decent, but not exceptional
+      gap > 15%            : cap at 一般偏低 [3/6] — still room to drop
     """
-    if not history_min or price <= history_min:
+    if not history_min:
         return google_rating
+    if price <= history_min:
+        return "超值"   # at or below Google's historical floor
     gap = (price - history_min) / history_min
     google_score = RATING_SCORE.get(google_rating, 4)
     if gap > 0.15:

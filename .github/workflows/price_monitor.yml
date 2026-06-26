@@ -127,8 +127,10 @@ jobs:
           SCORE_TO_KEY = {v: k for k, v in RATING_SCORE.items()}
 
           def rt_effective_rating(price, raw_rating, history_min):
-              if not history_min or price <= history_min:
+              if not history_min:
                   return raw_rating
+              if price <= history_min:
+                  return "超值"   # at or below Google's historical floor
               gap = (price - history_min) / history_min
               google_score = RATING_SCORE.get(raw_rating, 4)
               if gap > 0.15:
