@@ -197,7 +197,7 @@ jobs:
                   elif t.get("type") == "oneway":
                       lines.append(f"{latest['flight_no']}  {mmdd(latest['depart_date'])}  {latest['dep']}→{latest['arr']}")
                   else:
-                      depart_date = t.get("depart_date", "")
+                      depart_date = latest.get("depart_date") or t.get("depart_date", "")
                       days        = t.get("days")
                       return_date = latest.get("return_date") or (
                           (date.fromisoformat(depart_date) + timedelta(days=days)).isoformat()

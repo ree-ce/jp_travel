@@ -274,6 +274,7 @@ def record_snapshot(history: dict, target_id: str, results) -> dict:
         "flight_no": best["flight_no"],
         "dep": best["dep"],
         "arr": best["arr"],
+        "depart_date": best.get("depart_date", ""),
         "return_date": best.get("return_date"),
         "ret_airline": ret["airline"] if ret else None,
         "ret_flight_no": ret["flight_no"] if ret else None,
