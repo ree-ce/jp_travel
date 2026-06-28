@@ -64,15 +64,27 @@ jobs:
               const threshold = t.alert_threshold;
               if (!threshold || latest.price > threshold) continue;
 
+              // Support both canonical (out_flight_no) and old (inbound.flight_no) formats
+              const outFn  = latest.out_flight_no  || (latest.inbound  || {}).flight_no  || '?';
+              const outDep = latest.out_dep         || (latest.inbound  || {}).dep         || '';
+              const outArr = latest.out_arr         || (latest.inbound  || {}).arr         || '';
+              const outP   = latest.out_price       || (latest.inbound  || {}).price       || 0;
+              const outAl  = latest.out_airline     || (latest.inbound  || {}).airline     || '';
+              const retFn  = latest.ret_flight_no   || (latest.outbound || {}).flight_no  || '?';
+              const retDep = latest.ret_dep         || (latest.outbound || {}).dep         || '';
+              const retArr = latest.ret_arr         || (latest.outbound || {}).arr         || '';
+              const retP   = latest.ret_price       || (latest.outbound || {}).price       || 0;
+              const retAl  = latest.ret_airline     || (latest.outbound || {}).airline     || '';
+
               alerts.push(
                 `**${t.name}**\n` +
                 `- 合計票價：TWD ${latest.price.toLocaleString()}（目標 ≤ TWD ${threshold.toLocaleString()}）\n` +
-                `- 去程：${latest.inbound.airline} ${latest.inbound.flight_no}  ` +
-                  `${latest.depart_date}  ${latest.inbound.dep}→${latest.inbound.arr}  ` +
-                  `TWD ${latest.inbound.price.toLocaleString()}\n` +
-                `- 回程：${latest.outbound.airline} ${latest.outbound.flight_no}  ` +
-                  `${latest.return_date}  ${latest.outbound.dep}→${latest.outbound.arr}  ` +
-                  `TWD ${latest.outbound.price.toLocaleString()}`
+                `- 去程：${outAl} ${outFn}  ` +
+                  `${latest.depart_date}  ${outDep}→${outArr}  ` +
+                  `TWD ${outP.toLocaleString()}\n` +
+                `- 回程：${retAl} ${retFn}  ` +
+                  `${latest.return_date}  ${retDep}→${retArr}  ` +
+                  `TWD ${retP.toLocaleString()}`
               );
             }
 
@@ -123,23 +135,44 @@ jobs:
               "偏高":     "🔺 [5/6] 偏高",
               "高":       "❌ [6/6] 高",
           }
-          RATING_SCORE = {"超值": 1, "便宜": 2, "一般偏低": 3, "一般": 4, "偏高": 5, "高": 6}
-          SCORE_TO_KEY = {v: k for k, v in RATING_SCORE.items()}
 
-          def rt_effective_rating(price, raw_rating, history_min):
-              if not history_min:
-                  return raw_rating
-              if price <= history_min:
-                  return "超值"   # at or below Google's historical floor
-              gap = (price - history_min) / history_min
-              google_score = RATING_SCORE.get(raw_rating, 4)
-              if gap > 0.15:
-                  floor_score = 3
-              elif gap > 0.05:
-                  floor_score = 2
-              else:
-                  return raw_rating
-              return SCORE_TO_KEY[max(google_score, floor_score)]
+          def normalize_snapshot(snap, ttype):
+              """Map any snapshot (old or new format) to the canonical 16-field schema."""
+              if "out_flight_no" in snap:
+                  return snap
+              if ttype == "open_jaw":
+                  inb = snap.get("inbound", {})
+                  out = snap.get("outbound", {})
+                  return {
+                      "checked_at": snap["checked_at"], "price": snap["price"],
+                      "depart_date": snap.get("depart_date"), "return_date": snap.get("return_date"),
+                      "out_airline": inb.get("airline"), "out_flight_no": inb.get("flight_no"),
+                      "out_dep": inb.get("dep"), "out_arr": inb.get("arr"), "out_price": inb.get("price"),
+                      "ret_airline": out.get("airline"), "ret_flight_no": out.get("flight_no"),
+                      "ret_dep": out.get("dep"), "ret_arr": out.get("arr"), "ret_price": out.get("price"),
+                      "rating": None, "google_low": None,
+                  }
+              if ttype == "oneway":
+                  return {
+                      "checked_at": snap["checked_at"], "price": snap["price"],
+                      "depart_date": snap.get("depart_date"), "return_date": None,
+                      "out_airline": snap.get("airline"), "out_flight_no": snap.get("flight_no"),
+                      "out_dep": snap.get("dep"), "out_arr": snap.get("arr"), "out_price": snap.get("price"),
+                      "ret_airline": None, "ret_flight_no": None,
+                      "ret_dep": None, "ret_arr": None, "ret_price": None,
+                      "rating": None, "google_low": None,
+                  }
+              # roundtrip old format: flight_no / ret_flight_no / history_min
+              return {
+                  "checked_at": snap["checked_at"], "price": snap["price"],
+                  "depart_date": snap.get("depart_date"), "return_date": snap.get("return_date"),
+                  "out_airline": snap.get("airline"), "out_flight_no": snap.get("flight_no"),
+                  "out_dep": snap.get("dep"), "out_arr": snap.get("arr"), "out_price": None,
+                  "ret_airline": snap.get("ret_airline"), "ret_flight_no": snap.get("ret_flight_no"),
+                  "ret_dep": snap.get("ret_dep"), "ret_arr": snap.get("ret_arr"), "ret_price": None,
+                  "rating": snap.get("rating"),
+                  "google_low": snap.get("history_min") or snap.get("google_low"),
+              }
 
           def oj_rating(price, records):
               prices = [r["price"] for r in records if r.get("price")]
@@ -149,16 +182,11 @@ jobs:
               if price <= atl:
                   return "🔥 [1/6] 超值（歷史低點 TWD {:,}）".format(atl)
               gap = (price - atl) / atl
-              if gap <= 0.05:
-                  label = "✅ [2/6] 便宜"
-              elif gap <= 0.15:
-                  label = "🟡 [3/6] 一般偏低"
-              elif gap <= 0.30:
-                  label = "➖ [4/6] 一般"
-              elif gap <= 0.50:
-                  label = "🔺 [5/6] 偏高"
-              else:
-                  label = "❌ [6/6] 高"
+              if gap <= 0.05:   label = "✅ [2/6] 便宜"
+              elif gap <= 0.15: label = "🟡 [3/6] 一般偏低"
+              elif gap <= 0.30: label = "➖ [4/6] 一般"
+              elif gap <= 0.50: label = "🔺 [5/6] 偏高"
+              else:             label = "❌ [6/6] 高"
               return "{} （歷史低點 TWD {:,}，差 +{:.0f}%）".format(label, atl, gap * 100)
 
           def mmdd(iso):
@@ -167,13 +195,13 @@ jobs:
           def render_group(group_targets):
               lines, alerts = [], []
               for t in group_targets:
-                  tid     = t["id"]
+                  tid   = t["id"]
+                  ttype = t.get("type", "roundtrip")
                   records = history.get(tid, [])
                   if not records:
                       continue
-                  latest    = records[-1]
-                  price     = latest["price"]
-                  is_oj     = t.get("type") == "open_jaw"
+                  norm      = normalize_snapshot(records[-1], ttype)
+                  price     = norm["price"]
                   threshold = t.get("alert_threshold")
 
                   hit = threshold and price <= threshold
@@ -188,40 +216,38 @@ jobs:
                   lines.append(f"{icon} <b>{t['name']}</b>")
                   lines.append(price_line)
 
-                  if is_oj:
-                      inb = latest["inbound"]
-                      out = latest["outbound"]
-                      lines.append(f"去 {inb['flight_no']}  {mmdd(latest['depart_date'])}  {inb['dep']}→{inb['arr']}  {inb['price']:,}")
-                      lines.append(f"回 {out['flight_no']}  {mmdd(latest['return_date'])}  {out['dep']}→{out['arr']}  {out['price']:,}")
+                  # outbound
+                  out_fn   = norm.get("out_flight_no") or "?"
+                  out_date = mmdd(norm.get("depart_date") or "")
+                  out_dep  = norm.get("out_dep") or ""
+                  out_arr  = norm.get("out_arr") or ""
+                  arr_note = "⚠️" if out_arr == "00:00" else ""
+                  lines.append(f"去 {out_fn}  {out_date}  {out_dep}→{out_arr}{arr_note}")
+
+                  # return
+                  ret_fn   = norm.get("ret_flight_no")
+                  ret_date = mmdd(norm.get("return_date") or "")
+                  days     = t.get("days") or t.get("trip_days")
+                  days_str = f"  共{days}天" if days and ret_fn else ""
+                  if ret_fn:
+                      ret_dep = norm.get("ret_dep") or "?"
+                      ret_arr = norm.get("ret_arr") or "?"
+                      lines.append(f"回 {ret_fn}  {ret_date}  {ret_dep}→{ret_arr}{days_str}")
+                  elif ret_date:
+                      lines.append(f"回 {ret_date}{days_str}")
+
+                  # rating
+                  if ttype == "open_jaw":
                       lines.append(oj_rating(price, records))
-                  elif t.get("type") == "oneway":
-                      lines.append(f"{latest['flight_no']}  {mmdd(latest['depart_date'])}  {latest['dep']}→{latest['arr']}")
                   else:
-                      depart_date = latest.get("depart_date") or t.get("depart_date", "")
-                      days        = t.get("days")
-                      return_date = latest.get("return_date") or (
-                          (date.fromisoformat(depart_date) + timedelta(days=days)).isoformat()
-                          if depart_date and days else ""
-                      )
-                      raw_rating  = latest.get("rating", "")
-                      history_min = latest.get("history_min")
-                      eff_rating  = rt_effective_rating(price, raw_rating, history_min)
-                      rating_str  = RATING_LABEL.get(eff_rating, "")
-                      arr         = latest['arr']
-                      arr_note    = "⚠️" if arr == "00:00" else ""
-                      google_str  = f"  Google低點 TWD {history_min:,}" if history_min else ""
-                      days_str    = f"  共{days}天" if days else ""
-                      out_line    = f"去 {latest['flight_no']}  {mmdd(depart_date)}  {latest['dep']}→{arr}"
-                      if arr_note:
-                          out_line += arr_note
-                      lines.append(out_line)
-                      ret_fn = latest.get("ret_flight_no")
-                      if ret_fn:
-                          lines.append(f"回 {ret_fn}  {mmdd(return_date)}  {latest.get('ret_dep','?')}→{latest.get('ret_arr','?')}{days_str}")
-                      else:
-                          lines.append(f"回 {mmdd(return_date)}{days_str}")
-                      if rating_str or google_str:
-                          lines.append(f"{rating_str}{google_str}")
+                      r = norm.get("rating")
+                      rating_str = RATING_LABEL.get(r, "") if r else ""
+                      google_low = norm.get("google_low")
+                      if google_low:
+                          rating_str += f"  Google低點 TWD {google_low:,}"
+                      if rating_str:
+                          lines.append(rating_str)
+
                   lines.append("")
               return lines, alerts
 

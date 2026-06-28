@@ -25,14 +25,13 @@ TMP_RESULTS = Path("/tmp/flight_results.json")
 TMP_ONEWAY  = Path("/tmp/flight_oneway.json")
 
 RATING_SCORE = {"超值": 1, "便宜": 2, "一般偏低": 3, "一般": 4, "偏高": 5, "高": 6}
-# Display as rank [1/6] so hierarchy is unambiguous
 RATING_LABEL = {
-    "超值":   "🔥 [1/6] 超值",
-    "便宜":   "✅ [2/6] 便宜",
+    "超值":     "🔥 [1/6] 超值",
+    "便宜":     "✅ [2/6] 便宜",
     "一般偏低": "🟡 [3/6] 一般偏低",
-    "一般":   "➖ [4/6] 一般",
-    "偏高":   "🔺 [5/6] 偏高",
-    "高":    "❌ [6/6] 高",
+    "一般":     "➖ [4/6] 一般",
+    "偏高":     "🔺 [5/6] 偏高",
+    "高":       "❌ [6/6] 高",
 }
 
 
@@ -54,7 +53,7 @@ def save_history(history: dict):
 
 
 # ---------------------------------------------------------------------------
-# One-way / open-jaw helpers
+# One-way / open-jaw query helpers
 # ---------------------------------------------------------------------------
 
 def _query_oneway_leg(origin: str, dest: str, date_start: str,
@@ -64,7 +63,6 @@ def _query_oneway_leg(origin: str, dest: str, date_start: str,
     end = date_end or date_start
     cmd = ["python3", str(SEARCH_PY), "--oneway", origin, dest, date_start, end]
     if airlines:
-        # --oneway expects: [budget] [airlines] — must pass budget to hold the position
         cmd.extend(["15000", airlines])
     label = f"{date_start}" if end == date_start else f"{date_start}~{end}"
     print(f"    → 單程查詢：{origin} → {dest} {label}...", end=" ", flush=True)
@@ -155,7 +153,7 @@ def _query_open_jaw_range(target: dict) -> Optional[dict]:
 
 
 # ---------------------------------------------------------------------------
-# Round-trip query (original)
+# Round-trip query
 # ---------------------------------------------------------------------------
 
 def query_target(target: dict):
@@ -197,8 +195,8 @@ def query_target(target: dict):
     # Supplement return-leg details when Google doesn't provide return_options.
     best = best_result(results)
     if best and not (best.get("return_options") or []):
-        ret_date = best.get("return_date")
-        ret_origin = best.get("to", "")   # actual destination airport, e.g. "NRT"
+        ret_date   = best.get("return_date")
+        ret_origin = best.get("to", "")
         if ret_date and ret_origin:
             print(f"    → 補查回程：{ret_origin} → {target['origin']} {ret_date}...", end=" ", flush=True)
             ret_leg = _query_oneway_leg(ret_origin, target["origin"], ret_date, None, target.get("airlines"))
@@ -215,105 +213,124 @@ def best_result(results: list) -> Optional[dict]:
 
 
 # ---------------------------------------------------------------------------
-# Snapshot recording
+# Canonical snapshot schema + compat reader
 # ---------------------------------------------------------------------------
+# All recording functions write the same 16 fields regardless of target type.
+# normalize_snapshot() maps old snapshots (field names varied by type) to the
+# same shape, so render code never needs to branch on type to pick a field name.
+#
+# Canonical fields:
+#   checked_at, price, depart_date, return_date,
+#   out_airline, out_flight_no, out_dep, out_arr, out_price,
+#   ret_airline, ret_flight_no, ret_dep, ret_arr, ret_price,
+#   rating, google_low, top3
 
-def _record_open_jaw_snapshot(history: dict, target_id: str, result: dict) -> dict:
-    """Record open-jaw snapshot. inbound = 去程(into Japan), outbound = 回程(out of Japan)."""
-    out = result["leg_out"]   # e.g. TPE→KIX
-    ret = result["leg_ret"]   # e.g. OKJ→TPE
-    snapshot = {
-        "checked_at": datetime.now(timezone.utc).isoformat(),
-        "price": result["combined_price"],
-        "depart_date": out["depart_date"],
-        "return_date": ret["depart_date"],
-        "inbound": {          # 去程 leg (inbound to destination country)
-            "airline":   out["airline"],
-            "flight_no": out["flight_no"],
-            "dep":       out["dep"],
-            "arr":       out["arr"],
-            "price":     out["price_ow"],
-        },
-        "outbound": {         # 回程 leg (outbound from destination country)
-            "airline":   ret["airline"],
-            "flight_no": ret["flight_no"],
-            "dep":       ret["dep"],
-            "arr":       ret["arr"],
-            "price":     ret["price_ow"],
-        },
-    }
-    history.setdefault(target_id, []).append(snapshot)
-    return history
+def normalize_snapshot(snap: dict, target_type: str = "roundtrip") -> dict:
+    """Return a canonical view of any snapshot (old or new format)."""
+    if "out_flight_no" in snap:
+        return snap  # already canonical
 
-
-def record_snapshot(history: dict, target_id: str, results) -> dict:
-    if isinstance(results, dict) and results.get("type") == "open_jaw":
-        return _record_open_jaw_snapshot(history, target_id, results)
-
-    # One-way leg result from _query_oneway_leg
-    if isinstance(results, dict) and "price_ow" in results:
-        snapshot = {
-            "checked_at":  datetime.now(timezone.utc).isoformat(),
-            "price":       results["price_ow"],
-            "flight_no":   results.get("flight_no", "?"),
-            "dep":         results.get("dep", "?"),
-            "arr":         results.get("arr", "?"),
-            "depart_date": results.get("depart_date", ""),
+    if target_type == "open_jaw":
+        inb = snap.get("inbound", {})
+        out = snap.get("outbound", {})
+        return {
+            "checked_at":    snap["checked_at"],
+            "price":         snap["price"],
+            "depart_date":   snap.get("depart_date"),
+            "return_date":   snap.get("return_date"),
+            "out_airline":   inb.get("airline"),
+            "out_flight_no": inb.get("flight_no"),
+            "out_dep":       inb.get("dep"),
+            "out_arr":       inb.get("arr"),
+            "out_price":     inb.get("price"),
+            "ret_airline":   out.get("airline"),
+            "ret_flight_no": out.get("flight_no"),
+            "ret_dep":       out.get("dep"),
+            "ret_arr":       out.get("arr"),
+            "ret_price":     out.get("price"),
+            "rating":        None,   # OJ rating computed from history at render time
+            "google_low":    None,
+            "top3":          None,
         }
-        history.setdefault(target_id, []).append(snapshot)
-        return history
 
-    best = best_result(results)
-    if not best:
-        return history
-    ret = (best.get("return_options") or [None])[0]
-    snapshot = {
-        "checked_at": datetime.now(timezone.utc).isoformat(),
-        "price": best["price_rt"],
-        "airline": best["airline"],
-        "flight_no": best["flight_no"],
-        "dep": best["dep"],
-        "arr": best["arr"],
-        "depart_date": best.get("depart_date", ""),
-        "return_date": best.get("return_date"),
-        "ret_airline": ret["airline"] if ret else None,
-        "ret_flight_no": ret["flight_no"] if ret else None,
-        "ret_dep": ret["dep"] if ret else None,
-        "ret_arr": ret["arr"] if ret else None,
-        "rating": best["rating_label"],
-        "history_min": best.get("history_min"),
-        "top3": [
-            {
-                "airline": r["airline"],
-                "flight_no": r["flight_no"],
-                "dep": r["dep"],
-                "arr": r["arr"],
-                "price": r["price_rt"],
-                "rating": r["rating_label"],
-                "history_min": r.get("history_min"),
-            }
-            for r in sorted(results, key=lambda x: x["price_rt"])[:3]
-        ],
+    if target_type == "oneway":
+        return {
+            "checked_at":    snap["checked_at"],
+            "price":         snap["price"],
+            "depart_date":   snap.get("depart_date"),
+            "return_date":   None,
+            "out_airline":   snap.get("airline"),
+            "out_flight_no": snap.get("flight_no"),
+            "out_dep":       snap.get("dep"),
+            "out_arr":       snap.get("arr"),
+            "out_price":     snap.get("price"),
+            "ret_airline":   None,
+            "ret_flight_no": None,
+            "ret_dep":       None,
+            "ret_arr":       None,
+            "ret_price":     None,
+            "rating":        None,
+            "google_low":    None,
+            "top3":          None,
+        }
+
+    # roundtrip — old format: flight_no / ret_flight_no / history_min
+    return {
+        "checked_at":    snap["checked_at"],
+        "price":         snap["price"],
+        "depart_date":   snap.get("depart_date"),
+        "return_date":   snap.get("return_date"),
+        "out_airline":   snap.get("airline"),
+        "out_flight_no": snap.get("flight_no"),
+        "out_dep":       snap.get("dep"),
+        "out_arr":       snap.get("arr"),
+        "out_price":     None,
+        "ret_airline":   snap.get("ret_airline"),
+        "ret_flight_no": snap.get("ret_flight_no"),
+        "ret_dep":       snap.get("ret_dep"),
+        "ret_arr":       snap.get("ret_arr"),
+        "ret_price":     None,
+        "rating":        snap.get("rating"),
+        "google_low":    snap.get("history_min") or snap.get("google_low"),
+        "top3":          snap.get("top3"),
     }
-    history.setdefault(target_id, []).append(snapshot)
-    return history
+
+
+def oj_rating(price: int, records: list) -> str:
+    """Rate an open-jaw price relative to tracked history."""
+    prices = [r["price"] for r in records if r.get("price")]
+    if len(prices) < 2:
+        return f"❓ 資料不足（僅 {len(prices)} 筆）"
+    atl = min(prices)
+    if price <= atl:
+        return f"🔥 [1/6] 超值（歷史低點 TWD {atl:,}）"
+    gap = (price - atl) / atl
+    if gap <= 0.05:
+        label = "✅ [2/6] 便宜"
+    elif gap <= 0.15:
+        label = "🟡 [3/6] 一般偏低"
+    elif gap <= 0.30:
+        label = "➖ [4/6] 一般"
+    elif gap <= 0.50:
+        label = "🔺 [5/6] 偏高"
+    else:
+        label = "❌ [6/6] 高"
+    return f"{label}（歷史低點 TWD {atl:,}，差 +{gap*100:.0f}%）"
 
 
 def effective_rating(price: int, google_rating: str, history_min: Optional[int]) -> str:
     """Adjust Google's rating based on relationship to the historical floor.
 
-    Google rates vs typical price range; history_min is Google's displayed floor.
-
     Rules:
       price <= history_min : force 超值 — at or below the floor is always exceptional
-      gap <= 5%            : trust Google's rating (nearly at the floor)
-      gap  5–15%           : cap at 便宜 [2/6]   — decent, but not exceptional
-      gap > 15%            : cap at 一般偏低 [3/6] — still room to drop
+      gap <= 5%            : trust Google's rating
+      gap  5–15%           : cap at 便宜 [2/6]
+      gap > 15%            : cap at 一般偏低 [3/6]
     """
     if not history_min:
         return google_rating
     if price <= history_min:
-        return "超值"   # at or below Google's historical floor
+        return "超值"
     gap = (price - history_min) / history_min
     google_score = RATING_SCORE.get(google_rating, 4)
     if gap > 0.15:
@@ -324,6 +341,108 @@ def effective_rating(price: int, google_rating: str, history_min: Optional[int])
         return google_rating
     adjusted = max(google_score, floor_score)
     return next(k for k, v in RATING_SCORE.items() if v == adjusted)
+
+
+# ---------------------------------------------------------------------------
+# Snapshot recording — all three types write the same canonical fields
+# ---------------------------------------------------------------------------
+
+def _record_open_jaw_snapshot(history: dict, target_id: str, result: dict) -> dict:
+    out = result["leg_out"]   # TPE→destination (inbound to Japan)
+    ret = result["leg_ret"]   # destination→TPE (outbound from Japan)
+    snapshot = {
+        "checked_at":    datetime.now(timezone.utc).isoformat(),
+        "price":         result["combined_price"],
+        "depart_date":   out.get("depart_date", ""),
+        "return_date":   ret.get("depart_date", ""),
+        "out_airline":   out.get("airline"),
+        "out_flight_no": out.get("flight_no"),
+        "out_dep":       out.get("dep"),
+        "out_arr":       out.get("arr"),
+        "out_price":     out.get("price_ow"),
+        "ret_airline":   ret.get("airline"),
+        "ret_flight_no": ret.get("flight_no"),
+        "ret_dep":       ret.get("dep"),
+        "ret_arr":       ret.get("arr"),
+        "ret_price":     ret.get("price_ow"),
+        "rating":        None,   # OJ rating computed from history at render time
+        "google_low":    None,
+        "top3":          None,
+    }
+    history.setdefault(target_id, []).append(snapshot)
+    return history
+
+
+def record_snapshot(history: dict, target_id: str, results) -> dict:
+    if isinstance(results, dict) and results.get("type") == "open_jaw":
+        return _record_open_jaw_snapshot(history, target_id, results)
+
+    # One-way leg
+    if isinstance(results, dict) and "price_ow" in results:
+        snapshot = {
+            "checked_at":    datetime.now(timezone.utc).isoformat(),
+            "price":         results["price_ow"],
+            "depart_date":   results.get("depart_date", ""),
+            "return_date":   None,
+            "out_airline":   results.get("airline"),
+            "out_flight_no": results.get("flight_no", "?"),
+            "out_dep":       results.get("dep", "?"),
+            "out_arr":       results.get("arr", "?"),
+            "out_price":     results["price_ow"],
+            "ret_airline":   None,
+            "ret_flight_no": None,
+            "ret_dep":       None,
+            "ret_arr":       None,
+            "ret_price":     None,
+            "rating":        None,
+            "google_low":    None,
+            "top3":          None,
+        }
+        history.setdefault(target_id, []).append(snapshot)
+        return history
+
+    # Round-trip — pre-compute effective rating at record time
+    best = best_result(results)
+    if not best:
+        return history
+    ret = (best.get("return_options") or [None])[0]
+    eff_rating = effective_rating(
+        best["price_rt"], best.get("rating_label", "一般"), best.get("history_min")
+    )
+    snapshot = {
+        "checked_at":    datetime.now(timezone.utc).isoformat(),
+        "price":         best["price_rt"],
+        "depart_date":   best.get("depart_date", ""),
+        "return_date":   best.get("return_date"),
+        "out_airline":   best.get("airline"),
+        "out_flight_no": best.get("flight_no"),
+        "out_dep":       best.get("dep"),
+        "out_arr":       best.get("arr"),
+        "out_price":     None,
+        "ret_airline":   ret["airline"] if ret else None,
+        "ret_flight_no": ret["flight_no"] if ret else None,
+        "ret_dep":       ret["dep"] if ret else None,
+        "ret_arr":       ret["arr"] if ret else None,
+        "ret_price":     None,
+        "rating":        eff_rating,
+        "google_low":    best.get("history_min"),
+        "top3": [
+            {
+                "out_airline":   r.get("airline"),
+                "out_flight_no": r.get("flight_no"),
+                "out_dep":       r.get("dep"),
+                "out_arr":       r.get("arr"),
+                "price":         r["price_rt"],
+                "rating":        effective_rating(
+                    r["price_rt"], r.get("rating_label", "一般"), r.get("history_min")
+                ),
+                "google_low":    r.get("history_min"),
+            }
+            for r in sorted(results, key=lambda x: x["price_rt"])[:3]
+        ],
+    }
+    history.setdefault(target_id, []).append(snapshot)
+    return history
 
 
 def all_time_low(history: dict, target_id: str) -> Optional[int]:
@@ -347,55 +466,8 @@ def days_ago(iso_str: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Reporting
+# Reporting — single unified path via normalize_snapshot
 # ---------------------------------------------------------------------------
-
-def _print_open_jaw_report(target: dict, records: list, history: dict):
-    tid = target["id"]
-    latest = records[-1]
-    prev   = prev_snapshot(history, tid)
-    atl    = all_time_low(history, tid)
-
-    if "inbound" in target:
-        inb_cfg = target["inbound"]
-        out_cfg = target["outbound"]
-        depart_date = latest.get("depart_date", "?")
-        return_date = latest.get("return_date", "?")
-        print(f"  {inb_cfg['origin']}→{inb_cfg['dest']} {depart_date}  ＋"
-              f"  {out_cfg['origin']}→{out_cfg['dest']} {return_date}")
-    else:
-        print(f"  {target['origin']}→{target['dest']} {target['depart_date']}  ＋"
-              f"  {target['return_from']}→{target['origin']} {target['return_date']}")
-    print(f"  備注：{target['notes']}")
-
-    inb = latest["inbound"]
-    out = latest["outbound"]
-    print(f"\n  合計  TWD {latest['price']:,}")
-    print(f"  去程  {inb['airline']} {inb['flight_no']}  "
-          f"{inb['dep']}→{inb['arr']}  TWD {inb['price']:,}")
-    print(f"  回程  {out['airline']} {out['flight_no']}  "
-          f"{out['dep']}→{out['arr']}  TWD {out['price']:,}")
-
-    if prev:
-        diff = latest["price"] - prev["price"]
-        sign, color = ("↑", "漲") if diff > 0 else ("↓", "降")
-        print(f"  上次記錄  TWD {prev['price']:,}  ({sign}{color} {abs(diff):,}，{days_ago(prev['checked_at'])})")
-
-    if atl:
-        diff_atl = latest["price"] - atl
-        if diff_atl == 0:
-            print(f"  歷史最低  TWD {atl:,}  ← 目前即歷史低點！")
-        else:
-            print(f"  歷史最低  TWD {atl:,}  （距低點還差 TWD {diff_atl:,}）")
-
-    threshold = target.get("alert_threshold")
-    if threshold:
-        if latest["price"] <= threshold:
-            print(f"\n  🔥 已達目標價！TWD {latest['price']:,} ≤ TWD {threshold:,}，可出手！")
-        else:
-            gap = latest["price"] - threshold
-            print(f"\n  💡 建議：繼續等，距目標 TWD {threshold:,} 還差 TWD {gap:,}。")
-
 
 def print_report(targets: list, history: dict):
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -404,7 +476,8 @@ def print_report(targets: list, history: dict):
     print(f"{'='*60}")
 
     for target in targets:
-        tid = target["id"]
+        tid   = target["id"]
+        ttype = target.get("type", "roundtrip")
         records = history.get(tid, [])
         print(f"\n【{target['name']}】")
 
@@ -412,105 +485,120 @@ def print_report(targets: list, history: dict):
             print("  （尚無查詢記錄）")
             continue
 
-        if target.get("type") == "open_jaw":
-            _print_open_jaw_report(target, records, history)
-            continue
+        norm   = normalize_snapshot(records[-1], ttype)
+        prev_r = records[-2] if len(records) >= 2 else None
+        prev   = normalize_snapshot(prev_r, ttype) if prev_r else None
+        atl    = all_time_low(history, tid)
+        price  = norm["price"]
 
-        if target.get("type") == "oneway":
-            latest = records[-1]
-            prev   = prev_snapshot(history, tid)
-            atl    = all_time_low(history, tid)
+        # ── route / date header ───────────────────────────────────────
+        if ttype == "open_jaw" and "inbound" in target:
+            inb_cfg = target["inbound"]
+            out_cfg = target["outbound"]
+            print(f"  {inb_cfg['origin']}→{inb_cfg['dest']} "
+                  f"{inb_cfg['date_start']}~{inb_cfg['date_end']}  ＋  "
+                  f"{out_cfg['origin']}→{out_cfg['dest']} "
+                  f"{out_cfg['date_start']}~{out_cfg['date_end']}")
+        elif ttype == "open_jaw":
+            print(f"  {target['origin']}→{target['dest']} {target.get('depart_date','')}  ＋  "
+                  f"{target.get('return_from','')}→{target['origin']} {target.get('return_date','')}")
+        elif ttype == "oneway":
             print(f"  {target['origin']}→{target['dest']}  "
                   f"{target.get('date_start','')}~{target.get('date_end','')}")
-            print(f"  備注：{target['notes']}")
-            print(f"\n  現在最低  TWD {latest['price']:,}")
-            print(f"  {latest['flight_no']}  {latest['depart_date']}  "
-                  f"{latest['dep']}→{latest['arr']}")
-            if prev:
-                diff = latest["price"] - prev["price"]
-                sign, color = ("↑", "漲") if diff > 0 else ("↓", "降")
-                print(f"  上次記錄  TWD {prev['price']:,}  "
-                      f"({sign}{color} {abs(diff):,}，{days_ago(prev['checked_at'])})")
-            if atl:
-                diff_atl = latest["price"] - atl
-                if diff_atl == 0:
-                    print(f"  歷史最低  TWD {atl:,}  ← 目前即歷史低點！")
-                else:
-                    print(f"  歷史最低  TWD {atl:,}  （距低點還差 TWD {diff_atl:,}）")
-            threshold = target.get("alert_threshold")
-            if threshold:
-                if latest["price"] <= threshold:
-                    print(f"\n  🔥 已達目標價！TWD {latest['price']:,} ≤ TWD {threshold:,}，可出手！")
-                else:
-                    print(f"\n  💡 距目標 TWD {threshold:,} 還差 TWD {latest['price']-threshold:,}。")
-            continue
+        else:
+            date_start = target.get("date_start", target.get("depart_date", ""))
+            print(f"  {target['origin']} → {target['dest']}  "
+                  f"{date_start} 出發  {target.get('days','')}天")
+        print(f"  備注：{target.get('notes','')}")
 
-        # --- Round-trip display ---
-        depart_date = target.get("date_start", target.get("depart_date", ""))
-        print(f"  {target['origin']} → {target['dest']}  "
-              f"{depart_date} 出發  {target['days']}天")
-        print(f"  備注：{target['notes']}")
+        # ── price + rating ────────────────────────────────────────────
+        if ttype == "open_jaw":
+            rating_str = oj_rating(price, records)
+        else:
+            rating_str = RATING_LABEL.get(norm.get("rating") or "一般", "")
+        print(f"\n  現在最低  TWD {price:,}  {rating_str}")
 
-        latest = records[-1]
-        prev = prev_snapshot(history, tid)
-        atl = all_time_low(history, tid)
-        eff_rating = effective_rating(latest["price"], latest["rating"], latest.get("history_min"))
-        rating_icon = RATING_LABEL.get(eff_rating, "")
+        # ── flights ───────────────────────────────────────────────────
+        out_fn   = norm.get("out_flight_no") or "?"
+        out_dep  = norm.get("out_dep") or ""
+        out_arr  = norm.get("out_arr") or ""
+        out_date = norm.get("depart_date") or ""
+        arr_note = " ⚠️" if out_arr == "00:00" else ""
+        print(f"  去 {out_fn}  {out_date}  {out_dep}→{out_arr}{arr_note}")
 
-        print(f"\n  現在最低  TWD {latest['price']:,}  "
-              f"{rating_icon}  "
-              f"{latest['airline']} {latest['flight_no']}  "
-              f"{latest['dep']}→{latest['arr']}")
-        if latest.get("ret_flight_no"):
-            print(f"  回程       {latest.get('ret_airline', '')} {latest['ret_flight_no']}  "
-                  f"{latest.get('return_date', '')}  "
-                  f"{latest.get('ret_dep', '?')}→{latest.get('ret_arr', '?')}")
+        ret_fn   = norm.get("ret_flight_no")
+        ret_date = norm.get("return_date") or ""
+        days     = target.get("days") or target.get("trip_days")
+        days_str = f"  共{days}天" if days else ""
+        if ret_fn:
+            ret_dep = norm.get("ret_dep") or "?"
+            ret_arr = norm.get("ret_arr") or "?"
+            print(f"  回 {ret_fn}  {ret_date}  {ret_dep}→{ret_arr}{days_str}")
+        elif ret_date:
+            print(f"  回 {ret_date}{days_str}")
 
+        # ── OJ individual leg prices ──────────────────────────────────
+        if ttype == "open_jaw" and norm.get("out_price"):
+            ret_p = norm.get("ret_price") or 0
+            print(f"  去程 TWD {norm['out_price']:,}  +  回程 TWD {ret_p:,}")
+
+        # ── change vs previous ────────────────────────────────────────
         if prev:
-            diff = latest["price"] - prev["price"]
-            sign = "↑" if diff > 0 else "↓"
-            color = "漲" if diff > 0 else "降"
-            ago = days_ago(prev["checked_at"])
+            diff = price - prev["price"]
+            sign, color = ("↑", "漲") if diff > 0 else ("↓", "降")
             print(f"  上次記錄  TWD {prev['price']:,}  "
-                  f"({sign}{color} {abs(diff):,}，{ago})")
+                  f"({sign}{color} {abs(diff):,}，{days_ago(prev['checked_at'])})")
 
+        # ── all-time low ──────────────────────────────────────────────
         diff_from_atl = 0
         if atl:
-            diff_from_atl = latest["price"] - atl
+            diff_from_atl = price - atl
             if diff_from_atl == 0:
                 print(f"  歷史最低  TWD {atl:,}  ← 目前即歷史低點！")
             else:
                 print(f"  歷史最低  TWD {atl:,}  （距低點還差 TWD {diff_from_atl:,}）")
 
-        if latest.get("history_min"):
-            google_low = latest["history_min"]
-            diff = latest["price"] - google_low
+        # ── Google historical floor ───────────────────────────────────
+        if norm.get("google_low"):
+            google_low = norm["google_low"]
+            diff = price - google_low
             if diff <= 0:
                 print(f"  Google低點 TWD {google_low:,}  ← 已達或低於 Google 歷史低！")
             else:
                 print(f"  Google低點 TWD {google_low:,}  （差 TWD {diff:,}）")
 
-        # 建議
-        rating = eff_rating
-        if rating == "超值":
-            print(f"\n  💡 建議：超值票，現在可考慮出手。")
-        elif rating == "便宜":
-            if atl and diff_from_atl == 0:
-                print(f"\n  💡 建議：便宜且為歷史低點，可出手。")
-            else:
-                print(f"\n  💡 建議：便宜，但還有空間可等更低。")
+        # ── 建議 ─────────────────────────────────────────────────────
+        threshold = target.get("alert_threshold")
+        if ttype in ("open_jaw", "oneway"):
+            if threshold:
+                if price <= threshold:
+                    print(f"\n  🔥 已達目標價！TWD {price:,} ≤ TWD {threshold:,}，可出手！")
+                else:
+                    print(f"\n  💡 建議：繼續等，距目標 TWD {threshold:,} 還差 TWD {price - threshold:,}。")
         else:
-            print(f"\n  💡 建議：繼續等，尚未到買點。")
+            rating = norm.get("rating") or "一般"
+            if rating == "超值":
+                print(f"\n  💡 建議：超值票，現在可考慮出手。")
+            elif rating == "便宜":
+                if atl and diff_from_atl == 0:
+                    print(f"\n  💡 建議：便宜且為歷史低點，可出手。")
+                else:
+                    print(f"\n  💡 建議：便宜，但還有空間可等更低。")
+            else:
+                print(f"\n  💡 建議：繼續等，尚未到買點。")
 
-        # Top 3
-        if latest.get("top3"):
+        # ── top 3 ────────────────────────────────────────────────────
+        if norm.get("top3"):
             print(f"\n  前3低價選項：")
-            for i, r in enumerate(latest["top3"], 1):
-                adj = effective_rating(r["price"], r["rating"], r.get("history_min"))
+            for i, r in enumerate(norm["top3"], 1):
+                adj  = r.get("rating") or "一般"
                 icon = RATING_LABEL.get(adj, "")
-                hmin = f"歷史低 {r['history_min']:,}" if r.get("history_min") else ""
+                hmin = f"Google低點 {r['google_low']:,}" if r.get("google_low") else ""
+                fn   = r.get("out_flight_no") or r.get("flight_no", "?")
+                dep  = r.get("out_dep") or r.get("dep", "")
+                arr  = r.get("out_arr") or r.get("arr", "")
                 print(f"  {i}. TWD {r['price']:,} {icon}  "
-                      f"{r['airline']} {r['flight_no']}  {r['dep']}→{r['arr']}  {hmin}")
+                      f"{r.get('out_airline') or r.get('airline','')} {fn}  {dep}→{arr}  {hmin}")
 
     print(f"\n{'='*60}")
     print(f"  歷史記錄已存至 {HISTORY_FILE.name}（共 "
@@ -521,27 +609,20 @@ def print_report(targets: list, history: dict):
 def print_history_only(targets: list, history: dict):
     print(f"\n{'='*60}  價格歷史  {'='*20}")
     for target in targets:
-        tid = target["id"]
+        tid   = target["id"]
+        ttype = target.get("type", "roundtrip")
         records = history.get(tid, [])
         print(f"\n【{target['name']}】")
         if not records:
             print("  （尚無記錄）")
             continue
-        is_oj = target.get("type") == "open_jaw"
         for r in records:
-            ago = days_ago(r["checked_at"])
-            checked_local = datetime.fromisoformat(r["checked_at"]).strftime("%m/%d %H:%M")
-            if is_oj:
-                inb = r.get("inbound", {})
-                out = r.get("outbound", {})
-                print(f"  {checked_local} ({ago:>5})  合計 TWD {r['price']:,}  "
-                      f"去程 {inb.get('flight_no','?')} TWD {inb.get('price','?'):,}  "
-                      f"回程 {out.get('flight_no','?')} TWD {out.get('price','?'):,}")
-            else:
-                adj = effective_rating(r["price"], r.get("rating", "一般"), r.get("history_min"))
-                icon = RATING_LABEL.get(adj, "")
-                print(f"  {checked_local} ({ago:>5})  TWD {r['price']:,}  "
-                      f"{icon}  {r['airline']} {r['flight_no']}")
+            norm  = normalize_snapshot(r, ttype)
+            ago   = days_ago(norm["checked_at"])
+            ts    = datetime.fromisoformat(norm["checked_at"]).strftime("%m/%d %H:%M")
+            fn    = norm.get("out_flight_no") or "?"
+            icon  = RATING_LABEL.get(norm.get("rating") or "", "")
+            print(f"  {ts} ({ago:>5})  TWD {norm['price']:,}  {icon}  {fn}")
         atl = all_time_low(history, tid)
         print(f"  → 歷史最低：TWD {atl:,}")
     print()
