@@ -31,16 +31,6 @@
     "notes": "鹿児島錦江湾サマーナイト大花火8/29（第24回・桜島活火山背景・絶景）＋桜島溶岩遊歩道・湯之平展望所。FUK→鹿児島 新幹線1.5h"
   },
   {
-    "id": "kyushu_ashiya_yabakei",
-    "name": "九州B：芦屋基地航空祭＋深耶馬渓",
-    "origin": "TPE",
-    "dest": "FUK",
-    "depart_date": "2026-11-13",
-    "days": 5,
-    "airlines": "IT,TR,MM",
-    "notes": "芦屋基地航空祭11/15（ブルーインパルス確定）＋深耶馬渓一目八景（11/上〜中旬ピーク★★★★★）。芦屋→耶馬渓 車1.5h圏内"
-  },
-  {
     "id": "shikoku_tak_rt",
     "name": "四國高松來回（TAK）",
     "origin": "TPE",
@@ -123,19 +113,6 @@
     "budget": 20000,
     "alert_threshold": 12000,
     "notes": "鹿児島錦江湾サマーナイト大花火8/29（第24回・桜島活火山背景）＋桜島溶岩遊歩道・湯之平展望所。FUK→鹿児島 新幹線1.5h"
-  },
-  {
-    "id": "kyushu_ashiya_fsc",
-    "name": "九州B（傳統航空）：芦屋航空祭＋深耶馬渓",
-    "origin": "TPE",
-    "dest": "FUK",
-    "depart_date": "2026-11-13",
-    "days": 5,
-    "airlines": "CI,BR,JX",
-    "tier": "fsc",
-    "budget": 20000,
-    "alert_threshold": 12000,
-    "notes": "芦屋基地航空祭11/15＋深耶馬渓一目八景"
   },
   {
     "id": "shikoku_tak_rt_fsc",
