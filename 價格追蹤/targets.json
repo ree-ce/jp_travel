@@ -61,8 +61,8 @@
     "inbound": {
       "origin": "TPE",
       "dest":   "KIX",
-      "date_start": "2026-11-09",
-      "date_end":   "2026-11-17",
+      "date_start": "2026-11-12",
+      "date_end":   "2026-11-15",
       "airlines": "IT,GK,MM"
     },
     "outbound": {
@@ -138,8 +138,8 @@
     "inbound": {
       "origin": "TPE",
       "dest":   "KIX",
-      "date_start": "2026-11-09",
-      "date_end":   "2026-11-17",
+      "date_start": "2026-11-12",
+      "date_end":   "2026-11-15",
       "airlines": "CI,BR,JX"
     },
     "outbound": {
