@@ -319,27 +319,23 @@ def oj_rating(price: int, records: list) -> str:
 
 
 def effective_rating(price: int, google_rating: str, history_min: Optional[int]) -> str:
-    """Adjust Google's rating based on relationship to the historical floor.
+    """Adjust Google's rating using the gap to the historical floor.
 
-    Rules:
-      price <= history_min : force 超值 — at or below the floor is always exceptional
-      gap <= 5%            : trust Google's rating
-      gap  5–15%           : cap at 便宜 [2/6]
-      gap > 15%            : cap at 一般偏低 [3/6]
+    Computes a gap-based rating with the same thresholds as oj_rating(),
+    then returns the WORSE of Google's rating vs the gap-based one.
+    This prevents Google from over-rating a price that is well above the floor.
     """
     if not history_min:
         return google_rating
     if price <= history_min:
         return "超值"
     gap = (price - history_min) / history_min
-    google_score = RATING_SCORE.get(google_rating, 4)
-    if gap > 0.15:
-        floor_score = RATING_SCORE["一般偏低"]
-    elif gap > 0.05:
-        floor_score = RATING_SCORE["便宜"]
-    else:
-        return google_rating
-    adjusted = max(google_score, floor_score)
+    if gap <= 0.05:     gap_rating = "便宜"
+    elif gap <= 0.15:   gap_rating = "一般偏低"
+    elif gap <= 0.30:   gap_rating = "一般"
+    elif gap <= 0.50:   gap_rating = "偏高"
+    else:               gap_rating = "高"
+    adjusted = max(RATING_SCORE.get(google_rating, 4), RATING_SCORE[gap_rating])
     return next(k for k, v in RATING_SCORE.items() if v == adjusted)
 
 
