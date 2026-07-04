@@ -99,6 +99,8 @@ Current activity database:
 9. **JAXA公開** (`jaxa_openday_2026.json`) — Space agency facility tours
 10. **モータースポーツ** (`motorsports_2026.json`) — Racing events (F1, Super GT, etc.)
 11. **工場見学** (`factory_tours.json`) — Industrial tours (Toyota, Mitsubishi, etc.)
+12. **聖地巡禮** (`聖地巡禮/anime_pilgrimage_spots.json`) — Anime creator hometowns & pilgrimage spots (23 spots, AP001–AP023)
+13. **体験スポット** (`体験スポット/timed_experiences_2026.json`) — Time-constrained experiences with booking rules, tidal data, and trip integration notes (EX001 明石大橋登塔, EX002 鳴門漩渦觀潮船)
 
 ## Itinerary Planning
 

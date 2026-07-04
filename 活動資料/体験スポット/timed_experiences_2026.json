@@ -13,7 +13,11 @@
     "confirmed": true,
     "confirmed_note": "JB本四高速公式サイト記載の常設体験プログラム",
     "open_schedule": {
-      "days_of_week": ["金", "土", "日", "祝"],
+      "days_of_week": ["木", "金", "土", "日", "祝"],
+      "fee_by_day": {
+        "木・金": 5500,
+        "土・日・祝": 6600
+      },
       "sessions": [
         { "time": "09:00", "label": "第1回" },
         { "time": "13:30", "label": "第2回" }
@@ -22,10 +26,11 @@
       "capacity_per_session": "約12名（要予約）",
       "closed_conditions": "荒天・強風・橋梁点検時は催行中止の場合あり",
       "reservation": "公式サイトから事前予約必須",
-      "fee_approx_jpy": 3000
+      "data_source": "2026年11月予約カレンダーより実確認（スクリーンショット）",
+      "known_exception_2026": "2026-11-14（土）は理由不明で休業（橋梁点検の可能性）"
     },
     "highlights": "主塔エレベーターで高さ298mまで登頂。橋桁内部（海面下から主塔間）の遊歩道も見学可能。天候良好時は四国・淡路島・大阪湾を一望。",
-    "notes": "舞子海上プロムナード（橋桁遊歩道）は別料金で毎日公開。登塔体験（ブリッジワールド）は週末・祝日限定。悪天候時の代替として「橋の科学館」も隣接。",
+    "notes": "舞子海上プロムナード（橋桁遊歩道）は別料金で毎日公開。登塔体験は木〜日・祝限定（当初の金〜日想定は誤り）。悪天候時の代替として「橋の科学館」も隣接。",
     "trip_integration": {
       "itinerary_ids": ["shikoku_openjaw", "shikoku_openjaw_fsc"],
       "strategy": "KIX入り四國開口票の必訪ポイント。KIX到着後 JR舞子まで約40分。",
@@ -33,6 +38,8 @@
         {
           "date": "2026-11-08",
           "day_of_week": "日",
+          "bridge_open": true,
+          "fee_jpy": 6600,
           "session": "13:30（KIX 12:00前着ならば当日可）",
           "tidal_context": "大潮★★★★★ 翌日鳴門が新月最強",
           "recommended": true
@@ -40,33 +47,41 @@
         {
           "date": "2026-11-12",
           "day_of_week": "木",
-          "session": "翌11/13（金）09:00 または 13:30",
+          "bridge_open": true,
+          "fee_jpy": 5500,
+          "session": "当日可（木曜開放・¥5,500）。早班KIX→JR舞子 12:00頃着なら13:30場に間に合う",
           "tidal_context": "大潮★★★★☆ 新月3日後",
           "recommended": true
         },
         {
           "date": "2026-11-13",
           "day_of_week": "金",
-          "session": "13:30（早班KIX着なら当日可）",
+          "bridge_open": true,
+          "fee_jpy": 5500,
+          "session": "当日可（¥5,500）。カレンダーで残席△（黄色）要注意、早めの予約を",
           "tidal_context": "中潮★★★☆☆",
           "recommended": true
         },
         {
           "date": "2026-11-14",
           "day_of_week": "土",
-          "session": "13:30（当日可）",
+          "bridge_open": false,
+          "fee_jpy": null,
+          "session": "休業（2026年11月カレンダーで灰色。橋梁点検等の可能性）",
           "tidal_context": "中潮★★★☆☆",
-          "recommended": true
+          "recommended": false
         },
         {
           "date": "2026-11-15",
           "day_of_week": "日",
+          "bridge_open": true,
+          "fee_jpy": 6600,
           "session": "13:30（当日可）",
           "tidal_context": "中潮★★☆☆☆（やや弱め）",
-          "recommended": false
+          "recommended": true
         }
       ],
-      "non_viable_dates_note": "11/09-11（月〜水）は登塔不可。橋科学館のみ。"
+      "non_viable_dates_note": "11/09-11（月〜水）・11/14（土・特例休業）は登塔不可。橋の科学館のみ。"
     }
   },
   {
