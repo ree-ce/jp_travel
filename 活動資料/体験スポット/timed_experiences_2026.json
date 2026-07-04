@@ -1,0 +1,153 @@
+[
+  {
+    "id": "EX001",
+    "name_ja": "明石海峡大橋 ブリッジワールド",
+    "name_zh": "明石海峽大橋 登塔體驗（Bridge World）",
+    "category": "体験",
+    "location_ja": "兵庫県神戸市垂水区東舞子町（舞子海上プロムナード内）",
+    "location_zh": "兵庫縣神戶市垂水區東舞子町（舞子海上步道內）",
+    "region": "関西",
+    "access": "JR 舞子駅 徒歩5分 / 山陽電鉄 舞子公園駅 徒歩3分",
+    "priority": "★★★★☆ 世界最長吊橋主塔登頂，高度298m，明石海峽全景",
+    "source": "https://www.jb-honshi.co.jp/bridgeworld/",
+    "confirmed": true,
+    "confirmed_note": "JB本四高速公式サイト記載の常設体験プログラム",
+    "open_schedule": {
+      "days_of_week": ["金", "土", "日", "祝"],
+      "sessions": [
+        { "time": "09:00", "label": "第1回" },
+        { "time": "13:30", "label": "第2回" }
+      ],
+      "duration_minutes": 90,
+      "capacity_per_session": "約12名（要予約）",
+      "closed_conditions": "荒天・強風・橋梁点検時は催行中止の場合あり",
+      "reservation": "公式サイトから事前予約必須",
+      "fee_approx_jpy": 3000
+    },
+    "highlights": "主塔エレベーターで高さ298mまで登頂。橋桁内部（海面下から主塔間）の遊歩道も見学可能。天候良好時は四国・淡路島・大阪湾を一望。",
+    "notes": "舞子海上プロムナード（橋桁遊歩道）は別料金で毎日公開。登塔体験（ブリッジワールド）は週末・祝日限定。悪天候時の代替として「橋の科学館」も隣接。",
+    "trip_integration": {
+      "itinerary_ids": ["shikoku_openjaw", "shikoku_openjaw_fsc"],
+      "strategy": "KIX入り四國開口票の必訪ポイント。KIX到着後 JR舞子まで約40分。",
+      "viable_arrival_dates_2026": [
+        {
+          "date": "2026-11-08",
+          "day_of_week": "日",
+          "session": "13:30（KIX 12:00前着ならば当日可）",
+          "tidal_context": "大潮★★★★★ 翌日鳴門が新月最強",
+          "recommended": true
+        },
+        {
+          "date": "2026-11-12",
+          "day_of_week": "木",
+          "session": "翌11/13（金）09:00 または 13:30",
+          "tidal_context": "大潮★★★★☆ 新月3日後",
+          "recommended": true
+        },
+        {
+          "date": "2026-11-13",
+          "day_of_week": "金",
+          "session": "13:30（早班KIX着なら当日可）",
+          "tidal_context": "中潮★★★☆☆",
+          "recommended": true
+        },
+        {
+          "date": "2026-11-14",
+          "day_of_week": "土",
+          "session": "13:30（当日可）",
+          "tidal_context": "中潮★★★☆☆",
+          "recommended": true
+        },
+        {
+          "date": "2026-11-15",
+          "day_of_week": "日",
+          "session": "13:30（当日可）",
+          "tidal_context": "中潮★★☆☆☆（やや弱め）",
+          "recommended": false
+        }
+      ],
+      "non_viable_dates_note": "11/09-11（月〜水）は登塔不可。橋科学館のみ。"
+    }
+  },
+  {
+    "id": "EX002",
+    "name_ja": "鳴門のうずしお 観潮船",
+    "name_zh": "鳴門漩渦 觀潮船",
+    "category": "体験",
+    "location_ja": "徳島県鳴門市鳴門町土佐泊浦（亀浦観光港）",
+    "location_zh": "德島縣鳴門市鳴門町土佐泊浦（龜浦觀光港）",
+    "region": "関西",
+    "access": "JR 鳴門駅 バス15分 → 亀浦港 / 鳴門IC より車10分",
+    "priority": "★★★★★ 世界最大級の渦潮。大潮×午前中が最大直径30m以上",
+    "source": "https://www.uzusio.com/",
+    "confirmed": true,
+    "confirmed_note": "鳴門観潮船（うずしお汽船・わんだーなると）公式サイト常設プログラム",
+    "operators": [
+      {
+        "name_ja": "うずしお汽船",
+        "name_zh": "漩渦汽船",
+        "vessel_type": "小型高速船（水中展望室あり）",
+        "duration_minutes": 30,
+        "fee_approx_jpy": 2600
+      },
+      {
+        "name_ja": "観潮船わんだーなると",
+        "name_zh": "觀潮船Wonder鳴門",
+        "vessel_type": "大型観光船（甲板・水中展望室）",
+        "duration_minutes": 30,
+        "fee_approx_jpy": 1800
+      }
+    ],
+    "tidal_dependency": {
+      "explanation": "満潮と干潮の水位差（潮差）が大きいほど渦潮が強くなる。大潮（新月・満月前後2日）が最強。小潮（上弦・下弦前後）は渦が弱い。当日の最強時刻は潮見表で確認要。",
+      "best_time_of_day": "大潮の干潮または満潮の前後1時間が見頃。朝〜昼が順光で撮影しやすい。",
+      "tidal_calendar_nov_2026": {
+        "new_moon_approx": "2026-11-09",
+        "full_moon_approx": "2026-11-24",
+        "ratings": [
+          { "date": "2026-11-07", "day": "土", "tidal_rating": "大潮★★★★☆", "note": "新月2日前" },
+          { "date": "2026-11-08", "day": "日", "tidal_rating": "大潮★★★★★", "note": "新月前夕" },
+          { "date": "2026-11-09", "day": "月", "tidal_rating": "大潮★★★★★", "note": "新月当日・本月最強" },
+          { "date": "2026-11-10", "day": "火", "tidal_rating": "大潮★★★★★", "note": "新月翌日" },
+          { "date": "2026-11-11", "day": "水", "tidal_rating": "大潮★★★★★", "note": "新月2日後" },
+          { "date": "2026-11-12", "day": "木", "tidal_rating": "大潮★★★★☆", "note": "やや減衰" },
+          { "date": "2026-11-13", "day": "金", "tidal_rating": "中潮★★★☆☆", "note": "" },
+          { "date": "2026-11-14", "day": "土", "tidal_rating": "中潮★★★☆☆", "note": "" },
+          { "date": "2026-11-15", "day": "日", "tidal_rating": "中潮★★☆☆☆", "note": "弱まり傾向" },
+          { "date": "2026-11-17", "day": "火", "tidal_rating": "小潮★☆☆☆☆", "note": "上弦付近・不推薦" },
+          { "date": "2026-11-22", "day": "日", "tidal_rating": "大潮★★★★☆", "note": "満月2日前" },
+          { "date": "2026-11-23", "day": "月", "tidal_rating": "大潮★★★★★", "note": "満月前夕" },
+          { "date": "2026-11-24", "day": "火", "tidal_rating": "大潮★★★★★", "note": "満月当日" },
+          { "date": "2026-11-25", "day": "水", "tidal_rating": "大潮★★★★★", "note": "満月翌日" }
+        ],
+        "calculation_note": "月齢は Jan 29 2025 新月（中国農暦元旦）を基準に 29.53日/周期 で算出。±1日の誤差あり。実際の観潮最強時刻は気象庁潮汐表・現地案内所で要確認。"
+      }
+    },
+    "highlights": "鳴門海峡の最大渦直径は大潮時に20〜30m。世界三大潮流の一つ。鳴門大橋真下の遊覧が迫力満点。",
+    "notes": "渦潮ピーク時刻は毎日変動（潮汐サイクル）。出発前に公式サイトまたは当日案内板で当日最強時刻を確認すること。大潮でも当日の潮流方向で午前・午後どちらが強いか変わる。",
+    "trip_integration": {
+      "itinerary_ids": ["shikoku_openjaw", "shikoku_openjaw_fsc"],
+      "strategy": "KIX入り→ 明石大橋（KIX当日or翌朝）→ 鳴門（明石大橋翌日）→ 四国本島 の順が最適動線。",
+      "optimal_scenarios": [
+        {
+          "scenario": "A：橋＋漩渦ダブル最強",
+          "arrive_kix": "2026-11-08（日）",
+          "bridge": "11/08 13:30場（大潮★★★★★）",
+          "naruto": "11/09（月）新月大潮★★★★★",
+          "shikoku": "11/09〜11/12（大歩危・祖谷・剣山）",
+          "depart_okj": "2026-11-13（金）IT215",
+          "foliage_risk": "大歩危・祖谷は11月上旬〜中旬で問題なし。寒霞渓（小豆島）は略早。"
+        },
+        {
+          "scenario": "B：橋＋楓葉優先・漩渦は中潮",
+          "arrive_kix": "2026-11-12（木）",
+          "bridge": "11/13（金）09:00 または 13:30（大潮★★★★☆）",
+          "naruto": "11/13〜14（中潮★★★☆☆）",
+          "shikoku": "11/13〜11/16（紅葉中旬ピーク）",
+          "depart_okj": "2026-11-17（火）IT215",
+          "foliage_risk": "寒霞渓含め最安定"
+        }
+      ]
+    }
+  }
+]
