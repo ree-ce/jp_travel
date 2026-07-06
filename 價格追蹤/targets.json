@@ -39,7 +39,8 @@
     "date_end": "2026-11-17",
     "days": 5,
     "alert_threshold": 8000,
-    "notes": "高松空港直飛，寒霞渓11月中旬盛期、鳴門大漩渦"
+    "min_ret_dep": "15:00",
+    "notes": "高松空港直飛，寒霞渓11月中旬盛期、鳴門大漩渦。回程限下午班（CI179 18:55）"
   },
   {
     "id": "shikoku_ojk_ow",
@@ -126,7 +127,8 @@
     "tier": "fsc",
     "budget": 20000,
     "alert_threshold": 12000,
-    "notes": "高松空港直飛，寒霞渓11月中旬盛期、鳴門大漩渦"
+    "min_ret_dep": "15:00",
+    "notes": "高松空港直飛，寒霞渓11月中旬盛期、鳴門大漩渦。回程限下午班（CI179 18:55）"
   },
   {
     "id": "shikoku_openjaw_fsc",

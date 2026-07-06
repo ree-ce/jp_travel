@@ -58,14 +58,19 @@ def save_history(history: dict):
 
 def _query_oneway_leg(origin: str, dest: str, date_start: str,
                       date_end: Optional[str] = None,
-                      airlines: Optional[str] = None) -> Optional[dict]:
-    """Query a single one-way leg over a date range; return cheapest result dict or None."""
+                      airlines: Optional[str] = None,
+                      min_dep: Optional[str] = None) -> Optional[dict]:
+    """Query a single one-way leg over a date range; return cheapest result dict or None.
+
+    min_dep: "HH:MM" — skip flights departing before this time (e.g. "15:00").
+    """
     end = date_end or date_start
     cmd = ["python3", str(SEARCH_PY), "--oneway", origin, dest, date_start, end]
     if airlines:
         cmd.extend(["15000", airlines])
     label = f"{date_start}" if end == date_start else f"{date_start}~{end}"
-    print(f"    → 單程查詢：{origin} → {dest} {label}...", end=" ", flush=True)
+    dep_note = f" dep≥{min_dep}" if min_dep else ""
+    print(f"    → 單程查詢：{origin} → {dest} {label}{dep_note}...", end=" ", flush=True)
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
         print(f"❌ {result.stderr[:80]}")
@@ -78,7 +83,11 @@ def _query_oneway_leg(origin: str, dest: str, date_start: str,
     if not data:
         print("❌ 查無結果")
         return None
-    best = min(data, key=lambda r: r.get("price_ow", 999_999))
+    candidates = [r for r in data if r.get("dep", "00:00") >= min_dep] if min_dep else data
+    if not candidates:
+        print(f"❌ 無符合 dep≥{min_dep} 的航班")
+        return None
+    best = min(candidates, key=lambda r: r.get("price_ow", 999_999))
     print(f"最低 TWD {best['price_ow']:,}（{best['flight_no']} {best['dep']}→{best['arr']}）")
     return best
 
@@ -192,6 +201,15 @@ def query_target(target: dict):
         data = json.load(f)
     results = data if isinstance(data, list) else []
 
+    # Apply min_ret_dep filter — drop return options that depart too early.
+    min_ret_dep = target.get("min_ret_dep")
+    if min_ret_dep:
+        for r in results:
+            r["return_options"] = [
+                opt for opt in (r.get("return_options") or [])
+                if opt.get("dep", "00:00") >= min_ret_dep
+            ]
+
     # Supplement return-leg details when Google doesn't provide return_options.
     best = best_result(results)
     if best and not (best.get("return_options") or []):
@@ -199,7 +217,8 @@ def query_target(target: dict):
         ret_origin = best.get("to", "")
         if ret_date and ret_origin:
             print(f"    → 補查回程：{ret_origin} → {target['origin']} {ret_date}...", end=" ", flush=True)
-            ret_leg = _query_oneway_leg(ret_origin, target["origin"], ret_date, None, target.get("airlines"))
+            ret_leg = _query_oneway_leg(ret_origin, target["origin"], ret_date, None,
+                                        target.get("airlines"), min_dep=min_ret_dep)
             if ret_leg:
                 best["return_options"] = [ret_leg]
 
