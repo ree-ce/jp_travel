@@ -59,7 +59,8 @@ def save_history(history: dict):
 def _query_oneway_leg(origin: str, dest: str, date_start: str,
                       date_end: Optional[str] = None,
                       airlines: Optional[str] = None,
-                      min_dep: Optional[str] = None) -> Optional[dict]:
+                      min_dep: Optional[str] = None,
+                      nonstop: bool = False) -> Optional[dict]:
     """Query a single one-way leg over a date range; return cheapest result dict or None.
 
     min_dep: "HH:MM" — skip flights departing before this time (e.g. "15:00").
@@ -68,6 +69,8 @@ def _query_oneway_leg(origin: str, dest: str, date_start: str,
     cmd = ["python3", str(SEARCH_PY), "--oneway", origin, dest, date_start, end]
     if airlines:
         cmd.extend(["15000", airlines])
+    if nonstop:
+        cmd.append("--nonstop")
     label = f"{date_start}" if end == date_start else f"{date_start}~{end}"
     dep_note = f" dep≥{min_dep}" if min_dep else ""
     print(f"    → 單程查詢：{origin} → {dest} {label}{dep_note}...", end=" ", flush=True)
@@ -188,8 +191,10 @@ def query_target(target: dict):
     ]
     if target.get("airlines"):
         cmd.extend([str(target.get("budget", 15000)), target["airlines"]])
+    if target.get("nonstop"):
+        cmd.append("--nonstop")
     print(f"  查詢中：{target['name']} ({target['origin']} → {target['dest']} "
-          f"{date_start}~{date_end} {target['days']}天)...")
+          f"{date_start}~{date_end} {target['days']}天{' 直飛' if target.get('nonstop') else ''})...")
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
         print(f"  ❌ 查詢失敗：{result.stderr[:100]}")
@@ -218,7 +223,8 @@ def query_target(target: dict):
         if ret_date and ret_origin:
             print(f"    → 補查回程：{ret_origin} → {target['origin']} {ret_date}...", end=" ", flush=True)
             ret_leg = _query_oneway_leg(ret_origin, target["origin"], ret_date, None,
-                                        target.get("airlines"), min_dep=min_ret_dep)
+                                        target.get("airlines"), min_dep=min_ret_dep,
+                                        nonstop=bool(target.get("nonstop")))
             if ret_leg:
                 best["return_options"] = [ret_leg]
 
