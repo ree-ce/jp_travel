@@ -60,10 +60,12 @@ def _query_oneway_leg(origin: str, dest: str, date_start: str,
                       date_end: Optional[str] = None,
                       airlines: Optional[str] = None,
                       min_dep: Optional[str] = None,
+                      max_arr: Optional[str] = None,
                       nonstop: bool = False) -> Optional[dict]:
     """Query a single one-way leg over a date range; return cheapest result dict or None.
 
     min_dep: "HH:MM" — skip flights departing before this time (e.g. "15:00").
+    max_arr: "HH:MM" — skip flights arriving after this time (e.g. "21:00").
     """
     end = date_end or date_start
     cmd = ["python3", str(SEARCH_PY), "--oneway", origin, dest, date_start, end]
@@ -72,8 +74,11 @@ def _query_oneway_leg(origin: str, dest: str, date_start: str,
     if nonstop:
         cmd.append("--nonstop")
     label = f"{date_start}" if end == date_start else f"{date_start}~{end}"
-    dep_note = f" dep≥{min_dep}" if min_dep else ""
-    print(f"    → 單程查詢：{origin} → {dest} {label}{dep_note}...", end=" ", flush=True)
+    time_note = ("".join([
+        f" dep≥{min_dep}" if min_dep else "",
+        f" arr≤{max_arr}" if max_arr else "",
+    ]))
+    print(f"    → 單程查詢：{origin} → {dest} {label}{time_note}...", end=" ", flush=True)
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
         print(f"❌ {result.stderr[:80]}")
@@ -86,9 +91,13 @@ def _query_oneway_leg(origin: str, dest: str, date_start: str,
     if not data:
         print("❌ 查無結果")
         return None
-    candidates = [r for r in data if r.get("dep", "00:00") >= min_dep] if min_dep else data
+    candidates = data
+    if min_dep:
+        candidates = [r for r in candidates if r.get("dep", "00:00") >= min_dep]
+    if max_arr:
+        candidates = [r for r in candidates if r.get("arr", "99:99") <= max_arr]
     if not candidates:
-        print(f"❌ 無符合 dep≥{min_dep} 的航班")
+        print(f"❌ 無符合時間限制的航班")
         return None
     best = min(candidates, key=lambda r: r.get("price_ow", 999_999))
     print(f"最低 TWD {best['price_ow']:,}（{best['flight_no']} {best['dep']}→{best['arr']}）")
@@ -143,9 +152,11 @@ def _query_open_jaw_range(target: dict) -> Optional[dict]:
             continue
 
         leg_in  = _query_oneway_leg(inb["origin"], inb["dest"],
-                                    current.isoformat(), None, inb_airlines)
+                                    current.isoformat(), None, inb_airlines,
+                                    max_arr=inb.get("max_arr"))
         leg_out = _query_oneway_leg(out["origin"], out["dest"],
-                                    return_date.isoformat(), None, out_airlines)
+                                    return_date.isoformat(), None, out_airlines,
+                                    min_dep=out.get("min_dep"))
 
         if leg_in and leg_out:
             combined = leg_in["price_ow"] + leg_out["price_ow"]

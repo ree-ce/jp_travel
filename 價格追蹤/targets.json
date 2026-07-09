@@ -65,7 +65,8 @@
       "dest":   "KIX",
       "date_start": "2026-11-08",
       "date_end":   "2026-11-15",
-      "airlines": "IT,GK,MM"
+      "airlines": "IT,GK,MM",
+      "max_arr": "21:00"
     },
     "outbound": {
       "origin": "OKJ",
@@ -144,7 +145,8 @@
       "dest":   "KIX",
       "date_start": "2026-11-08",
       "date_end":   "2026-11-15",
-      "airlines": "CI,BR,JX"
+      "airlines": "CI,BR,JX",
+      "max_arr": "21:00"
     },
     "outbound": {
       "origin": "OKJ",
