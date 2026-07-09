@@ -14587,6 +14587,25 @@
       "rating": null,
       "google_low": null,
       "top3": null
+    },
+    {
+      "checked_at": "2026-07-09T10:05:13.305402+00:00",
+      "price": 5333,
+      "depart_date": "2026-11-18",
+      "return_date": null,
+      "out_airline": "台灣虎航",
+      "out_flight_no": "IT215",
+      "out_dep": "15:25",
+      "out_arr": "17:30",
+      "out_price": 5333,
+      "ret_airline": null,
+      "ret_flight_no": null,
+      "ret_dep": null,
+      "ret_arr": null,
+      "ret_price": null,
+      "rating": null,
+      "google_low": null,
+      "top3": null
     }
   ],
   "plan1_tokyo_fsc": [
@@ -22575,6 +22594,35 @@
           "price": 14910,
           "rating": "一般偏低",
           "google_low": 13818
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-07-09T10:04:55.119726+00:00",
+      "price": 14595,
+      "depart_date": "2026-11-16",
+      "return_date": "2026-11-20",
+      "out_airline": "中華航空",
+      "out_flight_no": "CI178",
+      "out_dep": "14:30",
+      "out_arr": "17:55",
+      "out_price": null,
+      "ret_airline": null,
+      "ret_flight_no": null,
+      "ret_dep": null,
+      "ret_arr": null,
+      "ret_price": null,
+      "rating": "?",
+      "google_low": null,
+      "top3": [
+        {
+          "out_airline": "中華航空",
+          "out_flight_no": "CI178",
+          "out_dep": "14:30",
+          "out_arr": "17:55",
+          "price": 14595,
+          "rating": "?",
+          "google_low": null
         }
       ]
     }
