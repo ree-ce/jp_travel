@@ -239,6 +239,12 @@ def query_target(target: dict):
             if ret_leg:
                 best["return_options"] = [ret_leg]
 
+    # When departure-time or nonstop constraints are active, drop outbound options
+    # whose return date has no qualifying flight (avoids showing results with blank
+    # return info, e.g. CI179 only flies certain days — CI279 days get excluded).
+    if min_ret_dep or target.get("nonstop"):
+        results = [r for r in results if r.get("return_options")]
+
     return results
 
 
