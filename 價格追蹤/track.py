@@ -219,6 +219,7 @@ def query_target(target: dict):
 
     # Apply min_ret_dep filter — drop return options that depart too early.
     min_ret_dep = target.get("min_ret_dep")
+    nonstop = bool(target.get("nonstop"))
     if min_ret_dep:
         for r in results:
             r["return_options"] = [
@@ -226,24 +227,34 @@ def query_target(target: dict):
                 if opt.get("dep", "00:00") >= min_ret_dep
             ]
 
-    # Supplement return-leg details when Google doesn't provide return_options.
-    best = best_result(results)
-    if best and not (best.get("return_options") or []):
-        ret_date   = best.get("return_date")
-        ret_origin = best.get("to", "")
-        if ret_date and ret_origin:
-            print(f"    → 補查回程：{ret_origin} → {target['origin']} {ret_date}...", end=" ", flush=True)
-            ret_leg = _query_oneway_leg(ret_origin, target["origin"], ret_date, None,
-                                        target.get("airlines"), min_dep=min_ret_dep,
-                                        nonstop=bool(target.get("nonstop")))
-            if ret_leg:
-                best["return_options"] = [ret_leg]
-
-    # When departure-time or nonstop constraints are active, drop outbound options
-    # whose return date has no qualifying flight (avoids showing results with blank
-    # return info, e.g. CI179 only flies certain days — CI279 days get excluded).
-    if min_ret_dep or target.get("nonstop"):
+    if min_ret_dep or nonstop:
+        # Constraints active: scan mode only provides return_options for the
+        # cheapest outbound. Supplement ALL dates with empty return_options so
+        # valid combos (e.g. Nov 14 out → Nov 18 CI179) aren't silently dropped.
+        for r in results:
+            if not r.get("return_options"):
+                ret_date   = r.get("return_date")
+                ret_origin = r.get("to", "")
+                if ret_date and ret_origin:
+                    print(f"    → 補查回程：{ret_origin} → {target['origin']} {ret_date}...", end=" ", flush=True)
+                    ret_leg = _query_oneway_leg(ret_origin, target["origin"], ret_date, None,
+                                                target.get("airlines"), min_dep=min_ret_dep,
+                                                nonstop=nonstop)
+                    if ret_leg:
+                        r["return_options"] = [ret_leg]
         results = [r for r in results if r.get("return_options")]
+    else:
+        # No constraints: supplement only the single cheapest result.
+        best = best_result(results)
+        if best and not (best.get("return_options") or []):
+            ret_date   = best.get("return_date")
+            ret_origin = best.get("to", "")
+            if ret_date and ret_origin:
+                print(f"    → 補查回程：{ret_origin} → {target['origin']} {ret_date}...", end=" ", flush=True)
+                ret_leg = _query_oneway_leg(ret_origin, target["origin"], ret_date, None,
+                                            target.get("airlines"))
+                if ret_leg:
+                    best["return_options"] = [ret_leg]
 
     return results
 
