@@ -1,0 +1,586 @@
+{
+  "category": "特別交通体験",
+  "notes": "富士・箱根・伊豆エリアおよび全国のユニーク鉄道・交通体験。観光価値の高い路線・乗り物を収録。",
+  "last_verified": "2026-06-07",
+  "experiences": [
+
+    {
+      "id": "TE001",
+      "name_ja": "小田急ロマンスカー GSE（70000形）",
+      "name_zh": "小田急浪漫特快 GSE（70000型）",
+      "name_en": "Odakyu Romancecar GSE (Series 70000)",
+      "operator": "小田急電鉄",
+      "route": {
+        "from": "新宿駅 / 箱根湯本駅",
+        "to": "箱根湯本駅 / 新宿駅",
+        "stops_major": ["新宿", "町田", "小田原", "箱根湯本"]
+      },
+      "journey_time_min": 80,
+      "journey_time_note": "新宿〜箱根湯本 約80分（最速「スーパーはこね」：小田原まで59分）",
+      "operating_days": "毎日（はこね号・スーパーはこね号として運行）",
+      "season": "通年",
+      "fare_breakdown": {
+        "base_passenger_fare_yen": 1270,
+        "limited_express_surcharge_yen": 1200,
+        "total_paper_ticket_yen": 2470,
+        "ticketless_digital_total_yen": 2420,
+        "note": "チケットレス（スマートフォン購入）で50円引き。小人は半額。"
+      },
+      "reservation": {
+        "method": "小田急公式アプリ・e-ロマンスカー（web-odakyu.com）・駅窓口・旅行代理店",
+        "booking_opens": "乗車日1ヶ月前午前10時から",
+        "advance_required": true
+      },
+      "what_makes_it_unique": "2018年デビューの最新型。先頭・最後尾に各16席の「展望席」（パノラマビュー）を配置し、乗客は前方・後方の車窓を独占的に楽しめる。現役ロマンスカーで展望席を持つ唯一の型式（VSEは2023年末に引退済）。全席100Vコンセント・無料Wi-Fi完備。朱色がかったローズボルドーの車体が特徴。",
+      "confirmed": true,
+      "confirmed_note": "小田急電鉄公式サイト・複数観光ガイドで確認済",
+      "source": "https://www.odakyu.jp/romancecar/features/line_up/70000/"
+    },
+
+    {
+      "id": "TE002",
+      "name_ja": "小田急ロマンスカー MSE（60000形）",
+      "name_zh": "小田急浪漫特快 MSE（60000型）",
+      "name_en": "Odakyu Romancecar MSE (Series 60000)",
+      "operator": "小田急電鉄",
+      "route": {
+        "from": "北千住（東京メトロ千代田線経由）または新宿",
+        "to": "小田原・箱根湯本",
+        "stops_major": ["北千住", "表参道", "代々木上原", "新宿（一部）", "小田原", "箱根湯本"]
+      },
+      "journey_time_min": 105,
+      "journey_time_note": "北千住〜箱根湯本 約105分。「メトロはこね」として東京メトロ千代田線に直通運転。",
+      "operating_days": "土休日中心（メトロはこね・メトロホームウェイ号）",
+      "season": "通年",
+      "fare_breakdown": {
+        "base_passenger_fare_yen": 1500,
+        "limited_express_surcharge_yen": 1300,
+        "note": "東京メトロ経由の場合、メトロ区間の乗車券別途必要。車内購入時に100円増し。北千住〜箱根湯本の概算総額約2,800円前後。",
+        "ticketless_discount": "あり（50円引き）"
+      },
+      "reservation": {
+        "method": "e-ロマンスカー（web-odakyu.com）・小田急アプリ・駅窓口",
+        "booking_opens": "乗車日1ヶ月前午前10時から",
+        "advance_required": true
+      },
+      "what_makes_it_unique": "2008年デビュー。ロマンスカーで唯一、東京メトロ千代田線に直通し、北千住・表参道など都心各駅から乗り換えなしで箱根へアクセスできる。青いカラーリング。展望席はないが全席指定・快適なシート。分割・増結が可能な6両＋4両の柔軟編成。",
+      "confirmed": true,
+      "confirmed_note": "小田急電鉄公式サイト・Japan Guide等で確認済",
+      "source": "https://www.odakyu.jp/romancecar/features/line_up/60000/"
+    },
+
+    {
+      "id": "TE003",
+      "name_ja": "小田急ロマンスカー EXEα（30000形改）",
+      "name_zh": "小田急浪漫特快 EXEα（30000型改）",
+      "name_en": "Odakyu Romancecar EXEα (Series 30000 renovated)",
+      "operator": "小田急電鉄",
+      "route": {
+        "from": "新宿",
+        "to": "小田原・箱根湯本・片瀬江ノ島・松田",
+        "stops_major": ["新宿", "相模大野", "小田原", "箱根湯本"]
+      },
+      "journey_time_min": 80,
+      "journey_time_note": "新宿〜箱根湯本 約80分",
+      "operating_days": "毎日（えのしま号・はこね号・あしがら号など）",
+      "season": "通年",
+      "fare_breakdown": {
+        "base_passenger_fare_yen": 1270,
+        "limited_express_surcharge_yen": 1200,
+        "total_paper_ticket_yen": 2470,
+        "ticketless_digital_total_yen": 2420
+      },
+      "reservation": {
+        "method": "e-ロマンスカー（web-odakyu.com）・小田急アプリ・駅窓口",
+        "booking_opens": "乗車日1ヶ月前午前10時から",
+        "advance_required": true
+      },
+      "what_makes_it_unique": "1996年デビューのEXE（30000形）をリノベーション（2016〜17年）した車両。最多の運用本数を誇り「最も乗りやすいロマンスカー」。展望席はないが全席100Vコンセント完備・スーツケース置場付き。4両＋6両の分割が可能で、えのしま号・はこね号の分割運行に使われる。朝の「モーニングウェイ」・夜の「ホームウェイ」として通勤特急としても活躍。",
+      "confirmed": true,
+      "confirmed_note": "小田急電鉄公式サイトで確認済",
+      "source": "https://www.odakyu.jp/romancecar/features/line_up/30000/"
+    },
+
+    {
+      "id": "TE004",
+      "name_ja": "箱根登山鉄道（スイッチバック区間）",
+      "name_zh": "箱根登山鐵道（折返行駛區間）",
+      "name_en": "Hakone Tozan Railway (Switchback Section)",
+      "operator": "箱根登山鉄道（小田急グループ）",
+      "route": {
+        "from": "箱根湯本駅",
+        "to": "強羅駅",
+        "distance_km": 8.9,
+        "stations": ["箱根湯本", "塔ノ沢", "大平台", "宮ノ下", "小涌谷", "彫刻の森", "強羅"],
+        "switchback_points": ["出山信号場（第1スイッチバック）", "大平台駅（第2スイッチバック）", "上大平台信号場（第3スイッチバック）"]
+      },
+      "journey_time_min": 40,
+      "journey_time_note": "箱根湯本〜強羅 約40分。日中は20〜30分間隔で運行。",
+      "operating_days": "毎日",
+      "season": "通年（梅雨期・紅葉期は特に人気）",
+      "fare_breakdown": {
+        "hakone_yumoto_to_gora_yen": 770,
+        "note": "IC可。区間により異なる。強羅のみの乗降は770円。",
+        "hakone_freepass_included": true
+      },
+      "reservation": {
+        "method": "予約不要。当日ICカード・現金で乗車。",
+        "advance_required": false,
+        "note": "箱根フリーパス（小田急購入）に含まれる。"
+      },
+      "what_makes_it_unique": "日本唯一の本格的な登山電車（粘着式）。最急勾配80‰（パーミル）という日本の粘着式鉄道で最も急な坂を登る。3箇所のスイッチバックでジグザグに高度を稼ぎ、スイッチバックのたびに運転士と車掌が入れ替わる。大平台駅ではホームからスイッチバックの様子を至近距離で観察可能。箱根湯本（標高108m）から強羅（標高541m）まで高度差433mを40分で登る迫力の路線。",
+      "confirmed": true,
+      "confirmed_note": "箱根ナビ・Japan Guide等で確認済",
+      "source": "https://www.hakonenavi.jp/hakone-tozan/"
+    },
+
+    {
+      "id": "TE005",
+      "name_ja": "箱根ロープウェイ",
+      "name_zh": "箱根纜車",
+      "name_en": "Hakone Ropeway",
+      "operator": "箱根ロープウェイ株式会社（小田急グループ）",
+      "route": {
+        "from": "早雲山駅",
+        "to": "桃源台駅（芦ノ湖畔）",
+        "distance_km": 4.0,
+        "stations": ["早雲山", "大涌谷", "姥子", "桃源台"],
+        "max_altitude_m": 1044
+      },
+      "journey_time_min": 30,
+      "journey_time_note": "早雲山〜桃源台 約30分（各区間約10分）。約1分間隔で18名乗りゴンドラが運行。",
+      "operating_days": "毎日（悪天候・定期点検時は運休）",
+      "season": "通年（2月〜11月 9:00〜17:00 / 12月〜1月 9:00〜16:15）",
+      "fare_breakdown": {
+        "sounzan_to_togendai_oneway_yen": 1700,
+        "sounzan_to_togendai_return_yen": 3000,
+        "owakudani_to_togendai_oneway_yen": 600,
+        "revision_date": "2025年10月1日改定（値上げ）",
+        "note": "改定前（〜2025年9月）：片道1,200円。箱根フリーパスに含まれる。"
+      },
+      "reservation": {
+        "method": "予約不要。当日乗車。デジタルチケット（EMot）も利用可。",
+        "advance_required": false,
+        "note": "繁忙期は早雲山で待ち時間が発生することあり。"
+      },
+      "what_makes_it_unique": "活火山・大涌谷の真上4kmを空中で横断する世界有数の長距離ロープウェイ。大涌谷では火山性ガスが噴出する地獄谷・黒たまご（卵を茹でると黒くなる）が名物。天候次第で富士山・芦ノ湖を一望できる絶景。2026年4月13日より「音箱（OTOBACO）」としてDolby Atmos立体音響ゴンドラが早雲山〜大涌谷間で運行開始。",
+      "confirmed": true,
+      "confirmed_note": "箱根ナビ・Travel Watch（2025年料金改定記事）で確認済",
+      "source": "https://www.hakonenavi.jp/hakone-ropeway/"
+    },
+
+    {
+      "id": "TE006",
+      "name_ja": "箱根海賊船（芦ノ湖観光船）",
+      "name_zh": "箱根海盜船（蘆之湖觀光船）",
+      "name_en": "Hakone Pirate Ships (Lake Ashi Sightseeing)",
+      "operator": "箱根観光船株式会社（小田急グループ）",
+      "route": {
+        "from": "桃源台港",
+        "to": "箱根町港・元箱根港",
+        "distance_km": 10.0,
+        "ports": ["桃源台港", "箱根町港", "元箱根港"],
+        "note": "3港を循環。桃源台〜元箱根（全区間）は約40分。"
+      },
+      "journey_time_min": 40,
+      "journey_time_note": "桃源台〜箱根町港 約25分、桃源台〜元箱根港 約40分。",
+      "ships": [
+        {"name": "ロワイヤルII", "note": "特別船室リニューアル工事中（2026年夏完成予定）"},
+        {"name": "ビクトリー", "note": "運行中"},
+        {"name": "クイーン芦ノ湖", "note": "運行中"}
+      ],
+      "operating_days": "毎日",
+      "season": "通年",
+      "fare_breakdown": {
+        "togendai_to_hakone_machi_or_moto_hakone_oneway_yen": 1700,
+        "togendai_to_togendai_return_yen": 3000,
+        "hakone_machi_to_moto_hakone_yen": 600,
+        "special_cabin_surcharge_yen": 1480,
+        "revision_date": "2025年10月1日改定（片道500円値上げ）",
+        "note": "特別船室利用時は追加1,480円（大人）。箱根フリーパスで乗船可。"
+      },
+      "reservation": {
+        "method": "予約不要（当日乗船）。デジタルチケット（EMot）も利用可。",
+        "advance_required": false
+      },
+      "what_makes_it_unique": "欧州の帆船・ガレオン船を模した豪華海賊船デザインが特徴。芦ノ湖越しに富士山（晴天時）と箱根の山々を望む遊覧。特別船室は優雅な内装と専用デッキ付き。ロープウェイ（桃源台）と水上移動を組み合わせた「箱根観光ゴールデンルート」の核心。箱根フリーパスで乗り放題。",
+      "confirmed": true,
+      "confirmed_note": "箱根ナビ・Travel Watch料金改定記事（2025年10月）で確認済",
+      "source": "https://www.hakonenavi.jp/hakone-kankosen/"
+    },
+
+    {
+      "id": "TE007",
+      "name_ja": "富士山ビュー特急（富士山麓電気鉄道）",
+      "name_zh": "富士山景觀特急（富士山麓電氣鐵道）",
+      "name_en": "Fuji View Express (Fujisan Midoriku Denki Railway)",
+      "operator": "富士山麓電気鉄道株式会社（旧：富士急行）",
+      "route": {
+        "from": "大月駅",
+        "to": "河口湖駅",
+        "distance_km": 26.6,
+        "stops": ["大月", "都留文科大学前", "谷村町", "都留市", "禾生", "赤坂", "田野倉", "富士山", "富士急ハイランド", "河口湖"]
+      },
+      "journey_time_min": 50,
+      "journey_time_note": "大月〜河口湖 約50分",
+      "operating_days": "週末・休日運行（土曜・日曜・祝日）。平日は一部フジサン特急車両で代替。",
+      "season": "通年（ただし車両整備等で運休日あり）",
+      "car_types": {
+        "car_1": {
+          "name": "特別車両（グランドクラス的内装）",
+          "surcharge_yen": 900,
+          "note": "スイーツプラン設定列車では大人4,900円（運賃・特急料金・スイーツ・ドリンク込み）。通常乗車は運賃＋特急料金400円＋特別車両料金900円。"
+        },
+        "car_2": {
+          "name": "指定席（普通車）",
+          "surcharge_yen": 200
+        },
+        "car_3": {
+          "name": "自由席",
+          "surcharge_yen": 0
+        }
+      },
+      "fare_breakdown": {
+        "base_fare_otsuki_to_kawaguchiko_yen": 1170,
+        "limited_express_surcharge_yen": 400,
+        "car1_special_car_yen": 900,
+        "total_car1_yen": 2470,
+        "total_car2_reserved_yen": 1770,
+        "sweets_plan_car1_yen": 4900,
+        "sweets_plan_note": "スイーツプランは富士急トラベル主催。ホテルパティシエ特製スイーツ＋ドリンク付き。前月1日より予約受付開始。"
+      },
+      "reservation": {
+        "method": "富士急行線公式サイト（express-reserve.fujikyu.co.jp）・旅行代理店・富士急コールセンター（0555-73-8181）",
+        "booking_opens": "通常特急券：1ヶ月前から。スイーツプラン：ご利用月の前月1日から受付。",
+        "advance_required": false,
+        "note": "自由席は予約不要。1・2号車は事前予約推奨。"
+      },
+      "what_makes_it_unique": "元JR東海371系電車（「あさぎり」号として運用）をリノベーションした特急。1号車の特別内装は革張りシート・落ち着いたカラーリングで特別感がある。河口湖・富士急ハイランド方面への車窓から富士山を望む路線で、スイーツプランは地元パティシエ特製スイーツが楽しめるプレミアム体験。",
+      "confirmed": true,
+      "confirmed_note": "富士急行線公式サイト・複数観光ガイドで確認済",
+      "source": "https://www.fujikyu-railway.jp/train/fujisan_view_express.php"
+    },
+
+    {
+      "id": "TE008",
+      "name_ja": "フジサン特急（富士山麓電気鉄道）",
+      "name_zh": "富士山特急（富士山麓電氣鐵道）",
+      "name_en": "Fujisan Express (Fujisan Midoriku Denki Railway)",
+      "operator": "富士山麓電気鉄道株式会社",
+      "route": {
+        "from": "大月駅",
+        "to": "河口湖駅",
+        "stops": ["大月", "富士山", "富士急ハイランド", "河口湖"]
+      },
+      "journey_time_min": 50,
+      "operating_days": "毎日（ただし富士山ビュー特急の整備代替日など変動あり）",
+      "season": "通年",
+      "fare_breakdown": {
+        "base_fare_yen": 1170,
+        "reserved_seat_surcharge_yen": 200,
+        "note": "1・2号車は指定席料金200円。1号車は観光展望車だが特別料金はなく200円のみ。3号車は自由席で追加料金不要。"
+      },
+      "reservation": {
+        "method": "富士急行線公式サイト・旅行代理店・窓口",
+        "booking_opens": "1ヶ月前から",
+        "advance_required": false
+      },
+      "what_makes_it_unique": "車体側面に富士山をモチーフにした大型ラッピングが施された個性的な特急。元小田急RSE（20000形）を改造した車両で、1号車は展望車両。ビュー特急より気軽に乗れる（指定席料金のみ）ため、コスパよく特急体験が可能。",
+      "confirmed": true,
+      "confirmed_note": "富士急行線公式サイトで現在も運行確認済（2026年3月ダイヤ改正後も継続）",
+      "source": "https://www.fujikyu-railway.jp/train/fujisan_express.php"
+    },
+
+    {
+      "id": "TE009",
+      "name_ja": "嵯峨野観光鉄道（嵯峨野トロッコ列車）",
+      "name_zh": "嵯峨野觀光鐵道（嵯峨野觀光小火車）",
+      "name_en": "Sagano Scenic Railway (Sagano Romantic Train)",
+      "operator": "嵯峨野観光鉄道株式会社（JR西日本グループ）",
+      "route": {
+        "from": "トロッコ嵯峨駅",
+        "to": "トロッコ亀岡駅",
+        "distance_km": 7.3,
+        "stations": ["トロッコ嵯峨", "トロッコ嵐山", "トロッコ保津峡", "トロッコ亀岡"]
+      },
+      "journey_time_min": 25,
+      "journey_time_note": "全区間約25分。保津峡沿いの渓谷絶景を走行。",
+      "operating_days": "水曜定休（ただしGW・紅葉シーズン等は水曜も運行）",
+      "season": "2026年3月20日〜12月6日（冬期は運休、例年1〜2月は運休）。8月12日〜8月31日も夏期運休。",
+      "fare_breakdown": {
+        "adult_one_way_yen": 880,
+        "child_one_way_yen": 440,
+        "note": "全区間均一。往復割引なし。全席指定。"
+      },
+      "car_types": {
+        "car_5": {
+          "name": "ザ・リッチ号（窓なしオープン客車）",
+          "note": "5号車のみ窓ガラスなしのオープン構造。自然の風・音を直に体感できる人気車両。追加料金なし（同じ880円）。"
+        }
+      },
+      "reservation": {
+        "method": "嵯峨野観光鉄道公式サイト（ars-saganokanko.triplabo.jp）・各駅窓口（トロッコ保津峡駅除く）・KKday等",
+        "booking_opens": "特段の発売開始日制限なし。公式サイトから随時購入可。",
+        "advance_required": true,
+        "note": "全席指定制。当日窓口販売あり（繁忙期は売切れ注意）。JRみどりの窓口・e5489では購入不可（嵯峨野観光鉄道独自の販売経路のみ）。"
+      },
+      "what_makes_it_unique": "1991年に廃止された山陰本線旧線を活用した観光専用鉄道。保津峡の険しい峡谷美と紅葉（11月）・新緑（4〜5月）が最大の見どころ。5号車のオープン客車「ザ・リッチ号」は自然を体で感じられる名物車両。乗車後は保津峡下り（急流下り）と組み合わせるのが定番コース。東から乗る（嵯峨→亀岡）と車窓の左側に渓谷が見やすい。",
+      "confirmed": true,
+      "confirmed_note": "嵯峨野観光鉄道公式サイト・JR西日本プレスリリース（2026年1月）で確認済",
+      "source": "https://www.sagano-kanko.co.jp/"
+    },
+
+    {
+      "id": "TE010",
+      "name_ja": "青函トンネル記念館 体験坑道（もぐら号）",
+      "name_zh": "青函隧道紀念館 體驗坑道（鼴鼠號）",
+      "name_en": "Seikan Tunnel Museum Underground Tour (Mogura-go)",
+      "operator": "公益財団法人 青函トンネル記念館",
+      "route": {
+        "from": "地上展示館（龍飛崎）",
+        "to": "海面下140m 体験坑道",
+        "gradient_degrees": 14,
+        "depth_m": 140,
+        "note": "青函トンネル建設時に作業員用として掘られた斜坑を利用。"
+      },
+      "journey_time_min": 7,
+      "journey_time_note": "斜坑乗車は片道約7分。地下での体験ツアー全体（往復＋見学）は約40分。",
+      "operating_days": "開館期間中は毎日",
+      "season": "2026年は4月17日（金）開館〜11月頃まで（冬期休館）",
+      "fare_breakdown": {
+        "museum_admission_adult_yen": 400,
+        "museum_admission_child_yen": 200,
+        "underground_tour_adult_yen": 1200,
+        "underground_tour_child_yen": 600,
+        "set_ticket_adult_yen": 1500,
+        "set_ticket_child_yen": 750,
+        "note": "2026年度から中学生料金が小人に変更。"
+      },
+      "reservation": {
+        "method": "当日窓口のみ（予約不要）",
+        "advance_required": false,
+        "note": "観光シーズン・団体時は待ち時間が発生する場合あり。"
+      },
+      "what_makes_it_unique": "世界最長の海底鉄道トンネル（全長53.85km）建設に使われた実際の斜坑（傾斜14度）を鉄道車両「もぐら号」で下り、海面下140mの体験坑道へ。実際の工事現場を保存・再現した坑道内展示を見学できる世界で唯一の施設。青函トンネルは現在も新幹線・特急列車が通過している現役のインフラ。",
+      "access": "青森駅からJR津軽線・三厩駅下車（約100分）＋外ヶ浜町循環バス龍飛行き（約27分）。または青森ICから車で約80km（国道7号・280号経由）。",
+      "confirmed": true,
+      "confirmed_note": "青函トンネル記念館公式サイト・青森県観光情報サイトで確認済",
+      "source": "http://seikan-tunnel-museum.jp/"
+    },
+
+    {
+      "id": "TE011",
+      "name_ja": "大井川鐵道 SL・EL急行（大井川本線）",
+      "name_zh": "大井川鐵道 蒸汽機車急行列車（大井川本線）",
+      "name_en": "Oigawa Railway SL/EL Express (Oigawa Main Line)",
+      "operator": "大井川鐵道株式会社",
+      "route": {
+        "from": "新金谷駅（一部列車は金谷駅発）",
+        "to": "川根温泉笹間渡駅",
+        "note": "2022年台風被害により川根温泉笹間渡〜千頭は現在も不通。全線復旧目標2029年春。",
+        "distance_km": 21.5
+      },
+      "journey_time_min": 60,
+      "journey_time_note": "新金谷〜川根温泉笹間渡 約60分",
+      "operating_days": "週末・祝日中心（平日運行日あり。公式サイトで要確認）",
+      "season": "通年（年間を通じて運行）",
+      "current_traction_status": {
+        "sl": {
+          "vehicle": "C10形8号機（黒いSL）",
+          "status": "2026年1月13日から長期運休中（車両改造工事のため。復活時期未定、2029年ごろを目途）"
+        },
+        "el": {
+          "vehicles": ["E10形", "旧客ブルートレイン12系"],
+          "status": "2026年1月13日よりEL（電気機関車）牽引の「ブルートレイン急行」として運行中",
+          "train_names": ["すまた号", "かわかぜ号", "奥大井号"]
+        }
+      },
+      "fare_breakdown": {
+        "base_fare_shinkanaiya_to_kawaneonsen_adult_yen": 920,
+        "sl_el_express_surcharge_adult_yen": 1500,
+        "sl_el_express_surcharge_child_yen": 750,
+        "total_adult_yen": 2420,
+        "note": "EL急行も同じ急行料金1,500円。旧型客車（ブルートレイン12系）乗車体験は継続中。"
+      },
+      "reservation": {
+        "method": "大井川鐵道公式サイト（daitetsu.jp）で空席確認・予約。窓口でも購入可。",
+        "booking_opens": "運行スケジュール公表後随時（公式サイトで確認）",
+        "advance_required": true,
+        "note": "SL急行は人気が高いため早めの予約を推奨（EL急行は比較的空きあり）。"
+      },
+      "what_makes_it_unique": "1936年から継続する日本最古の動態SL（蒸気機関車）定期運行路線。現在はEL（電気機関車）が旧型客車を牽引する「ブルートレイン急行」として運行中だが、昭和の旅情そのままの旧型客車体験が可能。沿線の大井川・寸又峡渓谷の自然美と合わせた観光価値が高い。SLは整備完了後（2029年頃）に復活予定。",
+      "confirmed": true,
+      "confirmed_note": "大井川鐵道公式サイト（daitetsu.jp/archives/297543）・鉄道コム記事で確認済",
+      "source": "https://daitetsu.jp/sl/schedule"
+    },
+
+    {
+      "id": "TE012",
+      "name_ja": "大井川鐵道 アプト式鉄道（南アルプスあぷとライン）",
+      "name_zh": "大井川鐵道 齒軌鐵道（南阿爾卑斯 Abt 線）",
+      "name_en": "Oigawa Abt Rack Railway (South Alps Abt Line)",
+      "operator": "大井川鐵道株式会社",
+      "route": {
+        "from": "千頭駅",
+        "to": "井川駅",
+        "total_distance_km": 25.5,
+        "abt_section": {
+          "from": "アプトいちしろ駅（標高396m）",
+          "to": "長島ダム駅（標高485m）",
+          "distance_km": 1.5,
+          "height_gain_m": 89,
+          "max_gradient_permille": 90,
+          "note": "日本の普通鉄道で最急勾配（90‰）。ここのみアプト式電気機関車ED90形を連結。"
+        },
+        "key_stations": ["千頭", "アプトいちしろ", "長島ダム", "奥大井湖上", "接岨峡温泉", "井川"]
+      },
+      "journey_time_min": 110,
+      "journey_time_note": "千頭〜井川 約110分。奥大井湖上駅（空中駅）等での停車時間を含む。",
+      "operating_days": "通年（観光列車化後は要予約制）",
+      "season": {
+        "before_july_2026": "定期列車として座席指定予約制（一部区間）",
+        "from_july_2026": "2026年7月1日より全列車「観光列車」化。全列車事前予約制ツアー商品として販売開始。予約は2026年6月中旬から公式サイトで受付予定。"
+      },
+      "fare_breakdown": {
+        "from_july_2026_per_ride_yen": 3500,
+        "child_yen": 1750,
+        "note": "1乗車あたり3,500円（距離に関係なく均一）。途中のアプトいちしろ・奥大井湖上等で観光停車・ガイドあり。"
+      },
+      "reservation": {
+        "method": "2026年7月以降：大井川鐵道公式サイト（daitetsu.jp）で要予約",
+        "booking_opens": "2026年6月中旬より受付開始予定",
+        "advance_required": true
+      },
+      "what_makes_it_unique": "日本唯一のアプト式（ラック・アンド・ピニオン）鉄道。最急勾配90‰区間（アプトいちしろ〜長島ダム）は普通鉄道日本一の急勾配。アプトいちしろ駅で専用電気機関車（ED90形）を連結・切り離す様子を間近で見学可能。奥大井湖上駅は湖の中に浮かぶ孤島に建つ幻想的な「空中駅」として有名。2026年7月からツアー観光鉄道化により観光価値がさらに向上。",
+      "confirmed": true,
+      "confirmed_note": "大井川鐵道公式サイト・静岡県公式観光情報・各種鉄道メディアで確認済",
+      "source": "https://daitetsu.jp/abt"
+    },
+
+    {
+      "id": "TE013",
+      "name_ja": "三岐鉄道 北勢線（ナローゲージ）",
+      "name_zh": "三岐鐵道 北勢線（窄軌鐵道）",
+      "name_en": "Sangi Railway Hokusei Line (762mm Narrow Gauge)",
+      "operator": "三岐鉄道株式会社",
+      "route": {
+        "from": "西桑名駅",
+        "to": "阿下喜駅",
+        "distance_km": 20.4,
+        "stations_count": 13,
+        "gauge_mm": 762,
+        "note": "JR・近鉄の西桑名駅に隣接。"
+      },
+      "journey_time_min": 54,
+      "journey_time_note": "西桑名〜阿下喜 約54分。日中は約30分間隔で運行。",
+      "operating_days": "毎日（地域住民の通勤・通学路線）",
+      "season": "通年",
+      "fare_breakdown": {
+        "nishi_kuwana_to_ageki_adult_yen": 510,
+        "day_pass_yen": 1200,
+        "note": "距離に応じた運賃体系。最大区間（西桑名〜阿下喜）510円。1日乗車券1,200円（ICOCAに搭載して使用）。"
+      },
+      "reservation": {
+        "method": "予約不要。ICカード（ICOCA）または現金で乗車。",
+        "advance_required": false
+      },
+      "what_makes_it_unique": "日本で現役稼働する762mm軌間（ナローゲージ）の旅客鉄道としては日本唯一（もう一つの四日市あすなろう鉄道と2路線で日本の762mm鉄道の全て）。車両が通常の鉄道より明らかに小さく、座席が小さく「かわいい」のが特徴。1914年開業の歴史ある路線で三重県桑名市・いなべ市を結ぶ。同様の軌間はかつて全国各地に存在したが現在は絶滅危惧路線として鉄道ファンに愛される。",
+      "confirmed": true,
+      "confirmed_note": "三岐鉄道公式サイト・英語版Wikipedia・MATCHA観光ガイドで確認済",
+      "source": "https://sangirail.co.jp/"
+    },
+
+    {
+      "id": "TE014",
+      "name_ja": "黒部峡谷鉄道（トロッコ電車）",
+      "name_zh": "黑部峽谷鐵道（礦車電車）",
+      "name_en": "Kurobe Gorge Railway (Trolley Train)",
+      "operator": "黒部峡谷鉄道株式会社（関西電力グループ）",
+      "route": {
+        "from": "宇奈月駅",
+        "to": "欅平駅（通常時）／猫又駅（2026年9月まで折返し）",
+        "distance_km": 20.1,
+        "stations": ["宇奈月", "黒薙", "鐘釣", "欅平"],
+        "gauge_mm": 762
+      },
+      "journey_time_min": 80,
+      "journey_time_note": "宇奈月〜欅平 約80分（通常時）。2026年は猫又折返しで約35分。",
+      "operating_days": "営業期間中毎日",
+      "season": {
+        "normal_season": "4月下旬〜11月30日",
+        "2026_status": "2026年4月20日より宇奈月〜猫又間のみ折返し運転（〜9月30日）。10月以降の区間は7月上旬に発表予定。能登半島地震（2024年1月）による鐘釣橋損傷が原因。2026年中の全線再開を目指して工事中。"
+      },
+      "fare_breakdown": {
+        "unazuki_to_nekomata_return_adult_yen": 2820,
+        "unazuki_to_nekomata_return_child_yen": 1420,
+        "unazuki_to_keyakidaira_return_yen_normal": 3960,
+        "relax_car_surcharge_yen": 600,
+        "note": "リラックス客車は窓付き密閉型（通常は屋根のみのオープン客車）。+600円で乗車可。予約は3ヶ月前から電話またはWEBで受付（5日前まで）。"
+      },
+      "car_types": {
+        "open_car": "屋根のみ・窓なし（標準）",
+        "relax_car": "窓付き密閉型・転換クロスシート3列。追加600円。",
+        "special_car": "完全密閉・個室的な空間（さらに上位）"
+      },
+      "reservation": {
+        "method": "黒部峡谷鉄道公式サイト（kurotetu.co.jp）・電話",
+        "booking_opens": "乗車日3ヶ月前から（5日前まで）",
+        "advance_required": false,
+        "note": "当日券あり。繁忙期（秋の紅葉シーズン10〜11月）はリラックス客車は事前予約を強く推奨。"
+      },
+      "what_makes_it_unique": "黒部川の深い峡谷を20kmにわたって走る工業用鉄道の一般旅客向け開放路線（762mm軌間）。関西電力が建設した発電所・ダム群へのアクセス用として建設された路線で、断崖絶壁・数多くのトンネル・橋梁を連続して通過する。欅平では源泉かけ流しの温泉・散策路が楽しめる（通常時）。秋の紅葉シーズンは特に圧巻。日本三大峡谷の一つ黒部峡谷の中を走る唯一の交通機関。",
+      "confirmed": true,
+      "confirmed_note": "黒部峡谷鉄道公式サイト・railf.jp（2026年3月）・鉄道コムで確認済",
+      "source": "https://www.kurotetu.co.jp/"
+    },
+
+    {
+      "id": "TE015",
+      "name_ja": "嵐電（京福電気鉄道 嵐山本線・北野線）",
+      "name_zh": "嵐電（京福電氣鐵道 嵐山本線・北野線）",
+      "name_en": "Randen (Keifuku Electric Railroad Arashiyama & Kitano Lines)",
+      "operator": "京福電気鉄道株式会社",
+      "route": {
+        "arashiyama_line": {
+          "from": "四条大宮駅",
+          "to": "嵐山駅（嵐山本線）",
+          "distance_km": 7.2,
+          "key_stations": ["四条大宮", "太秦広隆寺", "帷子ノ辻", "嵐山"]
+        },
+        "kitano_line": {
+          "from": "帷子ノ辻駅（嵐山本線乗換）",
+          "to": "北野白梅町駅",
+          "distance_km": 3.8,
+          "key_stations": ["帷子ノ辻", "鳴滝", "宇多野", "御室仁和寺", "北野白梅町"]
+        }
+      },
+      "journey_time_min": 25,
+      "journey_time_note": "四条大宮〜嵐山 約25分。北野白梅町〜帷子ノ辻 約12分。",
+      "operating_days": "毎日",
+      "season": "通年",
+      "fare_breakdown": {
+        "flat_fare_adult_yen": 250,
+        "flat_fare_child_yen": 120,
+        "all_day_pass_adult_yen": 500,
+        "all_day_pass_child_yen": 250,
+        "revision_date": "2023年4月1日改定（220円→250円）",
+        "note": "全線均一運賃。後払い（下車時精算）。らんでんカードチャージで10%プレミアム付与。"
+      },
+      "reservation": {
+        "method": "予約不要。当日乗車。",
+        "advance_required": false
+      },
+      "highlights": {
+        "sakura_tunnel": "鳴滝〜宇多野間の「桜のトンネル」（4月上旬）：桜の時期のみ速度を落として走行し、夜間はライトアップ",
+        "arashiyama_station_footbath": "嵐山駅ホームに足湯あり（200円）",
+        "special_trains": "夏の「妖怪電車」・秋のライトアップ運行等のイベント列車あり",
+        "new_vehicle": "2025年2月より新型車両「KYOTRAM」導入開始（バリアフリー・多言語対応・省エネ）"
+      },
+      "what_makes_it_unique": "かつて京都市内全域に張り巡らされていた市電網の唯一の生き残り。路面電車的な街中走行と嵐山・仁和寺・北野天満宮など世界遺産・名刹を結ぶ観光路線を兼ねる。嵐山本線の一部は道路上を走る路面区間。四条大宮は阪急四条大宮駅に接続。地元住民の生活路線でありながら観光客にも人気の「下町感」が魅力。",
+      "confirmed": true,
+      "confirmed_note": "京福電気鉄道公式サイト・複数観光ガイドで確認済",
+      "source": "https://randen.keifuku.co.jp/"
+    }
+
+  ]
+}
