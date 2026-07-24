@@ -1,160 +1,32 @@
 [
   {
-    "id": "plan1_tokyo",
-    "name": "方案一：東京灣大花火",
-    "origin": "TPE",
-    "dest": "NRT,HND",
-    "depart_date": "2026-10-20",
-    "days": 6,
-    "airlines": "IT,TR,MM",
-    "notes": "東京灣大花火10/24（★★★★★）、足尾銅山廢墟、日光"
-  },
-  {
-    "id": "plan3_osaka",
-    "name": "方案三：大阪淀川+神戶花火",
-    "origin": "TPE",
-    "dest": "KIX",
-    "depart_date": "2026-10-15",
-    "days": 5,
-    "airlines": "IT,TR,MM",
-    "notes": "淀川花火10/17、神戶港花火10/19〜23"
-  },
-  {
-    "id": "kyushu_kagoshima_hanabi",
-    "name": "九州A：鹿兒島錦江灣花火＋桜島",
-    "origin": "TPE",
-    "dest": "FUK",
-    "date_start": "2026-08-25",
-    "date_end": "2026-08-27",
-    "days": 5,
-    "airlines": "IT,TR,MM",
-    "notes": "鹿児島錦江湾サマーナイト大花火8/29（第24回・桜島活火山背景・絶景）＋桜島溶岩遊歩道・湯之平展望所。FUK→鹿児島 新幹線1.5h"
-  },
-  {
-    "id": "shikoku_tak_rt",
-    "name": "四國高松來回（TAK）",
+    "id": "shikoku_tak_planA",
+    "name": "四國楓葉方案A：TAK來回 11/9→11/14（大潮★★★★★）",
     "origin": "TPE",
     "dest": "TAK",
     "date_start": "2026-11-09",
-    "date_end": "2026-11-17",
-    "days": 5,
-    "alert_threshold": 8000,
+    "date_end": "2026-11-09",
+    "days": 6,
+    "airlines": "CI",
+    "budget": 20000,
+    "alert_threshold": 14000,
     "nonstop": true,
     "min_ret_dep": "15:00",
-    "notes": "高松空港直飛，寒霞渓11月中旬盛期、鳴門大漩渦。回程限下午直飛（CI179 18:55）"
+    "notes": "CI178 14:30→17:55抵TAK / CI179 18:55回。11/10鳴門大潮★★★★★→11/11大歩危・小歩危→11/12金刀比羅宮→11/13寒霞渓（小豆島全天）→11/14栗林公園+回"
   },
   {
-    "id": "shikoku_ojk_ow",
-    "type": "oneway",
-    "name": "岡山→台北 單程（OKJ）",
-    "origin": "OKJ",
-    "dest": "TPE",
-    "date_start": "2026-11-13",
-    "date_end": "2026-11-22",
-    "alert_threshold": 5000,
-    "notes": "IT215 OKJ→TPE 15:25→17:30，開口票回程腿"
-  },
-  {
-    "id": "shikoku_openjaw",
-    "name": "四國楓葉（廉航彈性）：KIX進OKJ出 IT/MM/GK進＋IT回",
-    "type": "open_jaw",
-    "trip_days": 5,
-    "notes": "寒霞渓11月中旬盛期、鳴門大漩渦（觀潮船）、明石海峡大橋、小豆島",
-    "inbound": {
-      "origin": "TPE",
-      "dest":   "KIX",
-      "date_start": "2026-11-08",
-      "date_end":   "2026-11-15",
-      "airlines": "IT,GK,MM",
-      "max_arr": "21:00"
-    },
-    "outbound": {
-      "origin": "OKJ",
-      "dest":   "TPE",
-      "date_start": "2026-11-13",
-      "date_end":   "2026-11-22",
-      "airlines": "IT"
-    },
-    "alert_threshold": 8000
-  },
-  {
-    "id": "plan1_tokyo_fsc",
-    "name": "方案一（傳統航空）：東京灣大花火",
-    "origin": "TPE",
-    "dest": "NRT,HND",
-    "depart_date": "2026-10-20",
-    "days": 6,
-    "airlines": "CI,BR,JX",
-    "tier": "fsc",
-    "budget": 20000,
-    "alert_threshold": 12000,
-    "notes": "東京灣大花火10/24（★★★★★）、足尾銅山廢墟、日光"
-  },
-  {
-    "id": "plan3_osaka_fsc",
-    "name": "方案三（傳統航空）：大阪淀川+神戶花火",
-    "origin": "TPE",
-    "dest": "KIX",
-    "depart_date": "2026-10-15",
-    "days": 5,
-    "airlines": "CI,BR,JX",
-    "tier": "fsc",
-    "budget": 20000,
-    "alert_threshold": 12000,
-    "notes": "淀川花火10/17、神戶港花火10/19〜23"
-  },
-  {
-    "id": "kyushu_kagoshima_fsc",
-    "name": "九州A（傳統航空）：鹿兒島錦江灣花火＋桜島",
-    "origin": "TPE",
-    "dest": "FUK",
-    "date_start": "2026-08-25",
-    "date_end": "2026-08-27",
-    "days": 5,
-    "airlines": "CI,BR,JX",
-    "tier": "fsc",
-    "budget": 20000,
-    "alert_threshold": 12000,
-    "notes": "鹿児島錦江湾サマーナイト大花火8/29（第24回・桜島活火山背景）＋桜島溶岩遊歩道・湯之平展望所。FUK→鹿児島 新幹線1.5h"
-  },
-  {
-    "id": "shikoku_tak_rt_fsc",
-    "name": "四國高松來回（TAK）傳統航空",
+    "id": "shikoku_tak_planB",
+    "name": "四國楓葉方案B：TAK來回 11/11→11/16（楓葉盛期）",
     "origin": "TPE",
     "dest": "TAK",
-    "date_start": "2026-11-09",
-    "date_end": "2026-11-17",
-    "days": 5,
-    "airlines": "CI,BR,JX",
-    "tier": "fsc",
+    "date_start": "2026-11-11",
+    "date_end": "2026-11-11",
+    "days": 6,
+    "airlines": "CI",
     "budget": 20000,
-    "alert_threshold": 12000,
+    "alert_threshold": 14000,
     "nonstop": true,
     "min_ret_dep": "15:00",
-    "notes": "高松空港直飛，寒霞渓11月中旬盛期、鳴門大漩渦。回程限下午直飛（CI179 18:55）"
-  },
-  {
-    "id": "shikoku_openjaw_fsc",
-    "name": "四國楓葉（傳統航空彈性）：KIX進OKJ出 CI/BR/JX進＋IT回",
-    "type": "open_jaw",
-    "trip_days": 5,
-    "tier": "fsc",
-    "notes": "寒霞渓11月中旬盛期、鳴門大漩渦（觀潮船）、明石海峡大橋、小豆島",
-    "inbound": {
-      "origin": "TPE",
-      "dest":   "KIX",
-      "date_start": "2026-11-08",
-      "date_end":   "2026-11-15",
-      "airlines": "CI,BR,JX",
-      "max_arr": "21:00"
-    },
-    "outbound": {
-      "origin": "OKJ",
-      "dest":   "TPE",
-      "date_start": "2026-11-13",
-      "date_end":   "2026-11-22",
-      "airlines": "IT"
-    },
-    "alert_threshold": 12000
+    "notes": "CI178 14:30→17:55抵TAK / CI179 18:55回。11/12鳴門大潮★★★★☆→11/13鹽江溫泉+栗林公園→11/14金刀比羅宮→11/15寒霞渓（小豆島全天）→11/16回"
   }
 ]
