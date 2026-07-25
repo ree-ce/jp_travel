@@ -34311,6 +34311,35 @@
           "google_low": 14077
         }
       ]
+    },
+    {
+      "checked_at": "2026-07-25T19:18:06.627619+00:00",
+      "price": 14084,
+      "depart_date": "2026-11-11",
+      "return_date": "2026-11-16",
+      "out_airline": "中華航空",
+      "out_flight_no": "CI178",
+      "out_dep": "14:30",
+      "out_arr": "17:55",
+      "out_price": null,
+      "ret_airline": "中華航空",
+      "ret_flight_no": "CI179",
+      "ret_dep": "18:55",
+      "ret_arr": "21:05",
+      "ret_price": null,
+      "rating": "便宜",
+      "google_low": 14077,
+      "top3": [
+        {
+          "out_airline": "中華航空",
+          "out_flight_no": "CI178",
+          "out_dep": "14:30",
+          "out_arr": "17:55",
+          "price": 14084,
+          "rating": "便宜",
+          "google_low": 14077
+        }
+      ]
     }
   ]
 }
