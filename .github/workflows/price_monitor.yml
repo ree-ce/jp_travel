@@ -253,18 +253,26 @@ jobs:
               return lines, alerts
 
           def send_tg(text):
+              import time
               url  = f"https://api.telegram.org/bot{bot_token}/sendMessage"
               data = urllib.parse.urlencode({
                   "chat_id": chat_id, "text": text, "parse_mode": "HTML",
               }).encode("utf-8")
-              req = urllib.request.Request(url, data=data, method="POST")
-              try:
-                  with urllib.request.urlopen(req, timeout=15) as resp:
-                      print(f"Telegram notified: HTTP {resp.status}")
-              except urllib.error.HTTPError as e:
-                  print(f"Telegram HTTP error: {e.code} {e.read().decode()}")
-              except urllib.error.URLError as e:
-                  print(f"Telegram network error (non-fatal): {e.reason}")
+              for attempt in range(1, 4):
+                  req = urllib.request.Request(url, data=data, method="POST")
+                  try:
+                      with urllib.request.urlopen(req, timeout=15) as resp:
+                          print(f"Telegram notified: HTTP {resp.status}")
+                          return
+                  except urllib.error.HTTPError as e:
+                      print(f"Telegram HTTP error: {e.code} {e.read().decode()}")
+                      return  # HTTP error (bad token, wrong chat_id…) — no point retrying
+                  except urllib.error.URLError as e:
+                      wait = 2 ** attempt
+                      print(f"Telegram attempt {attempt}/3 failed: {e.reason} — retry in {wait}s")
+                      if attempt < 3:
+                          time.sleep(wait)
+              print("Telegram: all retries exhausted (non-fatal)")
 
           lcc_targets = [t for t in targets if t.get("tier", "lcc") == "lcc"]
           fsc_targets = [t for t in targets if t.get("tier") == "fsc"]
