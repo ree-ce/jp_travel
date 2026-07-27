@@ -106,6 +106,7 @@ jobs:
 
       - name: Send Telegram summary
         if: always()
+        continue-on-error: true
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ vars.TELEGRAM_CHAT_ID }}
@@ -258,11 +259,12 @@ jobs:
               }).encode("utf-8")
               req = urllib.request.Request(url, data=data, method="POST")
               try:
-                  with urllib.request.urlopen(req) as resp:
+                  with urllib.request.urlopen(req, timeout=15) as resp:
                       print(f"Telegram notified: HTTP {resp.status}")
               except urllib.error.HTTPError as e:
-                  print(f"Telegram error: {e.code} {e.read().decode()}")
-                  exit(1)
+                  print(f"Telegram HTTP error: {e.code} {e.read().decode()}")
+              except urllib.error.URLError as e:
+                  print(f"Telegram network error (non-fatal): {e.reason}")
 
           lcc_targets = [t for t in targets if t.get("tier", "lcc") == "lcc"]
           fsc_targets = [t for t in targets if t.get("tier") == "fsc"]
