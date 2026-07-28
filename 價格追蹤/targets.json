@@ -10,6 +10,7 @@
     "airlines": "CI",
     "budget": 20000,
     "alert_threshold": 14000,
+    "tier": "fsc",
     "nonstop": true,
     "min_ret_dep": "15:00",
     "notes": "CI178 14:30→17:55抵TAK / CI179 18:55回。11/10鳴門大潮★★★★★→11/11大歩危・小歩危→11/12金刀比羅宮→11/13寒霞渓（小豆島全天）→11/14栗林公園+回"
@@ -25,8 +26,103 @@
     "airlines": "CI",
     "budget": 20000,
     "alert_threshold": 14000,
+    "tier": "fsc",
     "nonstop": true,
     "min_ret_dep": "15:00",
     "notes": "CI178 14:30→17:55抵TAK / CI179 18:55回。11/12鳴門大潮★★★★☆→11/13鹽江溫泉+栗林公園→11/14金刀比羅宮→11/15寒霞渓（小豆島全天）→11/16回"
+  },
+  {
+    "id": "shikoku_oj_planA",
+    "name": "四國開口票方案A（廉航）：KIX進OKJ出 11/9→11/14",
+    "type": "open_jaw",
+    "trip_days": 6,
+    "alert_threshold": 8000,
+    "notes": "11/9 KIX到→明石大橋or直奔鳴門→11/10鳴門大潮★★★★★→11/11-13香川楓葉→11/14 IT215 OKJ 15:25→17:30回",
+    "inbound": {
+      "origin": "TPE",
+      "dest": "KIX",
+      "date_start": "2026-11-09",
+      "date_end": "2026-11-09",
+      "airlines": "IT,MM,GK",
+      "max_arr": "21:00"
+    },
+    "outbound": {
+      "origin": "OKJ",
+      "dest": "TPE",
+      "date_start": "2026-11-14",
+      "date_end": "2026-11-14",
+      "airlines": "IT"
+    }
+  },
+  {
+    "id": "shikoku_oj_planA_fsc",
+    "name": "四國開口票方案A（傳統航空）：KIX進OKJ出 11/9→11/14",
+    "type": "open_jaw",
+    "tier": "fsc",
+    "trip_days": 6,
+    "alert_threshold": 12000,
+    "notes": "11/9 KIX到→明石大橋or直奔鳴門→11/10鳴門大潮★★★★★→11/11-13香川楓葉→11/14 IT215 OKJ 15:25→17:30回",
+    "inbound": {
+      "origin": "TPE",
+      "dest": "KIX",
+      "date_start": "2026-11-09",
+      "date_end": "2026-11-09",
+      "airlines": "CI,BR,JX",
+      "max_arr": "21:00"
+    },
+    "outbound": {
+      "origin": "OKJ",
+      "dest": "TPE",
+      "date_start": "2026-11-14",
+      "date_end": "2026-11-14",
+      "airlines": "IT"
+    }
+  },
+  {
+    "id": "shikoku_oj_planB",
+    "name": "四國開口票方案B（廉航）：KIX進OKJ出 11/11→11/16",
+    "type": "open_jaw",
+    "trip_days": 6,
+    "alert_threshold": 8000,
+    "notes": "11/11 KIX到→11/12鳴門大潮★★★★☆→11/13鹽江+栗林→11/14金刀比羅→11/15寒霞渓→11/16 IT215 OKJ回",
+    "inbound": {
+      "origin": "TPE",
+      "dest": "KIX",
+      "date_start": "2026-11-11",
+      "date_end": "2026-11-11",
+      "airlines": "IT,MM,GK",
+      "max_arr": "21:00"
+    },
+    "outbound": {
+      "origin": "OKJ",
+      "dest": "TPE",
+      "date_start": "2026-11-16",
+      "date_end": "2026-11-16",
+      "airlines": "IT"
+    }
+  },
+  {
+    "id": "shikoku_oj_planB_fsc",
+    "name": "四國開口票方案B（傳統航空）：KIX進OKJ出 11/11→11/16",
+    "type": "open_jaw",
+    "tier": "fsc",
+    "trip_days": 6,
+    "alert_threshold": 12000,
+    "notes": "11/11 KIX到→11/12鳴門大潮★★★★☆→11/13鹽江+栗林→11/14金刀比羅→11/15寒霞渓→11/16 IT215 OKJ回",
+    "inbound": {
+      "origin": "TPE",
+      "dest": "KIX",
+      "date_start": "2026-11-11",
+      "date_end": "2026-11-11",
+      "airlines": "CI,BR,JX",
+      "max_arr": "21:00"
+    },
+    "outbound": {
+      "origin": "OKJ",
+      "dest": "TPE",
+      "date_start": "2026-11-16",
+      "date_end": "2026-11-16",
+      "airlines": "IT"
+    }
   }
 ]
