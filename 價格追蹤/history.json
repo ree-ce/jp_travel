@@ -34689,5 +34689,47 @@
         }
       ]
     }
+  ],
+  "shikoku_oj_planA": [
+    {
+      "checked_at": "2026-07-28T12:17:49.738125+00:00",
+      "price": 9393,
+      "depart_date": "2026-11-09",
+      "return_date": "2026-11-15",
+      "out_airline": "樂桃航空",
+      "out_flight_no": "MM28",
+      "out_dep": "18:50",
+      "out_arr": "22:20",
+      "out_price": 3560,
+      "ret_airline": "台灣虎航",
+      "ret_flight_no": "IT215",
+      "ret_dep": "15:25",
+      "ret_arr": "17:30",
+      "ret_price": 5833,
+      "rating": null,
+      "google_low": null,
+      "top3": null
+    }
+  ],
+  "shikoku_oj_planB": [
+    {
+      "checked_at": "2026-07-28T12:17:59.472688+00:00",
+      "price": 9893,
+      "depart_date": "2026-11-11",
+      "return_date": "2026-11-19",
+      "out_airline": "樂桃航空",
+      "out_flight_no": "MM28",
+      "out_dep": "18:50",
+      "out_arr": "22:20",
+      "out_price": 4060,
+      "ret_airline": "台灣虎航",
+      "ret_flight_no": "IT215",
+      "ret_dep": "15:25",
+      "ret_arr": "17:30",
+      "ret_price": 5833,
+      "rating": null,
+      "google_low": null,
+      "top3": null
+    }
   ]
 }
