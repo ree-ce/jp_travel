@@ -35266,6 +35266,35 @@
           "google_low": 14275
         }
       ]
+    },
+    {
+      "checked_at": "2026-08-13T07:45:59.619256+00:00",
+      "price": 16749,
+      "depart_date": "2026-11-09",
+      "return_date": "2026-11-14",
+      "out_airline": "中華航空",
+      "out_flight_no": "CI178",
+      "out_dep": "14:30",
+      "out_arr": "17:55",
+      "out_price": null,
+      "ret_airline": "中華航空",
+      "ret_flight_no": "CI179",
+      "ret_dep": "18:55",
+      "ret_arr": "21:05",
+      "ret_price": null,
+      "rating": "一般",
+      "google_low": 14275,
+      "top3": [
+        {
+          "out_airline": "中華航空",
+          "out_flight_no": "CI178",
+          "out_dep": "14:30",
+          "out_arr": "17:55",
+          "price": 16749,
+          "rating": "一般",
+          "google_low": 14275
+        }
+      ]
     }
   ],
   "shikoku_tak_planB": [
@@ -36312,6 +36341,35 @@
           "google_low": 14077
         }
       ]
+    },
+    {
+      "checked_at": "2026-08-13T07:46:07.005994+00:00",
+      "price": 16749,
+      "depart_date": "2026-11-11",
+      "return_date": "2026-11-16",
+      "out_airline": "中華航空",
+      "out_flight_no": "CI178",
+      "out_dep": "14:30",
+      "out_arr": "17:55",
+      "out_price": null,
+      "ret_airline": "中華航空",
+      "ret_flight_no": "CI179",
+      "ret_dep": "18:55",
+      "ret_arr": "21:05",
+      "ret_price": null,
+      "rating": "一般",
+      "google_low": 14077,
+      "top3": [
+        {
+          "out_airline": "中華航空",
+          "out_flight_no": "CI178",
+          "out_dep": "14:30",
+          "out_arr": "17:55",
+          "price": 16749,
+          "rating": "一般",
+          "google_low": 14077
+        }
+      ]
     }
   ],
   "shikoku_oj_planA": [
@@ -36881,6 +36939,25 @@
       "ret_dep": "15:25",
       "ret_arr": "17:30",
       "ret_price": 5441,
+      "rating": null,
+      "google_low": null,
+      "top3": null
+    },
+    {
+      "checked_at": "2026-08-13T07:46:11.121570+00:00",
+      "price": 8992,
+      "depart_date": "2026-11-09",
+      "return_date": "2026-11-15",
+      "out_airline": "樂桃航空",
+      "out_flight_no": "MM28",
+      "out_dep": "18:50",
+      "out_arr": "22:20",
+      "out_price": 3560,
+      "ret_airline": "台灣虎航",
+      "ret_flight_no": "IT215",
+      "ret_dep": "15:25",
+      "ret_arr": "17:30",
+      "ret_price": 5432,
       "rating": null,
       "google_low": null,
       "top3": null
@@ -37475,6 +37552,25 @@
       "rating": null,
       "google_low": null,
       "top3": null
+    },
+    {
+      "checked_at": "2026-08-13T07:46:19.240711+00:00",
+      "price": 9295,
+      "depart_date": "2026-11-11",
+      "return_date": "2026-11-19",
+      "out_airline": "捷星日本航空",
+      "out_flight_no": "GK54",
+      "out_dep": "18:10",
+      "out_arr": "21:40",
+      "out_price": 3863,
+      "ret_airline": "台灣虎航",
+      "ret_flight_no": "IT215",
+      "ret_dep": "15:25",
+      "ret_arr": "17:30",
+      "ret_price": 5432,
+      "rating": null,
+      "google_low": null,
+      "top3": null
     }
   ],
   "shikoku_oj_planA_fsc": [
@@ -38047,6 +38143,25 @@
       "rating": null,
       "google_low": null,
       "top3": null
+    },
+    {
+      "checked_at": "2026-08-13T07:46:15.173675+00:00",
+      "price": 14420,
+      "depart_date": "2026-11-09",
+      "return_date": "2026-11-15",
+      "out_airline": "星宇航空",
+      "out_flight_no": "JX820",
+      "out_dep": "07:40",
+      "out_arr": "11:10",
+      "out_price": 8988,
+      "ret_airline": "台灣虎航",
+      "ret_flight_no": "IT215",
+      "ret_dep": "15:25",
+      "ret_arr": "17:30",
+      "ret_price": 5432,
+      "rating": null,
+      "google_low": null,
+      "top3": null
     }
   ],
   "shikoku_oj_planB_fsc": [
@@ -38597,6 +38712,25 @@
       "ret_dep": "15:25",
       "ret_arr": "17:30",
       "ret_price": 5441,
+      "rating": null,
+      "google_low": null,
+      "top3": null
+    },
+    {
+      "checked_at": "2026-08-13T07:46:23.231769+00:00",
+      "price": 14420,
+      "depart_date": "2026-11-11",
+      "return_date": "2026-11-19",
+      "out_airline": "星宇航空",
+      "out_flight_no": "JX820",
+      "out_dep": "07:40",
+      "out_arr": "11:10",
+      "out_price": 8988,
+      "ret_airline": "台灣虎航",
+      "ret_flight_no": "IT215",
+      "ret_dep": "15:25",
+      "ret_arr": "17:30",
+      "ret_price": 5432,
       "rating": null,
       "google_low": null,
       "top3": null
