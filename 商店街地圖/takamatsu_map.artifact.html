@@ -1369,6 +1369,13 @@ document.getElementById("btnLayers").onclick = () => {
   };
 };
 
+// Sandboxed viewers (a Claude Artifact, most embeds) silently drop
+// script-started downloads: the click throws nothing, it just does nothing.
+// Rather than offer a dead button, fall back to copy, which always works.
+const canDownload = (() => {
+  try { return window.self === window.top; } catch (_) { return false; }
+})();
+
 function exportJson() {
   const merged = { meta: CITY.meta, areas: CITY.areas, pois: pois };
   const text = JSON.stringify(merged, null, 2);
@@ -1376,7 +1383,7 @@ function exportJson() {
     <div class="note">貼回 <code>商店街地圖/data/${esc(CITY.meta.city)}.json</code> 再重跑 build 即可永久保存。</div>
     <div class="btnrow">
       <button class="btn primary" id="btn-copy">📋 複製到剪貼簿</button>
-      <button class="btn" id="btn-dl">💾 下載檔案</button>
+      ${canDownload ? `<button class="btn" id="btn-dl">💾 下載檔案</button>` : ""}
     </div>
     <label class="field"><span>JSON</span><textarea id="out" style="min-height:46vh;font-family:ui-monospace,monospace;font-size:12px"></textarea></label>`);
   const ta = document.getElementById("out");
@@ -1385,13 +1392,12 @@ function exportJson() {
     try { await navigator.clipboard.writeText(text); toast("已複製"); }
     catch (_) { ta.select(); toast("請手動複製（已全選）"); }
   };
+  if (!canDownload) return;
   document.getElementById("btn-dl").onclick = () => {
-    try {
-      const url = URL.createObjectURL(new Blob([text], { type: "application/json" }));
-      const a = document.createElement("a");
-      a.href = url; a.download = `${CITY.meta.city}.json`; a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 2000);
-    } catch (_) { toast("此環境不允許下載，請改用複製"); }
+    const url = URL.createObjectURL(new Blob([text], { type: "application/json" }));
+    const a = document.createElement("a");
+    a.href = url; a.download = `${CITY.meta.city}.json`; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
   };
 }
 
