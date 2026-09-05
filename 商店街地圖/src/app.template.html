@@ -1,0 +1,1413 @@
+<title>__TITLE__</title>
+<style>
+  /* ---- palette -------------------------------------------------------- */
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f1ea;
+    --sea: #a9cddc;
+    --water: #a9cddc;
+    --green: #d3e4c6;
+    --building: #e6e0d3;
+    --building-line: #d8cfbd;
+    --road-minor: #ffffff;
+    --road-mid: #fffaee;
+    --road-major: #ffeec2;
+    --road-line: #e2dac9;
+    --rail: #a8a49b;
+    --ink: #35302a;
+    --ink-soft: #7a736a;
+    --halo: rgba(255, 255, 255, .9);
+    --panel: rgba(252, 250, 246, .93);
+    --panel-solid: #fcfaf6;
+    --edge: rgba(0, 0, 0, .12);
+    --chip: rgba(0, 0, 0, .05);
+    --accent: #c2582f;
+    --shadow: 0 -2px 24px rgba(0, 0, 0, .16);
+    --arcade: #d9622f;
+    --mall: #2f74c9;
+    --group: #7a4fbf;
+    --area-fill: .26;
+    --area-line: .72;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1b1e23;
+      --sea: #142a36;
+      --water: #142a36;
+      --green: #1e2a20;
+      --building: #262a31;
+      --building-line: #313640;
+      --road-minor: #383d45;
+      --road-mid: #434952;
+      --road-major: #55504a;
+      --road-line: #23272d;
+      --rail: #5a5750;
+      --ink: #ded9d0;
+      --ink-soft: #948d83;
+      --halo: rgba(12, 14, 17, .85);
+      --panel: rgba(28, 31, 36, .94);
+      --panel-solid: #1c1f24;
+      --edge: rgba(255, 255, 255, .14);
+      --chip: rgba(255, 255, 255, .08);
+      --accent: #ff8a5c;
+      --shadow: 0 -2px 24px rgba(0, 0, 0, .5);
+      --arcade: #ff8a5c;
+      --mall: #63a8ff;
+      --group: #b18cff;
+      --area-fill: .3;
+      --area-line: .85;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1b1e23;
+    --sea: #142a36;
+    --water: #142a36;
+    --green: #1e2a20;
+    --building: #262a31;
+    --building-line: #313640;
+    --road-minor: #383d45;
+    --road-mid: #434952;
+    --road-major: #55504a;
+    --road-line: #23272d;
+    --rail: #5a5750;
+    --ink: #ded9d0;
+    --ink-soft: #948d83;
+    --halo: rgba(12, 14, 17, .85);
+    --panel: rgba(28, 31, 36, .94);
+    --panel-solid: #1c1f24;
+    --edge: rgba(255, 255, 255, .14);
+    --chip: rgba(255, 255, 255, .08);
+    --accent: #ff8a5c;
+    --shadow: 0 -2px 24px rgba(0, 0, 0, .5);
+    --arcade: #ff8a5c;
+    --mall: #63a8ff;
+    --group: #b18cff;
+    --area-fill: .3;
+    --area-line: .85;
+  }
+
+  /* ---- shell ---------------------------------------------------------- */
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Hiragino Sans",
+      "Noto Sans TC", "Segoe UI", system-ui, sans-serif;
+    overscroll-behavior: none;
+  }
+  #map { position: fixed; inset: 0; display: block; touch-action: none; }
+
+  /* ---- top bar -------------------------------------------------------- */
+  #top {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+    padding: calc(env(safe-area-inset-top, 0px) + 8px) 10px 6px;
+    background: linear-gradient(to bottom, var(--panel) 62%, transparent);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    pointer-events: none;
+  }
+  #top > * { pointer-events: auto; }
+  .searchrow { display: flex; gap: 8px; align-items: center; }
+  #q {
+    flex: 1; min-width: 0; height: 44px; padding: 0 14px;
+    border: 1px solid var(--edge); border-radius: 22px;
+    background: var(--panel-solid); color: var(--ink);
+    font-size: 16px; /* 16px stops iOS zoom-on-focus */
+  }
+  #q::placeholder { color: var(--ink-soft); }
+  .iconbtn {
+    width: 44px; height: 44px; flex: none;
+    border: 1px solid var(--edge); border-radius: 22px;
+    background: var(--panel-solid); color: var(--ink);
+    font-size: 19px; line-height: 1; cursor: pointer;
+  }
+  .iconbtn[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: transparent; }
+  #chips {
+    display: flex; gap: 6px; margin-top: 7px;
+    overflow-x: auto; scrollbar-width: none; padding-bottom: 2px;
+  }
+  #chips::-webkit-scrollbar { display: none; }
+  .chip {
+    flex: none; height: 34px; padding: 0 13px;
+    border: 1px solid var(--edge); border-radius: 17px;
+    background: var(--panel-solid); color: var(--ink);
+    font-size: 13px; white-space: nowrap; cursor: pointer;
+  }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--panel-solid); border-color: transparent; }
+
+  /* ---- floating buttons ---------------------------------------------- */
+  #fabs {
+    position: fixed; right: 12px; z-index: 15;
+    display: flex; flex-direction: column; gap: 10px;
+    transition: bottom .22s cubic-bezier(.2, .8, .3, 1);
+  }
+  .fab {
+    width: 52px; height: 52px; border-radius: 26px;
+    border: 1px solid var(--edge); background: var(--panel-solid); color: var(--ink);
+    font-size: 21px; line-height: 1; cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .18);
+  }
+  .fab[aria-pressed="true"] { background: var(--accent); color: #fff; }
+
+  /* ---- bottom sheet --------------------------------------------------- */
+  #sheet {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 25;
+    height: 88vh; max-height: 88dvh;
+    background: var(--panel-solid);
+    border-radius: 18px 18px 0 0;
+    box-shadow: var(--shadow);
+    display: flex; flex-direction: column;
+    transform: translateY(100%);
+    transition: transform .25s cubic-bezier(.2, .8, .3, 1);
+    touch-action: none;
+  }
+  #sheet.anim-off { transition: none; }
+  #grip { padding: 9px 0 5px; flex: none; cursor: grab; }
+  #grip::before {
+    content: ""; display: block; width: 40px; height: 4px; margin: 0 auto;
+    border-radius: 2px; background: var(--edge);
+  }
+  #sheetbody {
+    flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding: 0 16px calc(env(safe-area-inset-bottom, 0px) + 20px);
+    touch-action: pan-y;
+  }
+  .crumb { font-size: 12px; color: var(--ink-soft); margin-bottom: 3px; }
+  .crumb b { font-weight: 600; }
+  h1.title { font-size: 20px; margin: 2px 0 2px; line-height: 1.25; }
+  .subtitle { font-size: 13px; color: var(--ink-soft); margin-bottom: 10px; }
+  .badge {
+    display: inline-block; padding: 2px 9px; border-radius: 10px;
+    font-size: 11px; font-weight: 600; vertical-align: 2px; margin-left: 6px;
+    background: var(--chip); color: var(--ink-soft);
+  }
+  .note { font-size: 14px; margin: 10px 0; color: var(--ink); }
+  .row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 2px; border-top: 1px solid var(--edge); cursor: pointer;
+  }
+  .row:first-of-type { border-top: none; }
+  .row .glyph { font-size: 19px; width: 26px; text-align: center; flex: none; }
+  .row .txt { flex: 1; min-width: 0; }
+  .row .nm { font-size: 15px; }
+  .row .sub { font-size: 12px; color: var(--ink-soft); }
+  .sec {
+    font-size: 11px; font-weight: 700; letter-spacing: .09em;
+    color: var(--ink-soft); text-transform: uppercase;
+    margin: 18px 0 4px; padding-top: 10px; border-top: 1px solid var(--edge);
+  }
+  .floor {
+    font-size: 12px; font-weight: 700; color: var(--accent);
+    margin: 12px 0 2px;
+  }
+  .btnrow { display: flex; gap: 8px; margin: 12px 0 4px; }
+  .btn {
+    flex: 1; min-height: 46px; padding: 0 12px;
+    border: 1px solid var(--edge); border-radius: 12px;
+    background: var(--chip); color: var(--ink);
+    font-size: 15px; font-weight: 600; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    text-decoration: none;
+  }
+  .btn.primary { background: var(--accent); color: #fff; border-color: transparent; }
+  .btn.slim { flex: none; min-height: 38px; font-size: 13px; font-weight: 500; }
+  .field { display: block; margin: 10px 0; }
+  .field span { display: block; font-size: 12px; color: var(--ink-soft); margin-bottom: 4px; }
+  .field input, .field select, .field textarea {
+    width: 100%; padding: 10px 12px; font-size: 16px;
+    border: 1px solid var(--edge); border-radius: 10px;
+    background: var(--panel-solid); color: var(--ink); font-family: inherit;
+  }
+  .field textarea { min-height: 70px; resize: vertical; }
+  .switch { display: flex; align-items: center; justify-content: space-between; padding: 11px 2px; border-top: 1px solid var(--edge); }
+  .switch:first-child { border-top: none; }
+  .switch input { width: 46px; height: 28px; }
+  .empty { color: var(--ink-soft); font-size: 14px; padding: 14px 0; }
+  .cred {
+    font-size: 11px; color: var(--ink-soft); margin-top: 22px;
+    padding-top: 10px; border-top: 1px solid var(--edge);
+  }
+  .cred a { color: inherit; }
+  #toast {
+    position: fixed; left: 50%; bottom: 96px; z-index: 40;
+    transform: translate(-50%, 14px); opacity: 0;
+    background: var(--ink); color: var(--panel-solid);
+    padding: 9px 16px; border-radius: 20px; font-size: 13px;
+    pointer-events: none; transition: opacity .2s, transform .2s;
+  }
+  #toast.on { opacity: .95; transform: translate(-50%, 0); }
+  @media (min-width: 720px) and (orientation: landscape) {
+    #sheet {
+      left: auto; right: 0; top: 0; width: 380px;
+      height: 100%; max-height: 100%; border-radius: 0;
+      transform: translateX(100%);
+    }
+    #sheet.open-full, #sheet.open-half { transform: translateX(0); }
+    #grip { display: none; }
+    #sheetbody { padding-top: calc(env(safe-area-inset-top, 0px) + 92px); }
+  }
+</style>
+
+<canvas id="map"></canvas>
+
+<div id="top">
+  <div class="searchrow">
+    <input id="q" type="search" placeholder="搜尋店名 / 商店街…" autocomplete="off" enterkeyhint="search">
+    <button class="iconbtn" id="btnLayers" title="圖層與設定">☰</button>
+  </div>
+  <div id="chips"></div>
+</div>
+
+<div id="fabs">
+  <button class="fab" id="btnLocate" title="我的位置">⌖</button>
+</div>
+
+<div id="sheet">
+  <div id="grip"></div>
+  <div id="sheetbody"></div>
+</div>
+
+<div id="toast"></div>
+
+<script type="application/json" id="data-basemap">__BASEMAP_JSON__</script>
+<script type="application/json" id="data-city">__CITY_JSON__</script>
+
+<script>
+"use strict";
+/* =====================================================================
+   Shopping-street map — a deliberately plain vector map.
+   Everything is drawn from embedded OSM-derived GeoJSON onto a 2D canvas,
+   so the whole app is one offline file with no network dependency.
+   ===================================================================== */
+
+const BASEMAP = JSON.parse(document.getElementById("data-basemap").textContent);
+const CITY = JSON.parse(document.getElementById("data-city").textContent);
+
+const CATEGORIES = {
+  restaurant: { zh: "餐廳",  glyph: "🍜", color: "#e0642f" },
+  cafe:       { zh: "咖啡",  glyph: "☕", color: "#9a6b43" },
+  shop:       { zh: "商店",  glyph: "🛍️", color: "#2f74c9" },
+  sight:      { zh: "景點",  glyph: "⛩️", color: "#3f9a5c" },
+  hotel:      { zh: "住宿",  glyph: "🛏️", color: "#8256c4" },
+  transit:    { zh: "交通",  glyph: "🚉", color: "#6a7078" },
+  other:      { zh: "其他",  glyph: "📍", color: "#8a8177" },
+};
+const AREA_KIND = {
+  group:  { zh: "商店街群", varName: "--group" },
+  arcade: { zh: "商店街",   varName: "--arcade" },
+  mall:   { zh: "商場",     varName: "--mall" },
+};
+const DEFAULT_ARCADE_WIDTH_M = 14;
+const STORAGE_KEY = "ss-map-overrides-v1";
+const PREFS_KEY = "ss-map-prefs-v1";
+
+/* ---- projection ------------------------------------------------------ */
+// Web Mercator, normalised to a unit square so zoom maths stays simple.
+const Proj = {
+  x: (lon) => (lon + 180) / 360,
+  y: (lat) => {
+    const s = Math.sin(Math.max(-85, Math.min(85, lat)) * Math.PI / 180);
+    return 0.5 - Math.log((1 + s) / (1 - s)) / (4 * Math.PI);
+  },
+  lon: (x) => x * 360 - 180,
+  lat: (y) => {
+    const n = Math.PI * (1 - 2 * y);
+    return Math.atan(Math.sinh(n)) * 180 / Math.PI;
+  },
+};
+
+/* ---- persisted state ------------------------------------------------- */
+const safeStore = {
+  get(key, fallback) {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch (_) { return fallback; }
+  },
+  set(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); return true; }
+    catch (_) { return false; }
+  },
+};
+
+// User edits live as a diff on top of the baked-in data, so replacing the
+// HTML with a newer build never throws away what was added on the road.
+const overrides = safeStore.get(STORAGE_KEY, { pois: [], removed: [] });
+const prefs = Object.assign(
+  { buildings: true, labels: true, tiles: false, cats: null },
+  safeStore.get(PREFS_KEY, {})
+);
+
+function saveOverrides() {
+  if (!safeStore.set(STORAGE_KEY, overrides)) toast("無法儲存（瀏覽器封鎖了儲存空間）");
+}
+function savePrefs() { safeStore.set(PREFS_KEY, prefs); }
+
+/* ---- model ----------------------------------------------------------- */
+const areas = CITY.areas.slice();
+const areaById = new Map(areas.map((a) => [a.id, a]));
+
+function allPois() {
+  const removed = new Set(overrides.removed);
+  const base = CITY.pois.filter((p) => !removed.has(p.id));
+  return base.concat(overrides.pois.filter((p) => !removed.has(p.id)));
+}
+let pois = allPois();
+function refreshPois() { pois = allPois(); }
+
+function ancestry(area) {
+  const chain = [];
+  let cur = area;
+  const seen = new Set();
+  while (cur && !seen.has(cur.id)) {
+    seen.add(cur.id);
+    chain.unshift(cur);
+    cur = cur.parent ? areaById.get(cur.parent) : null;
+  }
+  return chain;
+}
+function childAreas(id) { return areas.filter((a) => a.parent === id); }
+// Points hanging off an area, including those under its descendant areas.
+function descendantIds(id) {
+  const out = [id];
+  for (let i = 0; i < out.length; i++) {
+    for (const c of childAreas(out[i])) out.push(c.id);
+  }
+  return new Set(out);
+}
+function poisUnder(id, deep) {
+  const ids = deep ? descendantIds(id) : new Set([id]);
+  return pois.filter((p) => ids.has(p.parent));
+}
+function nameOf(o) { return o.name_zh || o.name_ja || o.id; }
+function subnameOf(o) {
+  return o.name_zh && o.name_ja && o.name_zh !== o.name_ja ? o.name_ja : "";
+}
+
+/* ---- view ------------------------------------------------------------ */
+const canvas = document.getElementById("map");
+const ctx = canvas.getContext("2d");
+const meta = CITY.meta;
+const bbox = BASEMAP.meta && BASEMAP.meta.bbox ? BASEMAP.meta.bbox : null; // s,w,n,e
+
+const view = {
+  cx: Proj.x(meta.center[0]),
+  cy: Proj.y(meta.center[1]),
+  zoom: meta.zoom || 15,
+  min: 12.5,
+  max: 19.5,
+};
+let W = 0, H = 0, DPR = 1;
+
+function scale() { return 256 * Math.pow(2, view.zoom); }
+function metersPerPixel() {
+  const lat = Proj.lat(view.cy);
+  return 156543.033928 * Math.cos(lat * Math.PI / 180) / Math.pow(2, view.zoom);
+}
+function toScreen(lon, lat) {
+  const s = scale();
+  return [(Proj.x(lon) - view.cx) * s + W / 2, (Proj.y(lat) - view.cy) * s + H / 2];
+}
+function toLngLat(px, py) {
+  const s = scale();
+  return [Proj.lon((px - W / 2) / s + view.cx), Proj.lat((py - H / 2) / s + view.cy)];
+}
+function clampView() {
+  view.zoom = Math.max(view.min, Math.min(view.max, view.zoom));
+  if (!bbox) return;
+  // Keep the data roughly on screen; a little slack feels better than a hard wall.
+  const pad = 0.35;
+  const x0 = Proj.x(bbox[1]), x1 = Proj.x(bbox[3]);
+  const y0 = Proj.y(bbox[2]), y1 = Proj.y(bbox[0]);
+  const halfW = (W / scale()) * (0.5 + pad), halfH = (H / scale()) * (0.5 + pad);
+  view.cx = Math.max(x0 - halfW, Math.min(x1 + halfW, view.cx));
+  view.cy = Math.max(y0 - halfH, Math.min(y1 + halfH, view.cy));
+}
+
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 2.5);
+  W = canvas.clientWidth = window.innerWidth;
+  H = canvas.clientHeight = window.innerHeight;
+  canvas.width = Math.round(W * DPR);
+  canvas.height = Math.round(H * DPR);
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  clampView();
+  draw();
+}
+
+/* ---- geometry helpers ------------------------------------------------ */
+function eachLine(geom, fn) {
+  if (!geom) return;
+  if (geom.type === "LineString") fn(geom.coordinates);
+  else if (geom.type === "MultiLineString" || geom.type === "Polygon") geom.coordinates.forEach(fn);
+  else if (geom.type === "MultiPolygon") geom.coordinates.forEach((p) => p.forEach(fn));
+}
+function pathOf(geom) {
+  ctx.beginPath();
+  eachLine(geom, (ring) => {
+    for (let i = 0; i < ring.length; i++) {
+      const [x, y] = toScreen(ring[i][0], ring[i][1]);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+  });
+}
+function bboxOfGeom(geom) {
+  let n = -1e9, s = 1e9, e = -1e9, w = 1e9;
+  eachLine(geom, (ring) => ring.forEach(([lo, la]) => {
+    if (la > n) n = la; if (la < s) s = la;
+    if (lo > e) e = lo; if (lo < w) w = lo;
+  }));
+  return [w, s, e, n];
+}
+function centerOfGeom(geom) {
+  const b = bboxOfGeom(geom);
+  return [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2];
+}
+function pointInRing(px, py, ring) {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i], [xj, yj] = ring[j];
+    if ((yi > py) !== (yj > py) && px < ((xj - xi) * (py - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+function distToSegment(px, py, ax, ay, bx, by) {
+  const dx = bx - ax, dy = by - ay;
+  const len2 = dx * dx + dy * dy;
+  let t = len2 ? ((px - ax) * dx + (py - ay) * dy) / len2 : 0;
+  t = Math.max(0, Math.min(1, t));
+  const qx = ax + t * dx, qy = ay + t * dy;
+  return Math.hypot(px - qx, py - qy);
+}
+
+/* ---- basemap index --------------------------------------------------- */
+const byLayer = new Map();
+for (const f of BASEMAP.features) {
+  if (!byLayer.has(f.properties.layer)) byLayer.set(f.properties.layer, []);
+  byLayer.get(f.properties.layer).push(f);
+}
+const layer = (name) => byLayer.get(name) || [];
+
+function cssVar(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+let C = {};
+function readPalette() {
+  C = {};
+  for (const k of ["bg", "sea", "water", "green", "building", "building-line",
+    "road-minor", "road-mid", "road-major", "road-line", "rail", "ink",
+    "ink-soft", "halo", "arcade", "mall", "group"]) {
+    C[k] = cssVar("--" + k);
+  }
+  C.areaFill = parseFloat(cssVar("--area-fill")) || 0.26;
+  C.areaLine = parseFloat(cssVar("--area-line")) || 0.72;
+}
+
+function withAlpha(hex, a) {
+  const h = hex.replace("#", "");
+  const n = h.length === 3
+    ? h.split("").map((c) => parseInt(c + c, 16))
+    : [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16));
+  return `rgba(${n[0]},${n[1]},${n[2]},${a})`;
+}
+
+/* ---- optional online raster tiles (local file only) ------------------ */
+// Claude Artifacts block external images, so this layer silently fails
+// there; we detect the failure once and turn the toggle back off.
+const tileCache = new Map();
+let tilesBroken = false;
+function drawTiles() {
+  if (!prefs.tiles || tilesBroken) return;
+  const z = Math.max(12, Math.min(19, Math.round(view.zoom)));
+  const n = Math.pow(2, z);
+  const s = scale();
+  const size = s / n; // one tile's on-screen size in px
+  const x0 = Math.floor((view.cx - (W / 2) / s) * n);
+  const x1 = Math.floor((view.cx + (W / 2) / s) * n);
+  const y0 = Math.floor((view.cy - (H / 2) / s) * n);
+  const y1 = Math.floor((view.cy + (H / 2) / s) * n);
+  ctx.globalAlpha = 0.9;
+  for (let ty = y0; ty <= y1; ty++) {
+    for (let tx = x0; tx <= x1; tx++) {
+      if (ty < 0 || ty >= n) continue;
+      const key = `${z}/${((tx % n) + n) % n}/${ty}`;
+      let img = tileCache.get(key);
+      if (!img) {
+        img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => draw();
+        img.onerror = () => {
+          if (!tilesBroken) {
+            tilesBroken = true; prefs.tiles = false; savePrefs();
+            toast("此環境無法載入線上圖磚，已切回離線向量底圖");
+            draw();
+          }
+        };
+        img.src = `https://tile.openstreetmap.org/${key}.png`;
+        tileCache.set(key, img);
+      }
+      if (img.complete && img.naturalWidth) {
+        const px = (tx / n - view.cx) * s + W / 2;
+        const py = (ty / n - view.cy) * s + H / 2;
+        ctx.drawImage(img, px, py, size + 1, size + 1);
+      }
+    }
+  }
+  ctx.globalAlpha = 1;
+}
+
+/* ---- rendering ------------------------------------------------------- */
+let needsDraw = false;
+function draw() {
+  if (needsDraw) return;
+  needsDraw = true;
+  requestAnimationFrame(() => { needsDraw = false; render(); });
+}
+
+function strokeLayer(feats, color, widthPx, dash) {
+  if (widthPx <= 0) return;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = widthPx;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  if (dash) ctx.setLineDash(dash);
+  ctx.beginPath();
+  for (const f of feats) {
+    eachLine(f.geometry, (ring) => {
+      for (let i = 0; i < ring.length; i++) {
+        const [x, y] = toScreen(ring[i][0], ring[i][1]);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+    });
+  }
+  ctx.stroke();
+  if (dash) ctx.setLineDash([]);
+}
+function fillLayer(feats, color) {
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  for (const f of feats) {
+    eachLine(f.geometry, (ring) => {
+      for (let i = 0; i < ring.length; i++) {
+        const [x, y] = toScreen(ring[i][0], ring[i][1]);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+    });
+  }
+  ctx.fill();
+}
+
+function render() {
+  const z = view.zoom;
+  ctx.fillStyle = C.bg;
+  ctx.fillRect(0, 0, W, H);
+
+  drawTiles();
+
+  if (!prefs.tiles || tilesBroken) {
+    fillLayer(layer("sea"), C.sea);
+    fillLayer(layer("green"), C.green);
+    fillLayer(layer("water"), C.water);
+    strokeLayer(layer("stream"), C.water, Math.max(1.5, 4 - (17 - z)));
+
+    // Roads get a casing then a fill so junctions read cleanly.
+    const wMinor = Math.max(1, (z - 13.5) * 1.5);
+    const wMid = Math.max(1.6, (z - 13) * 2.3);
+    const wMajor = Math.max(2.2, (z - 12.5) * 3.0);
+    strokeLayer(layer("road_minor"), C["road-line"], wMinor + 1.6);
+    strokeLayer(layer("road_mid"), C["road-line"], wMid + 1.8);
+    strokeLayer(layer("road_major"), C["road-line"], wMajor + 2);
+    strokeLayer(layer("road_minor"), C["road-minor"], wMinor);
+    strokeLayer(layer("road_mid"), C["road-mid"], wMid);
+    strokeLayer(layer("road_major"), C["road-major"], wMajor);
+    strokeLayer(layer("footway"), C["road-minor"], Math.max(0.8, (z - 14.5) * 1.4));
+
+    if (prefs.buildings && z >= 15.2) {
+      ctx.globalAlpha = Math.min(1, (z - 15.2) * 2);
+      fillLayer(layer("building"), C.building);
+      ctx.strokeStyle = C["building-line"];
+      ctx.lineWidth = 0.7;
+      for (const f of layer("building")) { pathOf(f.geometry); ctx.stroke(); }
+      ctx.globalAlpha = 1;
+    }
+    strokeLayer(layer("rail"), C.rail, Math.max(1.2, (z - 14) * 1.2), [7, 5]);
+  }
+
+  drawAreas();
+  drawPois();
+  drawLocation();
+  drawScaleBar();
+}
+
+function areaColor(a) {
+  const c = a.kind === "mall" ? C.mall : a.kind === "group" ? C.group : C.arcade;
+  return a.color_hex || c;
+}
+
+function drawAreas() {
+  const mpp = metersPerPixel();
+  const hi = selection && selection.type === "area" ? selection.id : null;
+  const highlightIds = hi ? descendantIds(hi) : null;
+
+  for (const a of areas) {
+    if (!a.geometry) continue;
+    const col = areaColor(a);
+    const on = !highlightIds || highlightIds.has(a.id);
+    const fillA = C.areaFill * (on ? 1 : 0.35);
+    const lineA = C.areaLine * (on ? 1 : 0.3);
+
+    if (a.kind === "arcade") {
+      // OSM stores arcades as centrelines; a round-capped thick stroke is a
+      // free polygon buffer that unions overlaps and scales with zoom.
+      const wpx = Math.max(6, (a.width_m || DEFAULT_ARCADE_WIDTH_M) / mpp);
+      ctx.lineCap = "round"; ctx.lineJoin = "round";
+      ctx.strokeStyle = withAlpha(col, lineA);
+      ctx.lineWidth = wpx + 2.5;
+      pathOf(a.geometry); ctx.stroke();
+      ctx.strokeStyle = withAlpha(col, fillA);
+      ctx.lineWidth = wpx;
+      pathOf(a.geometry); ctx.stroke();
+    } else {
+      pathOf(a.geometry);
+      ctx.fillStyle = withAlpha(col, fillA);
+      ctx.fill();
+      ctx.strokeStyle = withAlpha(col, lineA);
+      ctx.lineWidth = a.id === hi ? 2.5 : 1.5;
+      ctx.stroke();
+    }
+  }
+
+  if (!prefs.labels || view.zoom < 14.6) return;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  for (const a of areas) {
+    if (!a.geometry || a.kind === "group") continue;
+    const [lo, la] = a.label_at || centerOfGeom(a.geometry);
+    const [x, y] = toScreen(lo, la);
+    if (x < -80 || x > W + 80 || y < -30 || y > H + 30) continue;
+    const size = a.kind === "mall" ? 13 : 12.5;
+    ctx.font = `700 ${size}px system-ui, "Noto Sans TC", sans-serif`;
+    const label = nameOf(a);
+    ctx.lineWidth = 3.5;
+    ctx.strokeStyle = C.halo;
+    ctx.strokeText(label, x, y);
+    ctx.fillStyle = areaColor(a);
+    ctx.fillText(label, x, y);
+  }
+}
+
+let visibleCats = new Set(prefs.cats || Object.keys(CATEGORIES));
+
+function drawPois() {
+  const z = view.zoom;
+  const showLabel = prefs.labels && z >= 16.2;
+  ctx.textAlign = "center";
+  for (const p of pois) {
+    if (!visibleCats.has(p.cat || "other")) continue;
+    if (query && !matches(p, query)) continue;
+    const [x, y] = toScreen(p.coord[0], p.coord[1]);
+    if (x < -40 || x > W + 40 || y < -40 || y > H + 40) continue;
+    const cat = CATEGORIES[p.cat] || CATEGORIES.other;
+    const sel = selection && selection.type === "poi" && selection.id === p.id;
+    const r = sel ? 15 : 12;
+
+    ctx.beginPath();
+    ctx.arc(x, y - r, r, 0, Math.PI * 2);
+    ctx.fillStyle = cat.color;
+    ctx.fill();
+    ctx.lineWidth = sel ? 3 : 2;
+    ctx.strokeStyle = C.halo;
+    ctx.stroke();
+    // stem
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x - 3.5, y - r + 2);
+    ctx.lineTo(x + 3.5, y - r + 2);
+    ctx.closePath();
+    ctx.fillStyle = cat.color;
+    ctx.fill();
+
+    ctx.font = `${r}px system-ui, "Apple Color Emoji", "Segoe UI Emoji"`;
+    ctx.textBaseline = "middle";
+    ctx.fillText(cat.glyph, x, y - r + 0.5);
+
+    if (showLabel) {
+      ctx.font = `600 12px system-ui, "Noto Sans TC", sans-serif`;
+      ctx.textBaseline = "top";
+      const label = nameOf(p);
+      ctx.lineWidth = 3.5;
+      ctx.strokeStyle = C.halo;
+      ctx.strokeText(label, x, y + 3);
+      ctx.fillStyle = C.ink;
+      ctx.fillText(label, x, y + 3);
+    }
+  }
+  ctx.textBaseline = "alphabetic";
+}
+
+let myPos = null;
+function drawLocation() {
+  if (!myPos) return;
+  const [x, y] = toScreen(myPos.lon, myPos.lat);
+  const rp = myPos.acc / metersPerPixel();
+  if (rp > 6) {
+    ctx.beginPath(); ctx.arc(x, y, rp, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(40,120,230,.14)"; ctx.fill();
+    ctx.strokeStyle = "rgba(40,120,230,.35)"; ctx.lineWidth = 1; ctx.stroke();
+  }
+  ctx.beginPath(); ctx.arc(x, y, 8, 0, Math.PI * 2);
+  ctx.fillStyle = "#2878e6"; ctx.fill();
+  ctx.lineWidth = 3; ctx.strokeStyle = "#fff"; ctx.stroke();
+}
+
+function drawScaleBar() {
+  const mpp = metersPerPixel();
+  const targetPx = 84;
+  const raw = targetPx * mpp;
+  const pow = Math.pow(10, Math.floor(Math.log10(raw)));
+  const nice = [1, 2, 5, 10].map((m) => m * pow).find((v) => v >= raw) || pow * 10;
+  const px = nice / mpp;
+  const x = 14, y = H - 18;
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 2; ctx.globalAlpha = .65;
+  ctx.beginPath();
+  ctx.moveTo(x, y - 5); ctx.lineTo(x, y); ctx.lineTo(x + px, y); ctx.lineTo(x + px, y - 5);
+  ctx.stroke();
+  ctx.font = "600 11px system-ui"; ctx.textAlign = "left"; ctx.fillStyle = C.ink;
+  ctx.fillText(nice >= 1000 ? nice / 1000 + " km" : nice + " m", x + 3, y - 8);
+  ctx.globalAlpha = 1;
+}
+
+/* ---- hit testing ----------------------------------------------------- */
+function hitTest(px, py) {
+  // Points win over areas: they are smaller and more deliberate targets.
+  let best = null, bestD = 26;
+  for (const p of pois) {
+    if (!visibleCats.has(p.cat || "other")) continue;
+    const [x, y] = toScreen(p.coord[0], p.coord[1]);
+    const d = Math.hypot(px - x, py - (y - 12));
+    if (d < bestD) { bestD = d; best = { type: "poi", id: p.id }; }
+  }
+  if (best) return best;
+
+  const mpp = metersPerPixel();
+  // Smaller areas first so a mall inside an arcade is reachable.
+  const ranked = areas.filter((a) => a.geometry)
+    .sort((a, b) => (a.kind === "mall" ? 0 : 1) - (b.kind === "mall" ? 0 : 1));
+  for (const a of ranked) {
+    if (a.kind === "arcade") {
+      const half = Math.max(6, (a.width_m || DEFAULT_ARCADE_WIDTH_M) / mpp) / 2 + 3;
+      let hit = false;
+      eachLine(a.geometry, (ring) => {
+        if (hit) return;
+        for (let i = 1; i < ring.length; i++) {
+          const [ax, ay] = toScreen(ring[i - 1][0], ring[i - 1][1]);
+          const [bx, by] = toScreen(ring[i][0], ring[i][1]);
+          if (distToSegment(px, py, ax, ay, bx, by) <= half) { hit = true; return; }
+        }
+      });
+      if (hit) return { type: "area", id: a.id };
+    } else {
+      let hit = false;
+      eachLine(a.geometry, (ring) => {
+        if (hit) return;
+        const pts = ring.map(([lo, la]) => toScreen(lo, la));
+        if (pointInRing(px, py, pts)) hit = true;
+      });
+      if (hit) return { type: "area", id: a.id };
+    }
+  }
+  return null;
+}
+
+/* ---- gestures -------------------------------------------------------- */
+const pointers = new Map();
+let gesture = null, moved = false, longPressTimer = null, velocity = { x: 0, y: 0 };
+let lastMove = 0;
+
+canvas.addEventListener("pointerdown", (e) => {
+  canvas.setPointerCapture(e.pointerId);
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  velocity = { x: 0, y: 0 };
+  if (pointers.size === 1) {
+    moved = false;
+    gesture = { mode: "pan", x: e.clientX, y: e.clientY };
+    clearTimeout(longPressTimer);
+    longPressTimer = setTimeout(() => {
+      if (!moved && pointers.size === 1) {
+        const [lon, lat] = toLngLat(e.clientX, e.clientY);
+        if (navigator.vibrate) navigator.vibrate(12);
+        openAddForm(lon, lat);
+        gesture = null;
+      }
+    }, 550);
+  } else if (pointers.size === 2) {
+    clearTimeout(longPressTimer);
+    const [a, b] = [...pointers.values()];
+    gesture = {
+      mode: "pinch",
+      dist: Math.hypot(a.x - b.x, a.y - b.y),
+      mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2,
+      zoom: view.zoom,
+    };
+  }
+});
+
+canvas.addEventListener("pointermove", (e) => {
+  if (!pointers.has(e.pointerId)) return;
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if (!gesture) return;
+
+  if (gesture.mode === "pan" && pointers.size === 1) {
+    const dx = e.clientX - gesture.x, dy = e.clientY - gesture.y;
+    if (Math.abs(dx) + Math.abs(dy) > 5) { moved = true; clearTimeout(longPressTimer); }
+    const s = scale();
+    view.cx -= dx / s; view.cy -= dy / s;
+    const now = performance.now();
+    const dt = Math.max(8, now - lastMove);
+    velocity = { x: dx / dt, y: dy / dt };
+    lastMove = now;
+    gesture.x = e.clientX; gesture.y = e.clientY;
+    clampView(); draw();
+  } else if (gesture.mode === "pinch" && pointers.size >= 2) {
+    moved = true;
+    const [a, b] = [...pointers.values()];
+    const dist = Math.hypot(a.x - b.x, a.y - b.y);
+    const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    // Keep the world point under the pinch centre pinned while zooming.
+    const before = toLngLat(mx, my);
+    view.zoom = gesture.zoom + Math.log2(Math.max(0.05, dist / gesture.dist));
+    clampView();
+    const after = toLngLat(mx, my);
+    view.cx += Proj.x(before[0]) - Proj.x(after[0]);
+    view.cy += Proj.y(before[1]) - Proj.y(after[1]);
+    clampView(); draw();
+  }
+});
+
+function endPointer(e) {
+  clearTimeout(longPressTimer);
+  const had = pointers.size;
+  pointers.delete(e.pointerId);
+  if (had === 1 && !moved && gesture && gesture.mode === "pan") {
+    const hit = hitTest(e.clientX, e.clientY);
+    if (hit) select(hit); else closeSheet();
+  } else if (had === 1 && moved) {
+    glide();
+  }
+  if (pointers.size < 2) gesture = pointers.size === 1
+    ? { mode: "pan", x: [...pointers.values()][0].x, y: [...pointers.values()][0].y }
+    : null;
+}
+canvas.addEventListener("pointerup", endPointer);
+canvas.addEventListener("pointercancel", endPointer);
+
+function glide() {
+  let vx = velocity.x, vy = velocity.y;
+  if (Math.hypot(vx, vy) < 0.15) return;
+  const step = () => {
+    if (pointers.size) return;
+    const s = scale();
+    view.cx -= (vx * 16) / s; view.cy -= (vy * 16) / s;
+    vx *= 0.92; vy *= 0.92;
+    clampView(); draw();
+    if (Math.hypot(vx, vy) > 0.02) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+canvas.addEventListener("wheel", (e) => {
+  e.preventDefault();
+  const before = toLngLat(e.clientX, e.clientY);
+  view.zoom -= (e.deltaMode === 1 ? e.deltaY * 20 : e.deltaY) * 0.0022;
+  clampView();
+  const after = toLngLat(e.clientX, e.clientY);
+  view.cx += Proj.x(before[0]) - Proj.x(after[0]);
+  view.cy += Proj.y(before[1]) - Proj.y(after[1]);
+  clampView(); draw();
+}, { passive: false });
+
+canvas.addEventListener("dblclick", (e) => {
+  flyTo(...toLngLat(e.clientX, e.clientY), view.zoom + 1);
+});
+
+function flyTo(lon, lat, zoom, offsetY) {
+  const tx = Proj.x(lon), ty = Proj.y(lat);
+  const tz = Math.max(view.min, Math.min(view.max, zoom == null ? view.zoom : zoom));
+  const from = { cx: view.cx, cy: view.cy, zoom: view.zoom };
+  const t0 = performance.now();
+  const dur = 420;
+  const step = (t) => {
+    const k = Math.min(1, (t - t0) / dur);
+    const e = 1 - Math.pow(1 - k, 3);
+    view.zoom = from.zoom + (tz - from.zoom) * e;
+    view.cx = from.cx + (tx - from.cx) * e;
+    view.cy = from.cy + (ty - from.cy) * e;
+    if (offsetY) view.cy += (offsetY / scale()) * e;
+    clampView(); draw();
+    if (k < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/* ---- bottom sheet ---------------------------------------------------- */
+const sheet = document.getElementById("sheet");
+const sheetBody = document.getElementById("sheetbody");
+const grip = document.getElementById("grip");
+const fabs = document.getElementById("fabs");
+let sheetState = "closed"; // closed | half | full
+
+// On a wide landscape screen the sheet becomes a right-hand column, so it
+// slides on X instead of Y and has no half-open state.
+const isSideSheet = () => matchMedia("(min-width: 720px) and (orientation: landscape)").matches;
+
+function setSheet(state) {
+  sheetState = state;
+  sheet.classList.remove("anim-off");
+  sheet.classList.toggle("open-full", state === "full");
+  sheet.classList.toggle("open-half", state === "half");
+  if (isSideSheet()) {
+    sheet.style.transform = state === "closed" ? "translateX(100%)" : "translateX(0)";
+    fabs.style.bottom = "calc(env(safe-area-inset-bottom, 0px) + 22px)";
+    return;
+  }
+  const h = sheet.getBoundingClientRect().height || window.innerHeight * 0.88;
+  const y = state === "full" ? 0 : state === "half" ? h * 0.58 : h;
+  sheet.style.transform = `translateY(${y}px)`;
+  fabs.style.bottom = state === "closed"
+    ? "calc(env(safe-area-inset-bottom, 0px) + 22px)"
+    : `${Math.round(h * 0.42) + 16}px`;
+}
+function closeSheet() { selection = null; setSheet("closed"); draw(); }
+
+let dragStart = null;
+grip.addEventListener("pointerdown", (e) => {
+  if (isSideSheet()) return;
+  grip.setPointerCapture(e.pointerId);
+  const m = /translateY\(([-\d.]+)px\)/.exec(sheet.style.transform);
+  dragStart = { y: e.clientY, base: m ? parseFloat(m[1]) : 0 };
+  sheet.classList.add("anim-off");
+});
+grip.addEventListener("pointermove", (e) => {
+  if (!dragStart) return;
+  const h = sheet.getBoundingClientRect().height;
+  const y = Math.max(0, Math.min(h, dragStart.base + (e.clientY - dragStart.y)));
+  sheet.style.transform = `translateY(${y}px)`;
+});
+grip.addEventListener("pointerup", (e) => {
+  if (!dragStart) return;
+  const h = sheet.getBoundingClientRect().height;
+  const y = Math.max(0, Math.min(h, dragStart.base + (e.clientY - dragStart.y)));
+  dragStart = null;
+  const r = y / h;
+  setSheet(r > 0.75 ? "closed" : r > 0.28 ? "half" : "full");
+});
+
+/* ---- selection & sheet content --------------------------------------- */
+let selection = null;
+
+function select(hit, opts) {
+  selection = hit;
+  if (hit.type === "poi") {
+    const p = pois.find((x) => x.id === hit.id);
+    if (p) {
+      renderPoi(p);
+      if (!opts || opts.fly !== false) flyTo(p.coord[0], p.coord[1], Math.max(view.zoom, 16.6), window.innerHeight * 0.16);
+    }
+  } else {
+    const a = areaById.get(hit.id);
+    if (a) {
+      renderArea(a);
+      if (opts && opts.fly && a.geometry) {
+        const [lo, la] = a.label_at || centerOfGeom(a.geometry);
+        flyTo(lo, la, Math.max(view.zoom, 16), window.innerHeight * 0.16);
+      }
+    }
+  }
+  setSheet("half");
+  draw();
+}
+
+function el(html) {
+  const d = document.createElement("div");
+  d.innerHTML = html;
+  return d.firstElementChild;
+}
+function esc(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function crumbHtml(area) {
+  const chain = ancestry(area);
+  return chain.map((a, i) =>
+    i === chain.length - 1
+      ? `<b>${esc(nameOf(a))}</b>`
+      : `<a href="#" data-goto="${esc(a.id)}" style="color:inherit">${esc(nameOf(a))}</a>`
+  ).join(" › ");
+}
+function navUrl(lat, lon) {
+  return `https://www.google.com/maps/dir/?api=1&destination=${lat.toFixed(6)},${lon.toFixed(6)}&travelmode=walking`;
+}
+
+function poiRow(p) {
+  const cat = CATEGORIES[p.cat] || CATEGORIES.other;
+  const bits = [cat.zh];
+  if (p.floor) bits.unshift(p.floor);
+  if (p.hours) bits.push(p.hours);
+  return `<div class="row" data-poi="${esc(p.id)}">
+      <div class="glyph">${cat.glyph}</div>
+      <div class="txt"><div class="nm">${esc(nameOf(p))}</div>
+      <div class="sub">${esc(bits.join(" · "))}</div></div>
+      <div style="color:var(--ink-soft)">›</div>
+    </div>`;
+}
+function areaRow(a) {
+  const kind = AREA_KIND[a.kind] || AREA_KIND.arcade;
+  const n = poisUnder(a.id, true).length;
+  return `<div class="row" data-area="${esc(a.id)}">
+      <div class="glyph" style="color:${areaColor(a)}">■</div>
+      <div class="txt"><div class="nm">${esc(nameOf(a))}</div>
+      <div class="sub">${kind.zh}${n ? " · " + n + " 個標記" : ""}</div></div>
+      <div style="color:var(--ink-soft)">›</div>
+    </div>`;
+}
+
+function renderArea(a) {
+  const kids = childAreas(a.id);
+  const direct = poisUnder(a.id, false);
+  const kind = AREA_KIND[a.kind] || AREA_KIND.arcade;
+  let html = `<div class="crumb">${crumbHtml(a)}</div>
+    <h1 class="title">${esc(nameOf(a))}<span class="badge">${kind.zh}</span></h1>`;
+  if (subnameOf(a)) html += `<div class="subtitle">${esc(a.name_ja)}</div>`;
+  if (a.note) html += `<div class="note">${esc(a.note)}</div>`;
+
+  if (a.geometry) {
+    const [lo, la] = a.label_at || centerOfGeom(a.geometry);
+    html += `<div class="btnrow">
+      <a class="btn primary" href="${navUrl(la, lo)}" target="_blank" rel="noopener">🧭 導航到這裡</a>
+    </div>`;
+  }
+  if (a.floors && a.floors.length) {
+    html += `<div class="sec">樓層</div><div class="note">${a.floors.map(esc).join(" · ")}</div>`;
+  }
+  if (kids.length) {
+    html += `<div class="sec">包含</div>` + kids.map(areaRow).join("");
+  }
+  if (direct.length) {
+    html += `<div class="sec">我的標記</div>` + groupByFloor(direct);
+  }
+  if (!kids.length && !direct.length) {
+    html += `<div class="empty">這個範圍裡還沒有標記的點。長按地圖可以新增。</div>`;
+  }
+  html += credits();
+  setBody(html);
+}
+
+function groupByFloor(list) {
+  const withFloor = list.filter((p) => p.floor);
+  const without = list.filter((p) => !p.floor);
+  if (!withFloor.length) return without.map(poiRow).join("");
+  const groups = new Map();
+  for (const p of withFloor) {
+    if (!groups.has(p.floor)) groups.set(p.floor, []);
+    groups.get(p.floor).push(p);
+  }
+  const order = (f) => (f[0] === "B" ? -parseInt(f.slice(1), 10) : parseInt(f, 10) || 99);
+  let html = without.map(poiRow).join("");
+  for (const f of [...groups.keys()].sort((x, y) => order(x) - order(y))) {
+    html += `<div class="floor">${esc(f)}</div>` + groups.get(f).map(poiRow).join("");
+  }
+  return html;
+}
+
+function renderPoi(p) {
+  const cat = CATEGORIES[p.cat] || CATEGORIES.other;
+  const parent = p.parent ? areaById.get(p.parent) : null;
+  let html = "";
+  if (parent) html += `<div class="crumb">${crumbHtml(parent)}</div>`;
+  html += `<h1 class="title">${cat.glyph} ${esc(nameOf(p))}<span class="badge">${cat.zh}</span></h1>`;
+  const sub = [subnameOf(p), p.floor ? `${p.floor} 樓層` : ""].filter(Boolean).join(" · ");
+  if (sub) html += `<div class="subtitle">${esc(sub)}</div>`;
+  html += `<div class="btnrow">
+      <a class="btn primary" href="${navUrl(p.coord[1], p.coord[0])}" target="_blank" rel="noopener">🧭 導航</a>
+      ${p.url ? `<a class="btn" href="${esc(p.url)}" target="_blank" rel="noopener">🔗 網站</a>` : ""}
+    </div>`;
+  if (p.hours) html += `<div class="note">🕘 ${esc(p.hours)}</div>`;
+  if (p.note) html += `<div class="note">${esc(p.note)}</div>`;
+  html += `<div class="btnrow">
+      <button class="btn slim" data-edit="${esc(p.id)}">✏️ 編輯</button>
+      <button class="btn slim" data-del="${esc(p.id)}">🗑 刪除</button>
+    </div>`;
+  html += credits();
+  setBody(html);
+}
+
+function credits() {
+  return `<div class="cred">地圖資料 © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> 貢獻者（ODbL）</div>`;
+}
+
+function setBody(html) {
+  sheetBody.innerHTML = html;
+  sheetBody.scrollTop = 0;
+}
+
+sheetBody.addEventListener("click", (e) => {
+  const goto = e.target.closest("[data-goto]");
+  if (goto) { e.preventDefault(); select({ type: "area", id: goto.dataset.goto }, { fly: true }); return; }
+  const a = e.target.closest("[data-area]");
+  if (a) { select({ type: "area", id: a.dataset.area }, { fly: true }); return; }
+  const p = e.target.closest("[data-poi]");
+  if (p) { select({ type: "poi", id: p.dataset.poi }); return; }
+  const ed = e.target.closest("[data-edit]");
+  if (ed) { openEditForm(pois.find((x) => x.id === ed.dataset.edit)); return; }
+  const del = e.target.closest("[data-del]");
+  if (del) { removePoi(del.dataset.del); return; }
+});
+
+/* ---- add / edit points ----------------------------------------------- */
+function catOptions(sel) {
+  return Object.entries(CATEGORIES)
+    .map(([k, v]) => `<option value="${k}"${k === sel ? " selected" : ""}>${v.glyph} ${v.zh}</option>`)
+    .join("");
+}
+function areaOptions(sel) {
+  const opts = areas.map((a) => {
+    const depth = ancestry(a).length - 1;
+    const pad = "　".repeat(depth);
+    return `<option value="${esc(a.id)}"${a.id === sel ? " selected" : ""}>${pad}${esc(nameOf(a))}</option>`;
+  }).join("");
+  return `<option value=""${sel ? "" : " selected"}>（不屬於任何範圍）</option>` + opts;
+}
+
+function poiForm(p, title) {
+  setBody(`<h1 class="title">${title}</h1>
+    <label class="field"><span>名稱</span><input id="f-name" value="${esc(p.name_zh || "")}" placeholder="中文或任何你記得的名字"></label>
+    <label class="field"><span>日文名（選填）</span><input id="f-ja" value="${esc(p.name_ja || "")}"></label>
+    <label class="field"><span>分類</span><select id="f-cat">${catOptions(p.cat || "restaurant")}</select></label>
+    <label class="field"><span>所屬範圍</span><select id="f-parent">${areaOptions(p.parent || "")}</select></label>
+    <label class="field"><span>樓層（選填，例 3F / B1）</span><input id="f-floor" value="${esc(p.floor || "")}"></label>
+    <label class="field"><span>營業時間（選填）</span><input id="f-hours" value="${esc(p.hours || "")}"></label>
+    <label class="field"><span>網址（選填）</span><input id="f-url" value="${esc(p.url || "")}" inputmode="url"></label>
+    <label class="field"><span>備註</span><textarea id="f-note">${esc(p.note || "")}</textarea></label>
+    <div class="btnrow">
+      <button class="btn" id="f-cancel">取消</button>
+      <button class="btn primary" id="f-save">儲存</button>
+    </div>`);
+  setSheet("full");
+  document.getElementById("f-cancel").onclick = () => closeSheet();
+  document.getElementById("f-save").onclick = () => {
+    const v = (id) => document.getElementById(id).value.trim();
+    if (!v("f-name") && !v("f-ja")) { toast("請至少填一個名稱"); return; }
+    const rec = {
+      id: p.id, coord: p.coord,
+      name_zh: v("f-name"), name_ja: v("f-ja"),
+      cat: v("f-cat"), parent: v("f-parent") || null,
+      floor: v("f-floor") || null, hours: v("f-hours") || null,
+      url: v("f-url") || null, note: v("f-note") || null,
+      user: true,
+    };
+    const i = overrides.pois.findIndex((x) => x.id === rec.id);
+    if (i >= 0) overrides.pois[i] = rec; else overrides.pois.push(rec);
+    // Editing a baked-in point shadows it rather than duplicating it.
+    if (CITY.pois.some((x) => x.id === rec.id) && !overrides.removed.includes(rec.id)) {
+      overrides.removed.push(rec.id);
+    }
+    saveOverrides(); refreshPois();
+    select({ type: "poi", id: rec.id }, { fly: false });
+    toast("已儲存到這台裝置");
+  };
+}
+
+function openAddForm(lon, lat) {
+  const hit = hitTest(...toScreen(lon, lat));
+  const parent = hit && hit.type === "area" ? hit.id : null;
+  poiForm({ id: "U" + Date.now().toString(36), coord: [lon, lat], parent }, "新增標記");
+}
+function openEditForm(p) { if (p) poiForm(JSON.parse(JSON.stringify(p)), "編輯標記"); }
+function removePoi(id) {
+  if (!confirm("確定刪除這個標記？")) return;
+  overrides.pois = overrides.pois.filter((x) => x.id !== id);
+  if (CITY.pois.some((x) => x.id === id) && !overrides.removed.includes(id)) overrides.removed.push(id);
+  saveOverrides(); refreshPois(); closeSheet();
+  toast("已刪除");
+}
+
+/* ---- search ---------------------------------------------------------- */
+let query = "";
+const qInput = document.getElementById("q");
+function matches(o, q) {
+  return [o.name_zh, o.name_ja, o.note, o.hours].filter(Boolean)
+    .some((s) => s.toLowerCase().includes(q));
+}
+qInput.addEventListener("input", () => {
+  query = qInput.value.trim().toLowerCase();
+  draw();
+  if (!query) { if (sheetState !== "closed" && selection === null) closeSheet(); return; }
+  selection = null;
+  const ma = areas.filter((a) => matches(a, query));
+  const mp = pois.filter((p) => matches(p, query));
+  let html = `<h1 class="title">搜尋「${esc(qInput.value.trim())}」</h1>`;
+  if (!ma.length && !mp.length) html += `<div class="empty">找不到符合的項目。</div>`;
+  if (ma.length) html += `<div class="sec">範圍</div>` + ma.map(areaRow).join("");
+  if (mp.length) html += `<div class="sec">標記</div>` + mp.map(poiRow).join("");
+  setBody(html);
+  setSheet("half");
+});
+
+/* ---- category chips -------------------------------------------------- */
+const chipsEl = document.getElementById("chips");
+function renderChips() {
+  const all = visibleCats.size === Object.keys(CATEGORIES).length;
+  chipsEl.innerHTML =
+    `<button class="chip" data-cat="*" aria-pressed="${all}">全部</button>` +
+    Object.entries(CATEGORIES).map(([k, v]) =>
+      `<button class="chip" data-cat="${k}" aria-pressed="${visibleCats.has(k)}">${v.glyph} ${v.zh}</button>`
+    ).join("");
+}
+chipsEl.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-cat]");
+  if (!b) return;
+  const k = b.dataset.cat;
+  if (k === "*") visibleCats = new Set(Object.keys(CATEGORIES));
+  else if (visibleCats.size === Object.keys(CATEGORIES).length) visibleCats = new Set([k]);
+  else if (visibleCats.has(k)) visibleCats.delete(k);
+  else visibleCats.add(k);
+  if (!visibleCats.size) visibleCats = new Set(Object.keys(CATEGORIES));
+  prefs.cats = [...visibleCats]; savePrefs();
+  renderChips(); draw();
+});
+
+/* ---- layers / settings sheet ----------------------------------------- */
+document.getElementById("btnLayers").onclick = () => {
+  selection = null;
+  const sw = (id, label, on, hint) => `<div class="switch">
+      <div><div class="nm">${label}</div>${hint ? `<div class="sub" style="font-size:12px;color:var(--ink-soft)">${hint}</div>` : ""}</div>
+      <input type="checkbox" id="${id}" ${on ? "checked" : ""}>
+    </div>`;
+  setBody(`<h1 class="title">圖層與設定</h1>
+    ${sw("sw-bld", "建物輪廓", prefs.buildings, "放大到街區層級才顯示")}
+    ${sw("sw-lbl", "文字標籤", prefs.labels)}
+    ${sw("sw-tile", "線上 OSM 圖磚", prefs.tiles, "需網路；在 Claude Artifact 中會被封鎖")}
+    <div class="sec">資料</div>
+    <div class="note">內建 ${CITY.areas.length} 個範圍、${CITY.pois.length} 個點；
+      你在這台裝置另外新增了 ${overrides.pois.length} 個。</div>
+    <div class="btnrow">
+      <button class="btn" id="btn-export">📤 匯出 JSON</button>
+      <button class="btn" id="btn-import">📥 匯入</button>
+    </div>
+    <div class="btnrow"><button class="btn slim" id="btn-reset">清除本機修改</button></div>
+    ${credits()}`);
+  setSheet("full");
+  document.getElementById("sw-bld").onchange = (e) => { prefs.buildings = e.target.checked; savePrefs(); draw(); };
+  document.getElementById("sw-lbl").onchange = (e) => { prefs.labels = e.target.checked; savePrefs(); draw(); };
+  document.getElementById("sw-tile").onchange = (e) => {
+    prefs.tiles = e.target.checked; tilesBroken = false; savePrefs(); draw();
+  };
+  document.getElementById("btn-export").onclick = exportJson;
+  document.getElementById("btn-import").onclick = importJson;
+  document.getElementById("btn-reset").onclick = () => {
+    if (!confirm("清除這台裝置上的所有新增與修改？")) return;
+    overrides.pois = []; overrides.removed = [];
+    saveOverrides(); refreshPois(); closeSheet(); draw();
+  };
+};
+
+function exportJson() {
+  const merged = { meta: CITY.meta, areas: CITY.areas, pois: pois };
+  const text = JSON.stringify(merged, null, 2);
+  setBody(`<h1 class="title">匯出</h1>
+    <div class="note">貼回 <code>商店街地圖/data/${esc(CITY.meta.city)}.json</code> 再重跑 build 即可永久保存。</div>
+    <div class="btnrow">
+      <button class="btn primary" id="btn-copy">📋 複製到剪貼簿</button>
+      <button class="btn" id="btn-dl">💾 下載檔案</button>
+    </div>
+    <label class="field"><span>JSON</span><textarea id="out" style="min-height:46vh;font-family:ui-monospace,monospace;font-size:12px"></textarea></label>`);
+  const ta = document.getElementById("out");
+  ta.value = text;
+  document.getElementById("btn-copy").onclick = async () => {
+    try { await navigator.clipboard.writeText(text); toast("已複製"); }
+    catch (_) { ta.select(); toast("請手動複製（已全選）"); }
+  };
+  document.getElementById("btn-dl").onclick = () => {
+    try {
+      const url = URL.createObjectURL(new Blob([text], { type: "application/json" }));
+      const a = document.createElement("a");
+      a.href = url; a.download = `${CITY.meta.city}.json`; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    } catch (_) { toast("此環境不允許下載，請改用複製"); }
+  };
+}
+
+function importJson() {
+  setBody(`<h1 class="title">匯入</h1>
+    <div class="note">貼上先前匯出的 JSON。既有的內建資料不會被刪除，只會把點合併進來。</div>
+    <label class="field"><span>JSON</span><textarea id="in" style="min-height:40vh;font-family:ui-monospace,monospace;font-size:12px"></textarea></label>
+    <div class="btnrow"><button class="btn primary" id="btn-do">合併</button></div>`);
+  document.getElementById("btn-do").onclick = () => {
+    try {
+      const obj = JSON.parse(document.getElementById("in").value);
+      const incoming = Array.isArray(obj) ? obj : obj.pois || [];
+      let n = 0;
+      for (const p of incoming) {
+        if (!p || !p.coord) continue;
+        const id = p.id || "I" + Math.random().toString(36).slice(2, 9);
+        if (CITY.pois.some((x) => x.id === id)) continue;
+        const i = overrides.pois.findIndex((x) => x.id === id);
+        const rec = Object.assign({}, p, { id });
+        if (i >= 0) overrides.pois[i] = rec; else overrides.pois.push(rec);
+        n++;
+      }
+      saveOverrides(); refreshPois(); draw(); closeSheet();
+      toast(`已匯入 ${n} 個點`);
+    } catch (err) { toast("JSON 格式錯誤"); }
+  };
+}
+
+/* ---- geolocation ----------------------------------------------------- */
+const btnLocate = document.getElementById("btnLocate");
+let watchId = null;
+btnLocate.onclick = () => {
+  if (watchId !== null) {
+    navigator.geolocation.clearWatch(watchId);
+    watchId = null; myPos = null;
+    btnLocate.setAttribute("aria-pressed", "false");
+    draw(); return;
+  }
+  if (!navigator.geolocation) { toast("此裝置不支援定位"); return; }
+  btnLocate.setAttribute("aria-pressed", "true");
+  let first = true;
+  watchId = navigator.geolocation.watchPosition((pos) => {
+    myPos = { lon: pos.coords.longitude, lat: pos.coords.latitude, acc: pos.coords.accuracy || 30 };
+    if (first) { first = false; flyTo(myPos.lon, myPos.lat, Math.max(view.zoom, 16.5)); }
+    draw();
+  }, () => {
+    toast("無法取得位置（需 HTTPS 或已授權）");
+    btnLocate.setAttribute("aria-pressed", "false");
+    watchId = null;
+  }, { enableHighAccuracy: true, maximumAge: 5000, timeout: 12000 });
+};
+
+/* ---- misc ------------------------------------------------------------ */
+const toastEl = document.getElementById("toast");
+let toastTimer = null;
+function toast(msg) {
+  toastEl.textContent = msg;
+  toastEl.classList.add("on");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove("on"), 2400);
+}
+
+window.addEventListener("resize", () => { resize(); setSheet(sheetState); });
+window.addEventListener("orientationchange", () => setTimeout(() => {
+  resize(); setSheet(sheetState);
+}, 250));
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { readPalette(); draw(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSheet(); });
+
+readPalette();
+if (prefs.cats) visibleCats = new Set(prefs.cats);
+renderChips();
+resize();
+setSheet("closed");
+</script>
