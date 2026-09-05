@@ -86,6 +86,13 @@ CITY_CONFIG = {
                 "note": "橫向的飲食店街，晚上熱鬧。",
                 "optional": True,
             },
+            {
+                "id": "ARC-TOKIWA-GAI", "kind": "arcade", "parent": "GRP-CENTRAL",
+                "name_ja": "トキワ街", "name_zh": "常盤街",
+                "match": ["トキワ街", "トキワ新町"], "width_m": 11,
+                "note": "常磐町旁的分支拱廊。",
+                "optional": True,
+            },
         ],
         # Malls are real polygons in OSM; `parent` puts them inside an arcade
         # where that is geographically true.
@@ -98,26 +105,29 @@ CITY_CONFIG = {
                 "note": "蓋在丸亀町商店街上的複合商場，中庭有櫸樹廣場。",
             },
             {
-                "id": "MALL-YUME", "name_ja": "ゆめタウン高松", "name_zh": "youme town 高松",
-                "match": ["ゆめタウン高松", "ゆめタウン"],
-                "floors": ["1F", "2F", "3F"],
-                "note": "市郊大型購物中心，需搭車前往。",
+                "id": "MALL-ICHIBANGAI", "parent": "ARC-MARUGAMEMACHI",
+                "name_ja": "高松丸亀町壱番街", "name_zh": "丸龜町壹番街",
+                "match": ["高松丸亀町壱番街"],
+                "floors": ["B1", "1F", "2F", "3F", "4F"],
+                "note": "丸亀町重建的第一街區，東館與西館夾著大鐘樓廣場。",
             },
             {
-                "id": "MALL-FLAG", "name_ja": "瓦町FLAG", "name_zh": "瓦町 FLAG",
-                "match": ["瓦町FLAG", "瓦町 FLAG", "瓦町ＦＬＡＧ"],
-                "floors": ["1F", "2F", "3F", "4F", "5F", "6F", "7F", "8F"],
-                "note": "琴電瓦町站上蓋商業設施。",
+                "id": "MALL-SANBANGAI", "parent": "ARC-MARUGAMEMACHI",
+                "name_ja": "高松丸亀町参番街", "name_zh": "丸龜町參番街",
+                "match": ["高松丸亀町参番街"],
+                "floors": ["1F", "2F", "3F"],
             },
             {
                 "id": "MALL-MITSUKOSHI", "parent": "ARC-MARUGAMEMACHI",
                 "name_ja": "高松三越", "name_zh": "高松三越",
-                "match": ["高松三越", "三越"],
+                "match": ["高松三越"],
                 "note": "位於丸亀町商店街北段。",
             },
             {
-                "id": "MALL-TENMAYA", "name_ja": "天満屋", "name_zh": "天滿屋",
-                "match": ["天満屋"],
+                "id": "MALL-MARITIME", "name_ja": "マリタイムプラザ高松",
+                "name_zh": "海洋廣場高松",
+                "match": ["マリタイムプラザ高松"],
+                "note": "サンポート高松，JR 高松站北側的港灣複合設施。",
             },
         ],
     },
@@ -171,8 +181,20 @@ def label_point(lines):
 
 
 def polygon_center(rings):
-    xs = [p[0] for r in rings for p in r]
-    ys = [p[1] for r in rings for p in r]
+    """Centre of the largest ring, not of the whole bounding box.
+
+    丸亀町グリーン is two separate buildings with the arcade running between
+    them; the bbox centre falls in that gap, which would put the mall's label
+    on the street and outside its own polygon.
+    """
+    def bbox_area(r):
+        xs = [p[0] for p in r]
+        ys = [p[1] for p in r]
+        return (max(xs) - min(xs)) * (max(ys) - min(ys))
+
+    r = max(rings, key=bbox_area)
+    xs = [p[0] for p in r]
+    ys = [p[1] for p in r]
     return [(min(xs) + max(xs)) / 2, (min(ys) + max(ys)) / 2]
 
 
@@ -212,8 +234,13 @@ def main() -> int:
         if spec["kind"] == "group":
             areas.append(area)
             continue
+        # Lines only. OSM also maps parts of an arcade as pedestrian *areas*;
+        # stroking such a ring would draw a loop around the plaza instead of a
+        # ribbon along the street, and the centreline already covers it.
         picked = [f for f in feats
-                  if f["properties"].get("name") and matches(f["properties"]["name"], spec["match"])]
+                  if f["properties"].get("name")
+                  and matches(f["properties"]["name"], spec["match"])
+                  and f["geometry"]["type"] in ("LineString", "MultiLineString")]
         lines = [ln for f in picked for ln in lines_of(f) if len(ln) >= 2]
         if not lines:
             level = "note" if spec.get("optional") else "WARN"
@@ -236,21 +263,17 @@ def main() -> int:
         if not picked:
             print(f"  WARN: no OSM polygon for {spec['id']} {spec['match']}", file=sys.stderr)
             continue
-        # Keep the largest match; OSM sometimes has both a building and a
-        # separate landuse polygon under the same name.
-        def area_of(f):
-            rings = lines_of(f)
-            xs = [p[0] for r in rings for p in r]
-            ys = [p[1] for r in rings for p in r]
-            return (max(xs) - min(xs)) * (max(ys) - min(ys))
-        picked.sort(key=area_of, reverse=True)
-        rings = lines_of(picked[0])
+        # Keep every match, not just the biggest: a mall is often several
+        # buildings under one name (丸亀町グリーン is an 東館 plus a 西館).
+        polys = [lines_of(f) for f in picked]
         mall = {k: v for k, v in spec.items() if k != "match"}
         mall["kind"] = "mall"
         mall.setdefault("parent", None)
-        mall["geometry"] = {"type": "Polygon", "coordinates": rings}
-        mall["label_at"] = polygon_center(rings)
-        mall["source"] = [picked[0]["properties"]["osm"]]
+        mall["geometry"] = ({"type": "Polygon", "coordinates": polys[0]}
+                            if len(polys) == 1
+                            else {"type": "MultiPolygon", "coordinates": polys})
+        mall["label_at"] = polygon_center([r for p in polys for r in p])
+        mall["source"] = sorted(f["properties"]["osm"] for f in picked)
         areas.append(mall)
 
     doc = {"meta": cfg["meta"], "areas": areas, "pois": kept_pois}

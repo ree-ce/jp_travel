@@ -49,9 +49,29 @@ python3 tools/derive_sea.py takamatsu
 # 3. 把散落的 OSM 線段整理成有階層的商店街／商場
 python3 tools/make_areas.py takamatsu
 
-# 4. 打包成單一 HTML
+# 4.（選用）加入標記，自動判斷它落在哪個商店街／商場裡
+python3 tools/add_pois.py takamatsu data/takamatsu_pois.seed.json
+
+# 5. 打包成單一 HTML
 python3 tools/build.py takamatsu
 ```
+
+第 4 步的 `add_pois.py` 是**之後匯入你自己的點**要走的路徑。輸入是一個 JSON 陣列，
+每筆需要名稱，加上 `coord: [lon, lat]` 或 `osm: "way/123"`（指向已抓下來的 OSM 元素），
+其餘欄位（`cat`／`floor`／`note`／`url`／`hours`）照抄。
+`parent` 不用填 —— 它會自己算：先看點落在哪個商場多邊形裡（取最小的那個），
+沒有的話再找最近、且距離在「中心線 ± 寬度/2 + 8 公尺」內的商店街。
+
+## 測試
+
+```bash
+python3 tools/test_derive_sea.py         # 海域封閉的幾何邏輯
+npm i playwright && node tools/test_app.js   # 建置後的 App 端對端行為
+```
+
+`test_app.js` 會真的開一個手機尺寸的瀏覽器，檢查階層麵包屑、樓層分組、長按新增與
+自動歸屬、搜尋（中日文）、導航 URL 格式、重新載入後編輯是否保留、匯出往返，
+以及**整個 App 是否真的零外部網路請求**。
 
 想加城市：在 `tools/fetch_osm.py` 的 `CITIES` 加 bbox，
 在 `tools/make_areas.py` 的 `CITY_CONFIG` 加階層設定，然後跑同樣四步。
@@ -66,6 +86,7 @@ takamatsu_map.artifact.html   成品（Artifact 用的 body-only 版）
 src/app.template.html         App 原始碼（HTML/CSS/JS，資料以佔位符注入）
 data/
   takamatsu.json              ★ 策劃過的範圍 + 我的標記（要手改就改這個）
+  takamatsu_pois.seed.json    示範標記的輸入範例
   takamatsu_basemap.json      底圖幾何（機器產生，別手改）
   takamatsu_areas.osm.json    OSM 原始候選（機器產生）
   .cache/                     Overpass 原始回應快取（git 忽略）
@@ -73,8 +94,30 @@ tools/
   fetch_osm.py                Overpass 下載
   derive_sea.py               海岸線 → 海域多邊形
   make_areas.py               OSM 線段 → 階層化商店街
+  add_pois.py                 加入標記並自動判斷所屬範圍
   build.py                    模板 + 資料 → 單一 HTML
+  test_derive_sea.py          海域幾何測試
+  test_app.js                 App 端對端測試（需 playwright）
 ```
+
+## 目前的高松資料
+
+`高松中央商店街`（8 段拱廊）＋ 5 個商場，全部來自 OSM 實際幾何：
+
+```
+高松中央商店街
+├── 兵庫町商店街    ├── 片原町商店街    ├── 南新町商店街
+├── 常磐町商店街    ├── 田町商店街      ├── 獅子通商店街
+├── 常盤街
+└── 丸龜町商店街 ── 463 m
+    ├── 丸龜町壹番街（東館＋西館）
+    ├── 丸龜町參番街（東館＋西館）
+    ├── 丸龜町 GREEN（東館＋西館，商店街從兩棟之間穿過）
+    └── 高松三越
+海洋廣場高松（サンポート，獨立）
+```
+
+標記目前只有 8 個示範點（`（示範）樓層標記` 是用來展示樓層分組的，可刪）。
 
 ## 為什麼不是 Leaflet + OSM 圖磚
 

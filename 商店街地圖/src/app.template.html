@@ -97,7 +97,13 @@
       "Noto Sans TC", "Segoe UI", system-ui, sans-serif;
     overscroll-behavior: none;
   }
-  #map { position: fixed; inset: 0; display: block; touch-action: none; }
+  /* A canvas is a replaced element: with `inset:0` and `width:auto` it sizes
+     to its own width/height attributes, which the renderer then writes back
+     from the measured size -- a feedback loop. Pin the layout size instead. */
+  #map {
+    position: fixed; top: 0; left: 0; display: block;
+    width: 100%; height: 100%; touch-action: none;
+  }
 
   /* ---- top bar -------------------------------------------------------- */
   #top {
@@ -388,6 +394,7 @@ function subnameOf(o) {
 /* ---- view ------------------------------------------------------------ */
 const canvas = document.getElementById("map");
 const ctx = canvas.getContext("2d");
+const topBar = document.getElementById("top");
 const meta = CITY.meta;
 const bbox = BASEMAP.meta && BASEMAP.meta.bbox ? BASEMAP.meta.bbox : null; // s,w,n,e
 
@@ -427,8 +434,10 @@ function clampView() {
 
 function resize() {
   DPR = Math.min(window.devicePixelRatio || 1, 2.5);
-  W = canvas.clientWidth = window.innerWidth;
-  H = canvas.clientHeight = window.innerHeight;
+  // CSS (position:fixed; inset:0) already sizes the element; read it back
+  // rather than assigning, since clientWidth/clientHeight are read-only.
+  W = canvas.clientWidth || window.innerWidth;
+  H = canvas.clientHeight || window.innerHeight;
   canvas.width = Math.round(W * DPR);
   canvas.height = Math.round(H * DPR);
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
@@ -557,6 +566,51 @@ function drawTiles() {
   ctx.globalAlpha = 1;
 }
 
+/* ---- labels ---------------------------------------------------------- */
+// Labels are collected during drawing and placed in one pass afterwards, so a
+// mall name and the pin sitting on top of it cannot print over each other.
+// Higher priority wins the space; anything that would collide is dropped.
+let labelQueue = [];
+let labelBlockers = [];
+
+function queueLabel(o) { labelQueue.push(o); }
+function blockLabels(box) { labelBlockers.push(box); }
+
+function overlaps(a, b) {
+  return !(a.x1 < b.x0 || a.x0 > b.x1 || a.y1 < b.y0 || a.y0 > b.y1);
+}
+
+function flushLabels() {
+  labelQueue.sort((a, b) => b.pri - a.pri);
+  const placed = labelBlockers.slice();
+  // Keep clear of the search bar and the chip row, whatever height they are,
+  // and of the chrome drawn after the labels (scale bar, floating buttons).
+  const topGuard = topBar.getBoundingClientRect().height + 4;
+  placed.push({ x0: -10, x1: 200, y0: H - 40, y1: H + 10 });      // scale bar
+  const fab = fabs.getBoundingClientRect();
+  placed.push({ x0: fab.left - 6, x1: W + 10, y0: fab.top - 6, y1: H + 10 });
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  for (const L of labelQueue) {
+    ctx.font = L.font;
+    const w = ctx.measureText(L.text).width;
+    const box = {
+      x0: L.x - w / 2 - 3, x1: L.x + w / 2 + 3,
+      y0: L.y - L.size * 0.7, y1: L.y + L.size * 0.7,
+    };
+    if (box.y0 < topGuard || box.y1 > H - 6 || box.x1 < 0 || box.x0 > W) continue;
+    if (placed.some((p) => overlaps(box, p))) continue;
+    placed.push(box);
+    ctx.lineWidth = 3.5;
+    ctx.strokeStyle = C.halo;
+    ctx.strokeText(L.text, L.x, L.y);
+    ctx.fillStyle = L.color;
+    ctx.fillText(L.text, L.x, L.y);
+  }
+  labelQueue = [];
+  labelBlockers = [];
+}
+
 /* ---- rendering ------------------------------------------------------- */
 let needsDraw = false;
 function draw() {
@@ -637,6 +691,7 @@ function render() {
 
   drawAreas();
   drawPois();
+  flushLabels();
   drawLocation();
   drawScaleBar();
 }
@@ -680,21 +735,18 @@ function drawAreas() {
   }
 
   if (!prefs.labels || view.zoom < 14.6) return;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
   for (const a of areas) {
     if (!a.geometry || a.kind === "group") continue;
     const [lo, la] = a.label_at || centerOfGeom(a.geometry);
     const [x, y] = toScreen(lo, la);
     if (x < -80 || x > W + 80 || y < -30 || y > H + 30) continue;
     const size = a.kind === "mall" ? 13 : 12.5;
-    ctx.font = `700 ${size}px system-ui, "Noto Sans TC", sans-serif`;
-    const label = nameOf(a);
-    ctx.lineWidth = 3.5;
-    ctx.strokeStyle = C.halo;
-    ctx.strokeText(label, x, y);
-    ctx.fillStyle = areaColor(a);
-    ctx.fillText(label, x, y);
+    queueLabel({
+      text: nameOf(a), x, y, size,
+      font: `700 ${size}px system-ui, "Noto Sans TC", sans-serif`,
+      color: areaColor(a),
+      pri: a.id === hi ? 900 : a.kind === "mall" ? 300 : 200,
+    });
   }
 }
 
@@ -730,18 +782,20 @@ function drawPois() {
     ctx.fill();
 
     ctx.font = `${r}px system-ui, "Apple Color Emoji", "Segoe UI Emoji"`;
+    ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(cat.glyph, x, y - r + 0.5);
 
+    // The pin itself always wins its space; labels route around it.
+    blockLabels({ x0: x - r, x1: x + r, y0: y - 2 * r, y1: y });
+
     if (showLabel) {
-      ctx.font = `600 12px system-ui, "Noto Sans TC", sans-serif`;
-      ctx.textBaseline = "top";
-      const label = nameOf(p);
-      ctx.lineWidth = 3.5;
-      ctx.strokeStyle = C.halo;
-      ctx.strokeText(label, x, y + 3);
-      ctx.fillStyle = C.ink;
-      ctx.fillText(label, x, y + 3);
+      queueLabel({
+        text: nameOf(p), x, y: y + 10, size: 12,
+        font: `600 12px system-ui, "Noto Sans TC", sans-serif`,
+        color: C.ink,
+        pri: sel ? 950 : 500,
+      });
     }
   }
   ctx.textBaseline = "alphabetic";
@@ -1258,11 +1312,13 @@ qInput.addEventListener("input", () => {
 /* ---- category chips -------------------------------------------------- */
 const chipsEl = document.getElementById("chips");
 function renderChips() {
+  // With every category on, highlighting all of them just makes the row look
+  // busy -- "全部" carries that state instead.
   const all = visibleCats.size === Object.keys(CATEGORIES).length;
   chipsEl.innerHTML =
     `<button class="chip" data-cat="*" aria-pressed="${all}">全部</button>` +
     Object.entries(CATEGORIES).map(([k, v]) =>
-      `<button class="chip" data-cat="${k}" aria-pressed="${visibleCats.has(k)}">${v.glyph} ${v.zh}</button>`
+      `<button class="chip" data-cat="${k}" aria-pressed="${!all && visibleCats.has(k)}">${v.glyph} ${v.zh}</button>`
     ).join("");
 }
 chipsEl.addEventListener("click", (e) => {
