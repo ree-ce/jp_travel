@@ -56,41 +56,76 @@ CITIES = {
     },
 }
 
-# Each entry: (layer name, overpass selector list). Selectors are kept
-# tag-indexed -- `name~"..."` regex scans time out on the public instances.
-BASEMAP_LAYERS: list[tuple[str, list[str]]] = [
-    ("coastline", ['way["natural"="coastline"]']),
-    ("water", ['way["natural"="water"]']),
-    ("moat", ['way["waterway"="riverbank"]']),
-    ("stream", ['way["waterway"~"^(river|stream|canal)$"]']),
-    ("rail", ['way["railway"~"^(rail|light_rail|tram)$"]']),
-    ("green", ['way["leisure"="park"]']),
-    ("garden", ['way["leisure"="garden"]']),
-    ("road_major", ['way["highway"~"^(motorway|trunk|primary)$"]']),
-    ("road_mid", ['way["highway"~"^(secondary|tertiary)$"]']),
+# The public mirrors rate-limit by *request*, not by result size: after the
+# first query or two they start returning 90s read timeouts regardless of how
+# trivial the query is. So we make as few round trips as possible -- a couple
+# of unioned queries -- and sort the results into layers locally.
+ROAD_KINDS = "motorway|trunk|primary|secondary|tertiary|residential|unclassified|living_street|pedestrian|footway"
+
+QUERIES: list[tuple[str, list[str]]] = [
     (
-        "road_minor",
+        "roads",
+        [f'way["highway"~"^({ROAD_KINDS})$"]'],
+    ),
+    (
+        "features",
         [
-            'way["highway"~"^(residential|unclassified|living_street)$"]',
+            'way["natural"="coastline"]',
+            'way["natural"="water"]',
+            'way["waterway"~"^(river|stream|canal|riverbank)$"]',
+            'way["railway"~"^(rail|light_rail|tram)$"]',
+            'way["leisure"~"^(park|garden)$"]',
+            'way["building"]["name"]',
+            'way["shop"~"^(mall|department_store|supermarket)$"]',
+            'node["railway"="station"]',
         ],
     ),
-    ("footway", ['way["highway"~"^(pedestrian|footway)$"]']),
-    ("building", ['way["building"]["name"]']),
-    ("station", ['node["railway"="station"]', 'node["public_transport"="station"]']),
 ]
 
-AREA_LAYERS: list[tuple[str, list[str]]] = [
-    # Shopping arcades: OSM models these as covered pedestrian *ways*, not
-    # polygons. The app widens them into ribbons at draw time.
-    ("arcade", ['way["highway"="pedestrian"]["covered"~"^(arcade|yes)$"]']),
-    ("arcade_open", ['way["highway"="pedestrian"]["name"]']),
-    # Kept as several narrow queries: combining them into one selector list
-    # makes the public mirrors return 504 on this bbox.
-    ("mall", ['way["shop"="mall"]']),
-    ("mall_dept", ['way["shop"="department_store"]']),
-    ("mall_retail", ['way["building"="retail"]["name"]']),
-    ("mall_super", ['way["shop"="supermarket"]']),
-]
+# Layers already fetched by the older per-layer queries; still read from cache
+# so an existing checkout does not have to re-download them.
+LEGACY_CACHE = ["arcade", "arcade_open", "mall"]
+
+
+def classify(tags: dict) -> str | None:
+    """Sort one OSM element into the layer the renderer draws it on."""
+    hw = tags.get("highway")
+    if hw in ("motorway", "trunk", "primary"):
+        return "road_major"
+    if hw in ("secondary", "tertiary"):
+        return "road_mid"
+    if hw in ("residential", "unclassified", "living_street"):
+        return "road_minor"
+    if hw in ("pedestrian", "footway"):
+        return "footway"
+    if tags.get("natural") == "coastline":
+        return "coastline"
+    if tags.get("natural") == "water" or tags.get("waterway") == "riverbank":
+        return "water"
+    if tags.get("waterway") in ("river", "stream", "canal"):
+        return "stream"
+    if tags.get("railway") in ("rail", "light_rail", "tram"):
+        return "rail"
+    if tags.get("leisure") in ("park", "garden"):
+        return "green"
+    if tags.get("railway") == "station":
+        return "station"
+    if tags.get("building"):
+        return "building"
+    return None
+
+
+def is_area_candidate(tags: dict) -> bool:
+    """Whether an element is a shopping arcade or a mall outline.
+
+    Arcades are covered `highway=pedestrian` *lines*; malls are polygons. Any
+    named pedestrian way is kept too, since some arcades lack `covered`.
+    """
+    if tags.get("highway") == "pedestrian" and (tags.get("covered") or tags.get("name")):
+        return True
+    return tags.get("shop") in ("mall", "department_store", "supermarket") or (
+        tags.get("building") == "retail" and tags.get("name")
+    )
 
 
 def overpass(query: str, timeout: int = 90) -> dict:
@@ -126,7 +161,7 @@ def build_query(selectors: list[str], bbox: tuple[float, ...], geom: bool) -> st
     return f"[out:json][timeout:85];({parts});{tail}"
 
 
-def to_features(payload: dict, layer: str) -> list[dict]:
+def to_features(payload: dict, layer: str | None = None) -> list[dict]:
     """Convert an Overpass `out geom` payload into GeoJSON features.
 
     Ways whose first and last node coincide become Polygons, everything else a
@@ -136,8 +171,11 @@ def to_features(payload: dict, layer: str) -> list[dict]:
     feats: list[dict] = []
     for el in payload.get("elements", []):
         tags = el.get("tags", {})
+        assigned = layer or classify(tags)
+        if assigned is None:
+            continue
         base = {
-            "layer": layer,
+            "layer": assigned,
             "osm": f"{el['type']}/{el['id']}",
             "name": tags.get("name"),
             "name_en": tags.get("name:en"),
@@ -175,31 +213,43 @@ def to_features(payload: dict, layer: str) -> list[dict]:
     return feats
 
 
-def fetch_group(city: str, layers, bbox, geom=True) -> list[dict]:
+def raw_elements(city: str, bbox) -> list[dict]:
+    """Every OSM element we need, from cache where possible."""
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    out: list[dict] = []
-    for layer, selectors in layers:
-        cache = CACHE_DIR / f"{city}_{layer}.json"
+    elements: list[dict] = []
+
+    for name, selectors in QUERIES:
+        cache = CACHE_DIR / f"{city}_{name}.json"
         if cache.exists():
             payload = json.loads(cache.read_text(encoding="utf-8"))
-            feats = to_features(payload, layer)
-            print(f"  · {layer}: {len(feats)} features (cached)", file=sys.stderr, flush=True)
-            out.extend(feats)
+            print(f"  · {name}: {len(payload.get('elements', []))} elements (cached)",
+                  file=sys.stderr, flush=True)
+        else:
+            print(f"  · {name} ...", file=sys.stderr, flush=True)
+            payload = overpass(build_query(selectors, bbox, True))
+            cache.write_text(json.dumps(payload), encoding="utf-8")
+            print(f"    {len(payload.get('elements', []))} elements",
+                  file=sys.stderr, flush=True)
+            time.sleep(1.0)  # be polite to the public mirror
+        elements.extend(payload.get("elements", []))
+
+    for name in LEGACY_CACHE:
+        cache = CACHE_DIR / f"{city}_{name}.json"
+        if cache.exists():
+            payload = json.loads(cache.read_text(encoding="utf-8"))
+            print(f"  · {name}: {len(payload.get('elements', []))} elements (legacy cache)",
+                  file=sys.stderr, flush=True)
+            elements.extend(payload.get("elements", []))
+
+    seen, unique = set(), []
+    for el in elements:
+        key = (el["type"], el["id"])
+        if key in seen:
             continue
-        print(f"  · {layer} ...", file=sys.stderr, flush=True)
-        try:
-            payload = overpass(build_query(selectors, bbox, geom))
-        except RuntimeError as exc:
-            # One dead layer should not cost us the eleven that worked; the
-            # next run picks it up from cache-miss and leaves the rest alone.
-            print(f"    SKIPPED {layer}: {exc}", file=sys.stderr, flush=True)
-            continue
-        cache.write_text(json.dumps(payload), encoding="utf-8")
-        feats = to_features(payload, layer)
-        print(f"    {len(feats)} features", file=sys.stderr, flush=True)
-        out.extend(feats)
-        time.sleep(1.0)  # be polite to the public mirror
-    return out
+        seen.add(key)
+        unique.append(el)
+    print(f"  {len(unique)} unique elements", file=sys.stderr, flush=True)
+    return unique
 
 
 def main() -> int:
@@ -210,18 +260,9 @@ def main() -> int:
     cfg = CITIES[city]
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Areas first: the arcades are the point of the app, the basemap is context.
-    print(f"area candidates for {city} {cfg['bbox']}", file=sys.stderr)
-    areas = {
-        "type": "FeatureCollection",
-        "meta": {"city": city, "note": "seed for hand-curated <city>_areas.json"},
-        "features": fetch_group(city, AREA_LAYERS, cfg["bbox"]),
-    }
-    path = DATA_DIR / f"{city}_areas.osm.json"
-    path.write_text(json.dumps(areas, ensure_ascii=False), encoding="utf-8")
-    print(f"wrote {path} ({path.stat().st_size / 1024:.0f} KB)", file=sys.stderr)
+    print(f"fetching {city} {cfg['bbox']}", file=sys.stderr)
+    elements = raw_elements(city, cfg["bbox"])
 
-    print("basemap", file=sys.stderr)
     basemap = {
         "type": "FeatureCollection",
         "meta": {
@@ -230,11 +271,27 @@ def main() -> int:
             "center": cfg["center"],
             "attribution": "© OpenStreetMap contributors (ODbL)",
         },
-        "features": fetch_group(city, BASEMAP_LAYERS, cfg["bbox"]),
+        "features": to_features({"elements": elements}),
     }
     path = DATA_DIR / f"{city}_basemap.json"
     path.write_text(json.dumps(basemap, ensure_ascii=False), encoding="utf-8")
+    counts: dict[str, int] = {}
+    for f in basemap["features"]:
+        counts[f["properties"]["layer"]] = counts.get(f["properties"]["layer"], 0) + 1
     print(f"wrote {path} ({path.stat().st_size / 1024:.0f} KB)", file=sys.stderr)
+    for k in sorted(counts, key=lambda k: -counts[k]):
+        print(f"    {k:<12} {counts[k]}", file=sys.stderr)
+
+    area_els = [el for el in elements if is_area_candidate(el.get("tags", {}))]
+    areas = {
+        "type": "FeatureCollection",
+        "meta": {"city": city, "note": "seed for hand-curated <city>.json"},
+        "features": to_features({"elements": area_els}, layer="candidate"),
+    }
+    path = DATA_DIR / f"{city}_areas.osm.json"
+    path.write_text(json.dumps(areas, ensure_ascii=False), encoding="utf-8")
+    print(f"wrote {path} ({path.stat().st_size / 1024:.0f} KB, "
+          f"{len(areas['features'])} candidates)", file=sys.stderr)
     return 0
 
 
