@@ -1776,8 +1776,8 @@
    "name_ja": "ABC-MART ゆめタウン高松店",
    "cat": "shop",
    "coord": [
-    134.04171,
-    34.31671
+    134.041558,
+    34.31662
    ],
    "parent": "MALL-YUME-TAKAMATSU",
    "floor": "2F",
@@ -1791,7 +1791,7 @@
    "cat": "shop",
    "coord": [
     134.04171,
-    34.31671
+    34.31662
    ],
    "parent": "MALL-YUME-TAKAMATSU",
    "floor": "2F",
@@ -1804,8 +1804,8 @@
    "name_ja": "ABC-MART ゆめタウン丸亀店",
    "cat": "shop",
    "coord": [
-    133.785403,
-    34.273531
+    133.785251,
+    34.273441
    ],
    "parent": "MALL-YUME-MARUGAME",
    "floor": "1F",
@@ -1818,8 +1818,8 @@
    "name_ja": "3COINS+plus ゆめタウン丸亀店",
    "cat": "shop",
    "coord": [
-    133.785403,
-    34.273531
+    133.785555,
+    34.273441
    ],
    "parent": "MALL-YUME-MARUGAME",
    "floor": "1F",
@@ -1832,8 +1832,8 @@
    "name_ja": "Standard Products ゆめタウン丸亀店",
    "cat": "shop",
    "coord": [
-    133.785403,
-    34.273531
+    133.785251,
+    34.273621
    ],
    "parent": "MALL-YUME-MARUGAME",
    "floor": "2F",
@@ -2004,7 +2004,7 @@
    "name_ja": "DAISO 瓦町FLAG店",
    "cat": "shop",
    "coord": [
-    134.052547,
+    134.052395,
     34.338992
    ],
    "parent": "MALL-FLAG",
@@ -2018,13 +2018,97 @@
    "name_ja": "アカチャンホンポ 瓦町FLAG店",
    "cat": "shop",
    "coord": [
-    134.052547,
+    134.052699,
     34.338992
    ],
    "parent": "MALL-FLAG",
    "floor": "5F",
    "note": "嬰幼兒用品專賣店，瓦町FLAG 5F。",
    "source": "阿卡將本舖官方店舖列表查證"
+  },
+  {
+   "id": "P047",
+   "name_zh": "UNIQLO Youme Town 高松店",
+   "name_ja": "ユニクロ ゆめタウン高松店",
+   "cat": "shop",
+   "coord": [
+    134.041862,
+    34.31662
+   ],
+   "parent": "MALL-YUME-TAKAMATSU",
+   "floor": "3F",
+   "note": "服飾。",
+   "source": "izumi.jp 官方租戶目錄查證"
+  },
+  {
+   "id": "P048",
+   "name_zh": "GU Youme Town 高松店",
+   "name_ja": "ジーユー ゆめタウン高松店",
+   "cat": "shop",
+   "coord": [
+    134.041558,
+    34.31671
+   ],
+   "parent": "MALL-YUME-TAKAMATSU",
+   "floor": "3F",
+   "note": "平價服飾。",
+   "source": "izumi.jp 官方租戶目錄查證"
+  },
+  {
+   "id": "P049",
+   "name_zh": "無印良品 Youme Town 高松店",
+   "name_ja": "無印良品 ゆめタウン高松店",
+   "cat": "shop",
+   "coord": [
+    134.04171,
+    34.31671
+   ],
+   "parent": "MALL-YUME-TAKAMATSU",
+   "floor": "1F",
+   "note": "生活雜貨、服飾、文具。",
+   "source": "izumi.jp 官方樓層指南、MUJI 官網查證"
+  },
+  {
+   "id": "P050",
+   "name_zh": "EDION Youme Town 高松店",
+   "name_ja": "エディオン ゆめタウン高松店",
+   "cat": "shop",
+   "coord": [
+    134.041862,
+    34.31671
+   ],
+   "parent": "MALL-YUME-TAKAMATSU",
+   "floor": "1F",
+   "note": "家電量販。注意：位於商場的「南館」附屬棟，非主館，實際位置可能略有偏移。",
+   "source": "izumi.jp 官方租戶目錄查證"
+  },
+  {
+   "id": "P051",
+   "name_zh": "Super Sports Xebio Youme Town 高松店",
+   "name_ja": "スーパースポーツゼビオ ゆめタウン高松店",
+   "cat": "shop",
+   "coord": [
+    134.041558,
+    34.3168
+   ],
+   "parent": "MALL-YUME-TAKAMATSU",
+   "floor": "2F",
+   "note": "運動用品。",
+   "source": "izumi.jp 官方租戶目錄查證"
+  },
+  {
+   "id": "P052",
+   "name_zh": "宜得利 Deco Home Youme Town 丸龜店",
+   "name_ja": "ニトリ デコホーム ゆめタウン丸亀店",
+   "cat": "shop",
+   "coord": [
+    133.785555,
+    34.273621
+   ],
+   "parent": "MALL-YUME-MARUGAME",
+   "floor": "1F",
+   "note": "居家生活雜貨（デコホーム為宜得利的小型店態）。",
+   "source": "izumi.jp 官方樓層指南、NITORI 官網查證"
   }
  ]
 }

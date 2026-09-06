@@ -153,6 +153,37 @@ const check = (name, ok, extra) => {
     parsed.pois.some((p) => p.name_zh === "測試店家") && parsed.areas.length === expectedAreas,
     `${parsed.areas.length} areas (expected ${expectedAreas}), ${parsed.pois.length} points`);
 
+  // --- tenants sharing a mall's placeholder coordinate (no known OSM
+  // footprint, e.g. Youme Town) must not sit exactly on top of each other:
+  // only the first would ever be visible or tappable, and a tap anywhere near
+  // that point would always resolve to one specific tenant instead of the
+  // mall. tools/add_pois.py spreads such groups apart; check the built data
+  // actually reflects that, and that tapping the mall's own area (not a pin)
+  // still opens the mall.
+  const stackCheck = await page.evaluate(() => {
+    const groups = new Map();
+    for (const p of pois) {
+      if (!p.parent) continue;
+      const key = p.parent + "|" + p.coord.join(",");
+      groups.set(key, (groups.get(key) || 0) + 1);
+    }
+    const worst = Math.max(0, ...groups.values());
+    const mall = areas.find((a) => a.kind === "mall" && a.geometry &&
+      poisUnder(a.id, false).length >= 3);
+    if (!mall) return { worst, mallTap: null };
+    const [lo, la] = mall.label_at || centerOfGeom(mall.geometry);
+    const ring = mall.geometry.coordinates[0] || mall.geometry.coordinates[0][0];
+    const corner = ring[0];
+    view.cx = Proj.x(lo); view.cy = Proj.y(la); view.zoom = 17.5; clampView(); render();
+    const [x, y] = toScreen(corner[0] * 0.6 + lo * 0.4, corner[1] * 0.6 + la * 0.4);
+    return { worst, mallTap: hitTest(x, y), mallId: mall.id };
+  });
+  check("no two points under the same parent share one exact coordinate",
+    stackCheck.worst <= 1, `worst group size: ${stackCheck.worst}`);
+  check("tapping a mall's own area (not a pin) opens the mall",
+    stackCheck.mallTap && stackCheck.mallTap.type === "area" && stackCheck.mallTap.id === stackCheck.mallId,
+    JSON.stringify(stackCheck.mallTap));
+
   // --- the sheet's content scrolls by touch/drag on real overflow content.
   // Regression test for a real bug: #sheet had `touch-action: none`, which
   // (per spec) also silently overrides any touch-action a descendant sets,

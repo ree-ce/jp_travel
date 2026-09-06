@@ -89,6 +89,63 @@ def dist_to_lines_m(pt, geom):
     return best
 
 
+def bbox_of_rings(rings):
+    xs = [p[0] for r in rings for p in r]
+    ys = [p[1] for r in rings for p in r]
+    return min(xs), min(ys), max(xs), max(ys)
+
+
+def spread_coincident_pois(doc):
+    """Nudge apart points that share one exact coordinate under one parent.
+
+    A mall with no known OSM footprint (Youme Town, 瓦町FLAG) gets a single
+    placeholder coordinate, and every tenant added under it inherits that same
+    point verbatim -- fine for the hierarchy (parent/floor), but on the map
+    their pins land exactly on top of each other. Only the first one in
+    drawing order is visible or tappable; tapping that spot selects one
+    specific tenant, never the mall itself. This spreads such a group into a
+    small grid, sized to stay inside the parent's own polygon when it has one.
+    """
+    areas_by_id = {a["id"]: a for a in doc["areas"]}
+    groups: dict[tuple, list[int]] = {}
+    for i, p in enumerate(doc["pois"]):
+        key = (p.get("parent"), tuple(p["coord"]))
+        groups.setdefault(key, []).append(i)
+
+    moved = 0
+    for (parent, coord), idxs in groups.items():
+        if len(idxs) < 2 or parent is None:
+            continue
+        area = areas_by_id.get(parent)
+        # Fit the grid inside the parent's own footprint when we have one, so
+        # spread-out pins never drift outside the shape they belong to.
+        half_w_m, half_h_m = 28.0, 20.0
+        if area and area.get("geometry"):
+            x0, y0, x1, y1 = bbox_of_rings(rings_of(area["geometry"]))
+            kx = 111320 * math.cos(math.radians(coord[1]))
+            half_w_m = min(half_w_m, (x1 - x0) * kx / 2 * 0.7)
+            half_h_m = min(half_h_m, (y1 - y0) * 110540 / 2 * 0.7)
+
+        n = len(idxs)
+        cols = math.ceil(math.sqrt(n))
+        rows = math.ceil(n / cols)
+        kx = 111320 * math.cos(math.radians(coord[1]))
+        for k, i in enumerate(idxs):
+            col, row = k % cols, k // cols
+            # Centre the grid on the original point rather than growing from a corner.
+            fx = (col - (cols - 1) / 2) / max(cols - 1, 1) if cols > 1 else 0
+            fy = (row - (rows - 1) / 2) / max(rows - 1, 1) if rows > 1 else 0
+            dx_m, dy_m = fx * half_w_m, fy * half_h_m
+            doc["pois"][i]["coord"] = [
+                round(coord[0] + dx_m / kx, 6),
+                round(coord[1] + dy_m / 110540, 6),
+            ]
+        moved += n
+    if moved:
+        print(f"  spread {moved} coincident point(s) apart under their shared parent(s)",
+              file=sys.stderr)
+
+
 def assign_parent(pt, areas):
     """The innermost area containing the point, or None."""
     containing = []
@@ -200,6 +257,8 @@ def main() -> int:
         where = names.get(rec["parent"], "（獨立）")
         print(f"  {rec['id']} {rec.get('name_zh') or rec.get('name_ja'):<22} → {where}",
               file=sys.stderr)
+
+    spread_coincident_pois(doc)
 
     city_path.write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"wrote {city_path}: +{added} added, {updated} updated, {skipped} skipped, "
