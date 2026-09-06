@@ -774,7 +774,12 @@ let visibleCats = new Set(prefs.cats || Object.keys(CATEGORIES));
 
 function drawPois() {
   const z = view.zoom;
-  const showLabel = prefs.labels && z >= 16.2;
+  // Matches the area-label threshold: collision avoidance in flushLabels()
+  // already thins out crowded clusters, so gating this much higher than that
+  // (it used to require z>=16.2, well past the default 15.4 view) just hid
+  // every point label at rest, including isolated pins with nothing to
+  // collide with.
+  const showLabel = prefs.labels && z >= 14.6;
   ctx.textAlign = "center";
   for (const p of pois) {
     if (!visibleCats.has(p.cat || "other")) continue;
@@ -1004,7 +1009,7 @@ canvas.addEventListener("wheel", (e) => {
   // (that's the standard way Chrome/Firefox represent a pinch gesture on a
   // trackpad) -- it does NOT go through the touch-pinch handler below, so
   // it needed its own speed-up, separate from PINCH_SENSITIVITY.
-  const WHEEL_ZOOM_SENSITIVITY = e.ctrlKey ? 0.011 : 0.0055;
+  const WHEEL_ZOOM_SENSITIVITY = e.ctrlKey ? 0.022 : 0.0055;
   view.zoom -= (e.deltaMode === 1 ? e.deltaY * 20 : e.deltaY) * WHEEL_ZOOM_SENSITIVITY;
   clampView();
   const after = toLngLat(e.clientX, e.clientY);
@@ -1012,6 +1017,29 @@ canvas.addEventListener("wheel", (e) => {
   view.cy += Proj.y(before[1]) - Proj.y(after[1]);
   clampView(); draw();
 }, { passive: false });
+
+// Safari's trackpad pinch-to-zoom does NOT fire wheel events at all -- it's
+// a WebKit-only gesture API (gesturestart/change/end with a `scale` factor),
+// completely separate from the wheel+ctrlKey convention Chrome and Firefox
+// use. Without this, pinching on a Mac trackpad in Safari either does
+// nothing or falls through to Safari's own page-zoom, neither of which is
+// "slow" so much as "not this app responding at all".
+let gestureStartZoom = 0;
+canvas.addEventListener("gesturestart", (e) => {
+  e.preventDefault();
+  gestureStartZoom = view.zoom;
+});
+canvas.addEventListener("gesturechange", (e) => {
+  e.preventDefault();
+  const before = toLngLat(e.clientX, e.clientY);
+  view.zoom = gestureStartZoom + Math.log2(Math.max(0.05, e.scale)) * 1.6;
+  clampView();
+  const after = toLngLat(e.clientX, e.clientY);
+  view.cx += Proj.x(before[0]) - Proj.x(after[0]);
+  view.cy += Proj.y(before[1]) - Proj.y(after[1]);
+  clampView(); draw();
+});
+canvas.addEventListener("gestureend", (e) => e.preventDefault());
 
 canvas.addEventListener("dblclick", (e) => {
   flyTo(...toLngLat(e.clientX, e.clientY), view.zoom + 1);
