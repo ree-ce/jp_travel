@@ -73,16 +73,25 @@ QUERIES: list[tuple[str, list[str]]] = [
         [f'way["highway"~"^({ROAD_KINDS})$"]'],
     ),
     (
-        "features",
+        "water_rail_green",
         [
             'way["natural"="coastline"]',
             'way["natural"="water"]',
             'way["waterway"~"^(river|stream|canal|riverbank)$"]',
             'way["railway"~"^(rail|light_rail|tram)$"]',
             'way["leisure"~"^(park|garden)$"]',
+            'node["railway"="station"]',
+        ],
+    ),
+    (
+        # Split from the above: named buildings are the densest tag scan and
+        # a wider bbox pushes this past what the public mirrors will finish
+        # in one query -- keeping it separate means it retries on its own
+        # instead of re-paying for the (already-cheap) water/rail/green query.
+        "buildings_shops",
+        [
             'way["building"]["name"]',
             'way["shop"~"^(mall|department_store|supermarket)$"]',
-            'node["railway"="station"]',
         ],
     ),
 ]
@@ -137,7 +146,7 @@ def overpass(query: str, timeout: int = 90) -> dict:
     """POST an Overpass QL query, walking the mirror list and retrying."""
     body = urllib.parse.urlencode({"data": query}).encode()
     last: Exception | None = None
-    for attempt in range(2):
+    for attempt in range(3):
         for url in ENDPOINTS:
             host = url.split("/")[2]
             t0 = time.time()
@@ -153,9 +162,10 @@ def overpass(query: str, timeout: int = 90) -> dict:
                 last = exc
                 print(f"    ! {host} after {time.time() - t0:.0f}s: {exc}",
                       file=sys.stderr, flush=True)
-        if attempt == 0:
-            print("    retrying in 5s ...", file=sys.stderr, flush=True)
-            time.sleep(5)
+        if attempt < 2:
+            wait = 8 * (attempt + 1)
+            print(f"    retrying in {wait}s ...", file=sys.stderr, flush=True)
+            time.sleep(wait)
     raise RuntimeError(f"all Overpass mirrors failed: {last}")
 
 
@@ -231,7 +241,14 @@ def raw_elements(city: str, bbox) -> list[dict]:
                   file=sys.stderr, flush=True)
         else:
             print(f"  · {name} ...", file=sys.stderr, flush=True)
-            payload = overpass(build_query(selectors, bbox, True))
+            try:
+                payload = overpass(build_query(selectors, bbox, True))
+            except RuntimeError as exc:
+                # One query dying shouldn't cost us everything else that
+                # already succeeded and is cached -- write what we have and
+                # let a re-run retry just this one (cache-miss picks it up).
+                print(f"    SKIPPED {name}: {exc}", file=sys.stderr, flush=True)
+                continue
             cache.write_text(json.dumps(payload), encoding="utf-8")
             print(f"    {len(payload.get('elements', []))} elements",
                   file=sys.stderr, flush=True)
