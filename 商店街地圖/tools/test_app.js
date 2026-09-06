@@ -49,7 +49,8 @@ const check = (name, ok, extra) => {
   await page.waitForTimeout(400);
   const kids = await page.evaluate(() =>
     [...document.querySelectorAll("#sheetbody [data-area]")].map((e) => e.dataset.area));
-  check("group lists its arcades", kids.length === 8, `${kids.length} children`);
+  const expectedKids = await page.evaluate(() => childAreas("GRP-CENTRAL").length);
+  check("group lists its arcades", kids.length === expectedKids, `${kids.length} of ${expectedKids} children`);
 
   // --- the arcade a mall sits on counts the mall's points as its own
   const deep = await page.evaluate(() =>

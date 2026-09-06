@@ -161,6 +161,17 @@ CITY_CONFIG = {
                 "note": "香川県丸亀市新田町150。OSM 無建物輪廓，範圍為依地址座標估算的示意方框（約 120×80m），非實際外觀。",
                 "box_m": [60, 40],
             },
+            {
+                "id": "MALL-FLAG", "name_ja": "瓦町FLAG",
+                "name_zh": "瓦町 FLAG",
+                "center": [134.0525472, 34.3389917],
+                "floors": ["1F", "2F", "3F", "4F", "5F"],
+                "note": "香川県高松市常磐町1-3-1，直接連通琴電瓦町駅（コトデン瓦町ビル）。"
+                        "單棟建物，地上約 8-10 層＋地下 3 層，商業樓地板約 29,700㎡，2015 年開幕。"
+                        "1F Starbucks、1-2F Beams、3F 丸善書店／駿河屋、4F 大創 DAISO、5F 阿卡將本舖。"
+                        "OSM 無此建物輪廓（附近的「瓦町ビル」way 是另一棟建物），範圍為依地址座標估算的示意方框（約 100×80m），非實際外觀。",
+                "box_m": [50, 40],
+            },
         ],
     },
 }
@@ -270,6 +281,19 @@ def main() -> int:
             seen.add(osm)
         feats.append(f)
 
+    # Fallback source for an arcade whose street simply isn't tagged
+    # highway=pedestrian in OSM (so it never became an area candidate) --
+    # e.g. 御坊町通り is mapped as an ordinary unclassified road. Matching
+    # against the basemap's road layers picks up its real geometry instead of
+    # leaving the street with no shape at all.
+    basemap_path = DATA_DIR / f"{city}_basemap.json"
+    road_feats = []
+    if basemap_path.exists():
+        basemap = json.loads(basemap_path.read_text(encoding="utf-8"))
+        road_feats = [f for f in basemap["features"]
+                      if f["properties"].get("layer") in
+                      ("road_minor", "road_mid", "road_major", "footway")]
+
     out_path = DATA_DIR / f"{city}.json"
     existing = json.loads(out_path.read_text(encoding="utf-8")) if out_path.exists() else {}
     kept_pois = existing.get("pois", [])
@@ -290,6 +314,12 @@ def main() -> int:
                   if f["properties"].get("name")
                   and matches(f["properties"]["name"], spec["match"])
                   and f["geometry"]["type"] in ("LineString", "MultiLineString")]
+        fallback = False
+        if not picked and road_feats:
+            picked = [f for f in road_feats
+                      if f["properties"].get("name")
+                      and matches(f["properties"]["name"], spec["match"])]
+            fallback = bool(picked)
         lines = [ln for f in picked for ln in lines_of(f) if len(ln) >= 2]
         if not lines:
             level = "note" if spec.get("optional") else "WARN"
@@ -302,6 +332,11 @@ def main() -> int:
         area["label_at"] = label_point(lines)
         sources[spec["id"]] = sorted({f["properties"]["osm"] for f in picked})
         area["source"] = sources[spec["id"]]
+        if fallback:
+            area["note"] = (area.get("note", "") +
+                             ("　" if area.get("note") else "") +
+                             "（OSM 未標記為行人徒步區，此為一般道路幾何，非拱廊實測輪廓。）")
+            print(f"  note: {spec['id']} used ordinary-road fallback geometry", file=sys.stderr)
         areas.append(area)
 
     for spec in cfg.get("malls", []):
