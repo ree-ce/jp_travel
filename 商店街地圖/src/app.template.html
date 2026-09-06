@@ -166,10 +166,13 @@
     display: flex; flex-direction: column;
     transform: translateY(100%);
     transition: transform .25s cubic-bezier(.2, .8, .3, 1);
-    touch-action: none;
   }
   #sheet.anim-off { transition: none; }
-  #grip { padding: 9px 0 5px; flex: none; cursor: grab; }
+  /* touch-action lives on #grip alone, not #sheet: a value here would apply
+     to every descendant (touch-action only narrows down an ancestor's value,
+     never re-opens it), which silently defeated #sheetbody's own `pan-y` and
+     made the content area impossible to scroll by touch. */
+  #grip { padding: 9px 0 5px; flex: none; cursor: grab; touch-action: none; }
   #grip::before {
     content: ""; display: block; width: 40px; height: 4px; margin: 0 auto;
     border-radius: 2px; background: var(--edge);
