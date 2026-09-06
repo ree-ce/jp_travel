@@ -2162,10 +2162,10 @@
     134.046584,
     34.352451
    ],
+   "parent": "MALL-MARITIME",
    "floor": "29F",
    "note": "免費入場。サンポート高松内，高松港旁的地標大樓。360度環景，可望瀬戸內海、屋島、市區天際線。",
-   "source": "symboltower.com 官方網站查證",
-   "parent": null
+   "source": "symboltower.com 官方網站查證"
   },
   {
    "id": "P058",
@@ -2179,6 +2179,20 @@
    "note": "落腳處。位於通町商店街內，近 JR 丸龜站。",
    "source": "OSM way/1117982585、superhoteljapan.com 官方網站查證",
    "parent": null
+  },
+  {
+   "id": "P059",
+   "name_zh": "扭蛋之森 海洋廣場高松店",
+   "name_ja": "ガチャガチャの森 マリタイムプラザ高松店",
+   "cat": "shop",
+   "coord": [
+    134.047193,
+    34.352787
+   ],
+   "parent": "MALL-MARITIME",
+   "floor": "2F",
+   "note": "2026/8/1 開幕，736 台扭蛋機，香川縣內規模最大。",
+   "source": "gashapon.jp 官方店舖目錄、Yahoo!ニュース查證"
   }
  ]
 }
