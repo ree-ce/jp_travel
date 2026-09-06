@@ -184,6 +184,27 @@ const check = (name, ok, extra) => {
     stackCheck.mallTap && stackCheck.mallTap.type === "area" && stackCheck.mallTap.id === stackCheck.mallId,
     JSON.stringify(stackCheck.mallTap));
 
+  // --- a POI's breadcrumb must let you get back to its parent mall. Regression
+  // test for a real bug: crumbHtml() always bolded (and made inert) the last
+  // segment, which is correct for an area's own panel (the last segment IS
+  // that page) but wrong for a POI's panel, where the crumb shows only
+  // ancestor areas -- none of them is "the current page", so all of them,
+  // including the immediate parent, should stay clickable.
+  const poiWithParent = await page.evaluate(() => pois.find((p) => p.parent));
+  await page.evaluate((id) => select({ type: "poi", id }, { fly: false }), poiWithParent.id);
+  await page.waitForTimeout(200);
+  const crumbLinks = await page.evaluate(() =>
+    [...document.querySelectorAll("#sheetbody .crumb [data-goto]")].map((e) => e.dataset.goto));
+  check("a POI's breadcrumb includes its immediate parent as a clickable link",
+    crumbLinks.includes(poiWithParent.parent), JSON.stringify(crumbLinks));
+  if (crumbLinks.length) {
+    await page.click(`#sheetbody .crumb [data-goto='${crumbLinks[crumbLinks.length - 1]}']`);
+    await page.waitForTimeout(200);
+    const sel = await page.evaluate(() => selection);
+    check("clicking a POI's breadcrumb navigates back to that area",
+      sel && sel.type === "area" && sel.id === poiWithParent.parent, JSON.stringify(sel));
+  }
+
   // --- the sheet's content scrolls by touch/drag on real overflow content.
   // Regression test for a real bug: #sheet had `touch-action: none`, which
   // (per spec) also silently overrides any touch-action a descendant sets,

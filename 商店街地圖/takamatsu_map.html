@@ -956,7 +956,7 @@ canvas.addEventListener("pointermove", (e) => {
     // log2(dist ratio) is physically 1:1 with finger movement -- doubling the
     // finger spread earns exactly one zoom level. That felt like too many
     // repeats of the gesture to get anywhere, so amplify it.
-    const PINCH_SENSITIVITY = 1.8;
+    const PINCH_SENSITIVITY = 2.8;
     view.zoom = gesture.zoom + Math.log2(Math.max(0.05, dist / gesture.dist)) * PINCH_SENSITIVITY;
     clampView();
     const after = toLngLat(mx, my);
@@ -1000,7 +1000,12 @@ function glide() {
 canvas.addEventListener("wheel", (e) => {
   e.preventDefault();
   const before = toLngLat(e.clientX, e.clientY);
-  view.zoom -= (e.deltaMode === 1 ? e.deltaY * 20 : e.deltaY) * 0.0022;
+  // Trackpad two-finger zoom arrives here as wheel events with ctrlKey set
+  // (that's the standard way Chrome/Firefox represent a pinch gesture on a
+  // trackpad) -- it does NOT go through the touch-pinch handler below, so
+  // it needed its own speed-up, separate from PINCH_SENSITIVITY.
+  const WHEEL_ZOOM_SENSITIVITY = e.ctrlKey ? 0.011 : 0.0055;
+  view.zoom -= (e.deltaMode === 1 ? e.deltaY * 20 : e.deltaY) * WHEEL_ZOOM_SENSITIVITY;
   clampView();
   const after = toLngLat(e.clientX, e.clientY);
   view.cx += Proj.x(before[0]) - Proj.x(after[0]);
@@ -1132,10 +1137,14 @@ function esc(s) {
   return String(s == null ? "" : s).replace(/[&<>"']/g,
     (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
-function crumbHtml(area) {
+// `currentIsLast` controls whether the final crumb segment is the page being
+// shown (bold, inert -- the area panel itself) or just its nearest ancestor,
+// which should stay a clickable way back (a POI's own panel is not part of
+// this chain, so nothing in it is "the current page").
+function crumbHtml(area, currentIsLast = true) {
   const chain = ancestry(area);
   return chain.map((a, i) =>
-    i === chain.length - 1
+    (currentIsLast && i === chain.length - 1)
       ? `<b>${esc(nameOf(a))}</b>`
       : `<a href="#" data-goto="${esc(a.id)}" style="color:inherit">${esc(nameOf(a))}</a>`
   ).join(" › ");
@@ -1219,7 +1228,7 @@ function renderPoi(p) {
   const cat = CATEGORIES[p.cat] || CATEGORIES.other;
   const parent = p.parent ? areaById.get(p.parent) : null;
   let html = "";
-  if (parent) html += `<div class="crumb">${crumbHtml(parent)}</div>`;
+  if (parent) html += `<div class="crumb">${crumbHtml(parent, false)}</div>`;
   html += `<h1 class="title">${cat.glyph} ${esc(nameOf(p))}<span class="badge">${cat.zh}</span></h1>`;
   const sub = [subnameOf(p), p.floor ? `${p.floor} 樓層` : ""].filter(Boolean).join(" · ");
   if (sub) html += `<div class="subtitle">${esc(sub)}</div>`;
