@@ -180,7 +180,12 @@
   #sheetbody {
     flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
     padding: 0 16px calc(env(safe-area-inset-bottom, 0px) + 20px);
-    touch-action: pan-y;
+    /* Scrolling here is driven entirely by JS pointer handlers (see the
+       script), not by native touch-scroll -- that combination proved
+       unreliable in at least one real Android environment. `touch-action:
+       none` stops the browser from also trying to handle the gesture itself
+       and fighting our own scrollTop updates. */
+    touch-action: none;
   }
   .crumb { font-size: 12px; color: var(--ink-soft); margin-bottom: 3px; }
   .crumb b { font-weight: 600; }
@@ -1040,27 +1045,41 @@ function setSheet(state) {
 }
 function closeSheet() { selection = null; setSheet("closed"); draw(); }
 
+// Dragging the sheet itself (open/half/closed), factored out so both the
+// grip handle and a "pulled past the top of the list" handoff (see the
+// sheetBody handlers below) can drive the exact same motion.
+function sheetDragBase() {
+  const m = /translateY\(([-\d.]+)px\)/.exec(sheet.style.transform);
+  return m ? parseFloat(m[1]) : 0;
+}
+function moveSheetDrag(baseY, clientY, startClientY) {
+  if (isSideSheet()) return;
+  const h = sheet.getBoundingClientRect().height;
+  const y = Math.max(0, Math.min(h, baseY + (clientY - startClientY)));
+  sheet.style.transform = `translateY(${y}px)`;
+}
+function endSheetDrag(baseY, clientY, startClientY) {
+  const h = sheet.getBoundingClientRect().height;
+  const y = Math.max(0, Math.min(h, baseY + (clientY - startClientY)));
+  const r = y / h;
+  setSheet(r > 0.75 ? "closed" : r > 0.28 ? "half" : "full");
+}
+
 let dragStart = null;
 grip.addEventListener("pointerdown", (e) => {
   if (isSideSheet()) return;
   grip.setPointerCapture(e.pointerId);
-  const m = /translateY\(([-\d.]+)px\)/.exec(sheet.style.transform);
-  dragStart = { y: e.clientY, base: m ? parseFloat(m[1]) : 0 };
+  dragStart = { y: e.clientY, base: sheetDragBase() };
   sheet.classList.add("anim-off");
 });
 grip.addEventListener("pointermove", (e) => {
   if (!dragStart) return;
-  const h = sheet.getBoundingClientRect().height;
-  const y = Math.max(0, Math.min(h, dragStart.base + (e.clientY - dragStart.y)));
-  sheet.style.transform = `translateY(${y}px)`;
+  moveSheetDrag(dragStart.base, e.clientY, dragStart.y);
 });
 grip.addEventListener("pointerup", (e) => {
   if (!dragStart) return;
-  const h = sheet.getBoundingClientRect().height;
-  const y = Math.max(0, Math.min(h, dragStart.base + (e.clientY - dragStart.y)));
+  endSheetDrag(dragStart.base, e.clientY, dragStart.y);
   dragStart = null;
-  const r = y / h;
-  setSheet(r > 0.75 ? "closed" : r > 0.28 ? "half" : "full");
 });
 
 /* ---- selection & sheet content --------------------------------------- */
@@ -1209,6 +1228,85 @@ function credits() {
 function setBody(html) {
   sheetBody.innerHTML = html;
   sheetBody.scrollTop = 0;
+}
+
+// Manual scroll for the sheet's content, driven by pointer events instead of
+// native overflow-y:auto + touch-action:pan-y. The native combination proved
+// unreliable in at least one real Android environment (an earlier CSS-only
+// fix for a touch-action inheritance bug did not resolve it there) -- rather
+// than keep debugging platform/embedding-specific native-scroll quirks, this
+// takes full manual control the same way the map's own pan and the grip's
+// resize gesture already do, which are known to work everywhere.
+let bodyDrag = null;
+let bodyVelocity = 0, bodyLastY = 0, bodyLastT = 0;
+
+sheetBody.addEventListener("pointerdown", (e) => {
+  // Let native behaviour through for anything interactive: form controls need
+  // real focus/click/text-selection, not to be hijacked as a scroll gesture.
+  if (e.target.closest("input,textarea,select,button,a,[contenteditable]")) return;
+  bodyDrag = {
+    id: e.pointerId, y: e.clientY, scrollTop: sheetBody.scrollTop, moved: false,
+    mode: "scroll", sheetBase: 0,
+  };
+  bodyVelocity = 0; bodyLastY = e.clientY; bodyLastT = performance.now();
+});
+sheetBody.addEventListener("pointermove", (e) => {
+  if (!bodyDrag || e.pointerId !== bodyDrag.id) return;
+  const dy = e.clientY - bodyDrag.y;
+  if (!bodyDrag.moved) {
+    if (Math.abs(dy) < 6) return;
+    bodyDrag.moved = true;
+    try { sheetBody.setPointerCapture(bodyDrag.id); } catch (_) { /* ignore */ }
+  }
+  if (bodyDrag.mode === "sheet") {
+    moveSheetDrag(bodyDrag.sheetBase, e.clientY, bodyDrag.y);
+    return;
+  }
+  e.preventDefault();
+  const max = sheetBody.scrollHeight - sheetBody.clientHeight;
+  const target = bodyDrag.scrollTop - dy;
+  if (target < 0) {
+    // Already at the top and still pulling down: switch to dragging the
+    // sheet itself (open/half/closed), which feels natural and mirrors most
+    // native bottom sheets, instead of just refusing to move further.
+    sheetBody.scrollTop = 0;
+    bodyDrag.mode = "sheet";
+    bodyDrag.sheetBase = sheetDragBase();
+    sheet.classList.add("anim-off");
+    moveSheetDrag(bodyDrag.sheetBase, e.clientY, bodyDrag.y);
+    return;
+  }
+  sheetBody.scrollTop = Math.max(0, Math.min(max, target));
+  const now = performance.now();
+  const dt = Math.max(8, now - bodyLastT);
+  bodyVelocity = (e.clientY - bodyLastY) / dt;
+  bodyLastY = e.clientY; bodyLastT = now;
+});
+function endBodyDrag(e) {
+  if (!bodyDrag || e.pointerId !== bodyDrag.id) return;
+  if (bodyDrag.mode === "sheet") {
+    endSheetDrag(bodyDrag.sheetBase, e.clientY, bodyDrag.y);
+  } else if (Math.abs(bodyVelocity) > 0.12) {
+    bodyGlide();
+  }
+  bodyDrag = null;
+}
+sheetBody.addEventListener("pointerup", endBodyDrag);
+sheetBody.addEventListener("pointercancel", endBodyDrag);
+
+function bodyGlide() {
+  let v = bodyVelocity;
+  const step = () => {
+    if (bodyDrag) return;
+    const max = sheetBody.scrollHeight - sheetBody.clientHeight;
+    const next = sheetBody.scrollTop - v * 16;
+    sheetBody.scrollTop = Math.max(0, Math.min(max, next));
+    v *= 0.92;
+    if ((sheetBody.scrollTop > 0 && sheetBody.scrollTop < max) && Math.abs(v) > 0.02) {
+      requestAnimationFrame(step);
+    }
+  };
+  requestAnimationFrame(step);
 }
 
 sheetBody.addEventListener("click", (e) => {

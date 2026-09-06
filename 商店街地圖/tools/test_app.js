@@ -153,6 +153,50 @@ const check = (name, ok, extra) => {
     parsed.pois.some((p) => p.name_zh === "測試店家") && parsed.areas.length === expectedAreas,
     `${parsed.areas.length} areas (expected ${expectedAreas}), ${parsed.pois.length} points`);
 
+  // --- the sheet's content scrolls by touch/drag on real overflow content.
+  // Regression test for a real bug: #sheet had `touch-action: none`, which
+  // (per spec) also silently overrides any touch-action a descendant sets,
+  // so #sheetbody's native touch-scroll never actually worked on at least one
+  // real Android device even though it looked fine in every desktop check.
+  // Scrolling is now driven by JS pointer handlers instead of relying on
+  // native touch-scroll at all -- this drags on #sheetbody itself, so a
+  // regression back to "native scroll only" would fail here too.
+  const scrollCase = await page.evaluate(() => {
+    for (const a of areas) {
+      select({ type: "area", id: a.id }, { fly: false });
+      const el = document.getElementById("sheetbody");
+      if (el.scrollHeight - el.clientHeight > 40) return { id: a.id, max: el.scrollHeight - el.clientHeight };
+    }
+    return null;
+  });
+  check("found a panel with real overflow to test scrolling", !!scrollCase, JSON.stringify(scrollCase));
+  if (scrollCase) {
+    await page.evaluate((id) => select({ type: "area", id }, { fly: false }), scrollCase.id);
+    const box = await page.locator("#sheetbody").boundingBox();
+    const vh = await page.evaluate(() => window.innerHeight);
+    const yStart = Math.min(box.y + box.height, vh) - 20;
+    const yEnd = box.y + 40;
+    await page.mouse.move(box.x + box.width / 2, yStart);
+    await page.mouse.down();
+    for (let i = 1; i <= 12; i++) {
+      await page.mouse.move(box.x + box.width / 2, yStart + (yEnd - yStart) * i / 12);
+    }
+    await page.mouse.up();
+    await page.waitForTimeout(200);
+    const scrolled = await page.evaluate(() => document.getElementById("sheetbody").scrollTop);
+    check("dragging the sheet content scrolls it", scrolled > 0, `scrollTop=${scrolled} of max ${scrollCase.max}`);
+
+    // A row is still tappable after scrolling (drag-to-scroll must not eat taps).
+    await page.evaluate(() => { document.getElementById("sheetbody").scrollTop = 0; });
+    const rowLocator = page.locator("#sheetbody [data-area],#sheetbody [data-poi]").first();
+    if (await rowLocator.count()) {
+      await rowLocator.click();
+      await page.waitForTimeout(200);
+      const sel = await page.evaluate(() => selection);
+      check("a row is still tappable after enabling drag-scroll", !!sel, JSON.stringify(sel));
+    }
+  }
+
   // --- category filter hides pins
   const shown = await page.evaluate(() => {
     visibleCats = new Set(["transit"]);
