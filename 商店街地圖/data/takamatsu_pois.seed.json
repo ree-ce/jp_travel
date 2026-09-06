@@ -1,0 +1,65 @@
+[
+ {
+  "id": "P001",
+  "name_ja": "肉料理ひらい",
+  "name_zh": "肉料理 HIRAI",
+  "cat": "restaurant",
+  "osm": "way/430191814",
+  "note": "示範標記。位置取自 OSM 建物輪廓中心。"
+ },
+ {
+  "id": "P002",
+  "name_ja": "ケヤキカフェ",
+  "name_zh": "櫸樹咖啡",
+  "cat": "cafe",
+  "osm": "way/1293007066",
+  "note": "示範標記。"
+ },
+ {
+  "id": "P003",
+  "name_ja": "海鮮食堂 おくどさん",
+  "name_zh": "海鮮食堂 OKUDOSAN",
+  "cat": "restaurant",
+  "osm": "way/1124906672",
+  "note": "示範標記。"
+ },
+ {
+  "id": "P004",
+  "name_ja": "ふくしま屋",
+  "name_zh": "福島屋",
+  "cat": "shop",
+  "osm": "way/840968536",
+  "note": "示範標記。"
+ },
+ {
+  "id": "P005",
+  "name_ja": "高松駅",
+  "name_zh": "JR 高松站",
+  "cat": "transit",
+  "osm": "node/8667971394"
+ },
+ {
+  "id": "P006",
+  "name_ja": "瓦町駅",
+  "name_zh": "瓦町站",
+  "cat": "transit",
+  "osm": "node/8067577865"
+ },
+ {
+  "id": "P007",
+  "name_ja": "高松築港駅",
+  "name_zh": "高松築港站",
+  "cat": "transit",
+  "osm": "node/6887308113"
+ },
+ {
+  "id": "P008",
+  "name_zh": "（示範）樓層標記",
+  "name_ja": "（デモ）フロア表示",
+  "cat": "shop",
+  "coord": [134.04938, 34.34228],
+  "parent": "MALL-GREEN",
+  "floor": "3F",
+  "note": "純示範，用來展示「店 → 商場 → 商店街 → 商店街群」的階層與樓層分組。確認過後可以直接刪掉。"
+ }
+]
