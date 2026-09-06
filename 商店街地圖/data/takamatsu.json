@@ -925,13 +925,13 @@
    "name_ja": "高松丸亀町壱番街",
    "name_zh": "丸龜町壹番街",
    "floors": [
-    "B1",
     "1F",
     "2F",
     "3F",
-    "4F"
+    "4F",
+    "5F"
    ],
-   "note": "丸亀町重建的第一街區，東館與西館夾著大鐘樓廣場。",
+   "note": "丸亀町重建的第一街區，東館與西館夾著大鐘樓廣場，與高松三越相連。東館 1F：Rolex、Gucci、Brooks Brothers；西館 1F：Tiffany & Co.；4F 有小型會館與餐廳，5F 以上為住宅。精品購物廊道，非平價商場。",
    "kind": "mall",
    "geometry": {
     "type": "MultiPolygon",
@@ -1037,111 +1037,6 @@
    "source": [
     "way/380087677",
     "way/380087678"
-   ]
-  },
-  {
-   "id": "MALL-SANBANGAI",
-   "parent": "ARC-MARUGAMEMACHI",
-   "name_ja": "高松丸亀町参番街",
-   "name_zh": "丸龜町參番街",
-   "floors": [
-    "1F",
-    "2F",
-    "3F"
-   ],
-   "kind": "mall",
-   "geometry": {
-    "type": "MultiPolygon",
-    "coordinates": [
-     [
-      [
-       [
-        134.050296,
-        34.3446387
-       ],
-       [
-        134.0505741,
-        34.3445993
-       ],
-       [
-        134.0505571,
-        34.3445175
-       ],
-       [
-        134.0507955,
-        34.3444837
-       ],
-       [
-        134.0507492,
-        34.3442614
-       ],
-       [
-        134.050319,
-        34.3443226
-       ],
-       [
-        134.0503214,
-        34.3443385
-       ],
-       [
-        134.0502589,
-        34.3443442
-       ],
-       [
-        134.0502423,
-        34.344366
-       ],
-       [
-        134.050296,
-        34.3446387
-       ]
-      ]
-     ],
-     [
-      [
-       [
-        134.0498535,
-        34.3448291
-       ],
-       [
-        134.049928,
-        34.3448189
-       ],
-       [
-        134.0501402,
-        34.3447901
-       ],
-       [
-        134.0500916,
-        34.3445459
-       ],
-       [
-        134.0499974,
-        34.3445587
-       ],
-       [
-        134.0500073,
-        34.344608
-       ],
-       [
-        134.0498147,
-        34.3446342
-       ],
-       [
-        134.0498535,
-        34.3448291
-       ]
-      ]
-     ]
-    ]
-   },
-   "label_at": [
-    134.0505189,
-    34.34445005
-   ],
-   "source": [
-    "way/380257759",
-    "way/380257760"
    ]
   },
   {
@@ -1347,6 +1242,95 @@
    "source": [
     "way/788612206"
    ]
+  },
+  {
+   "id": "MALL-YUME-TAKAMATSU",
+   "name_ja": "ゆめタウン高松",
+   "name_zh": "Youme Town 高松",
+   "floors": [
+    "1F",
+    "2F",
+    "3F"
+   ],
+   "note": "香川県高松市三条町608-1。OSM 無建物輪廓，範圍為依地址座標估算的示意方框（約 120×80m），非實際外觀。",
+   "kind": "mall",
+   "parent": null,
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       134.04105742150864,
+       34.31634814003981
+      ],
+      [
+       134.04236257849135,
+       34.31634814003981
+      ],
+      [
+       134.04236257849135,
+       34.317071859960194
+      ],
+      [
+       134.04105742150864,
+       34.317071859960194
+      ],
+      [
+       134.04105742150864,
+       34.31634814003981
+      ]
+     ]
+    ]
+   },
+   "label_at": [
+    134.04171,
+    34.31671
+   ],
+   "source": "manual (verified address lookup, no OSM footprint)"
+  },
+  {
+   "id": "MALL-YUME-MARUGAME",
+   "name_ja": "ゆめタウン丸亀",
+   "name_zh": "Youme Town 丸龜",
+   "floors": [
+    "1F",
+    "2F"
+   ],
+   "note": "香川県丸亀市新田町150。OSM 無建物輪廓，範圍為依地址座標估算的示意方框（約 120×80m），非實際外觀。",
+   "kind": "mall",
+   "parent": null,
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       133.78475075683983,
+       34.273169140039805
+      ],
+      [
+       133.78605524316018,
+       34.273169140039805
+      ],
+      [
+       133.78605524316018,
+       34.27389285996019
+      ],
+      [
+       133.78475075683983,
+       34.27389285996019
+      ],
+      [
+       133.78475075683983,
+       34.273169140039805
+      ]
+     ]
+    ]
+   },
+   "label_at": [
+    133.785403,
+    34.273531
+   ],
+   "source": "manual (verified address lookup, no OSM footprint)"
   }
  ],
  "pois": [
@@ -1387,18 +1371,6 @@
    "source": "node/6887308113"
   },
   {
-   "id": "P010",
-   "name_zh": "丸龜町 GREEN（LoFt・寶可夢中心）",
-   "name_ja": "丸亀町グリーン",
-   "cat": "shop",
-   "coord": [
-    134.048,
-    34.341
-   ],
-   "note": "☂️ Amvel Pentagon Large（79g 極輕傘）\n☂️ Wpc. IZA ZA003（106cm 大傘面晴雨傘）\n寶可夢中心（呆呆獸周邊）、美妝雜貨",
-   "parent": null
-  },
-  {
    "id": "P011",
    "name_zh": "Mont-bell 高松店",
    "name_ja": "モンベル高松店",
@@ -1409,30 +1381,6 @@
    ],
    "note": "☂️ Trekking Umbrella L / Long Tail（輕量加大傘）\n輕羽絨外套、GORE-TEX 防水機能服飾",
    "parent": "ARC-TAMACHI"
-  },
-  {
-   "id": "P012",
-   "name_zh": "Youme Town 高松",
-   "name_ja": "ゆめタウン高松",
-   "cat": "shop",
-   "coord": [
-    134.048,
-    34.316
-   ],
-   "note": "☂️ Wpc. IZA 系列雨傘（雜貨區）\nUNIQLO、GU、無印良品、EDION 電器",
-   "parent": null
-  },
-  {
-   "id": "P013",
-   "name_zh": "Youme Town 丸龜",
-   "name_ja": "ゆめタウン丸亀",
-   "cat": "shop",
-   "coord": [
-    133.805,
-    34.298
-   ],
-   "note": "☂️ Wpc. IZA 系列雨傘（雜貨區）\nStandard Products、3COINS、宜得利",
-   "parent": null
   },
   {
    "id": "P014",
@@ -1564,6 +1512,156 @@
     34.338
    ],
    "note": "日本威士忌（知多、碧）、梅酒、在地高級清酒",
+   "parent": null
+  },
+  {
+   "id": "P028",
+   "name_zh": "ABC-MART Youme Town 高松店",
+   "name_ja": "ABC-MART ゆめタウン高松店",
+   "cat": "shop",
+   "coord": [
+    134.04171,
+    34.31671
+   ],
+   "parent": "MALL-YUME-TAKAMATSU",
+   "floor": "2F",
+   "note": "各品牌運動鞋、休閒鞋款式齊全。座標=商場中心（實際店位在 2F 內，精確門市座標未查得）。",
+   "source": "izumi.jp 官方租戶目錄，2025 查證"
+  },
+  {
+   "id": "P029",
+   "name_zh": "3COINS Youme Town 高松店",
+   "name_ja": "3COINS+plus ゆめタウン高松店",
+   "cat": "shop",
+   "coord": [
+    134.04171,
+    34.31671
+   ],
+   "parent": "MALL-YUME-TAKAMATSU",
+   "floor": "2F",
+   "note": "300 日圓起生活雜貨、居家收納、日系餐具。",
+   "source": "izumi.jp 官方租戶目錄，2025 查證"
+  },
+  {
+   "id": "P030",
+   "name_zh": "ABC-MART Youme Town 丸龜店",
+   "name_ja": "ABC-MART ゆめタウン丸亀店",
+   "cat": "shop",
+   "coord": [
+    133.785403,
+    34.273531
+   ],
+   "parent": "MALL-YUME-MARUGAME",
+   "floor": "1F",
+   "note": "丸龜市區主力商場內，休閒鞋、家庭童鞋齊全。",
+   "source": "izumi.jp 官方租戶目錄，2025 查證"
+  },
+  {
+   "id": "P031",
+   "name_zh": "3COINS Youme Town 丸龜店",
+   "name_ja": "3COINS+plus ゆめタウン丸亀店",
+   "cat": "shop",
+   "coord": [
+    133.785403,
+    34.273531
+   ],
+   "parent": "MALL-YUME-MARUGAME",
+   "floor": "1F",
+   "note": "300 日圓爆紅收納、廚房生活雜貨。",
+   "source": "izumi.jp 官方租戶目錄，2025 查證"
+  },
+  {
+   "id": "P032",
+   "name_zh": "Standard Products Youme Town 丸龜店",
+   "name_ja": "Standard Products ゆめタウン丸亀店",
+   "cat": "shop",
+   "coord": [
+    133.785403,
+    34.273531
+   ],
+   "parent": "MALL-YUME-MARUGAME",
+   "floor": "2F",
+   "note": "大創高階副牌，無印簡約風木質餐具、居家香氛（¥300~1000）。",
+   "source": "izumi.jp 官方租戶目錄，2025 查證"
+  },
+  {
+   "id": "P033",
+   "name_zh": "寶可夢中心 香川",
+   "name_ja": "ポケモンセンターカガワ",
+   "cat": "shop",
+   "coord": [
+    134.0501,
+    34.3422
+   ],
+   "parent": "MALL-GREEN",
+   "floor": "1F",
+   "note": "丸龜町GREEN 東館 1F。2025/10/24 開幕，四國旗艦店，約 890㎡，含 Pokémon Card Station。呆呆獸周邊、美妝雜貨。",
+   "source": "Pokémon 官方網站、KSB News，2025 查證"
+  },
+  {
+   "id": "P034",
+   "name_zh": "高松 LoFt",
+   "name_ja": "高松ロフト",
+   "cat": "shop",
+   "coord": [
+    134.0493,
+    34.3426
+   ],
+   "parent": "MALL-GREEN",
+   "floor": "3F",
+   "note": "丸龜町GREEN 西館 3F。文具、生活雜貨、輕量傘具（Wpc./Amvel 等品牌常見於此類店）。",
+   "source": "Loft 官方店舖列表，2025 查證"
+  },
+  {
+   "id": "P035",
+   "name_zh": "Asics Walking 高松店",
+   "name_ja": "アシックスウォーキング高松店",
+   "cat": "shop",
+   "coord": [
+    134.050547,
+    34.345224
+   ],
+   "parent": "ARC-MARUGAMEMACHI",
+   "note": "香川県高松市丸亀町14-3。專業健走鞋、通勤鞋、免費 3D 足型測量。位於丸龜町街區路面店，非壱番街/參番街等編號建物內。",
+   "source": "Yahoo!地図 查證"
+  },
+  {
+   "id": "P036",
+   "name_zh": "ABC-MART 高松屋島店",
+   "name_ja": "ABC-MART 高松屋島店",
+   "cat": "shop",
+   "coord": [
+    134.098966,
+    34.338816
+   ],
+   "note": "香川県高松市屋島西町1893-1。屋島西町路面店，距 JR 高松駅約 3.5km（超出目前底圖範圍，僅顯示為獨立標記）。",
+   "source": "Yahoo!地図 查證",
+   "parent": null
+  },
+  {
+   "id": "P037",
+   "name_zh": "Can★Do COM高松店",
+   "name_ja": "キャンドゥ COM高松店",
+   "cat": "shop",
+   "coord": [
+    134.047023,
+    34.350698
+   ],
+   "note": "香川県高松市浜ノ町1-243 COM高松 2F，JR 高松駅步行 2 分。旅行小物、百元文具雜貨。",
+   "source": "Yahoo!地図、NAVITIME 查證",
+   "parent": null
+  },
+  {
+   "id": "P038",
+   "name_zh": "meets（Watts）丸龜中府 Halows店",
+   "name_ja": "ワッツ/meets 丸亀中府ハローズ店",
+   "cat": "shop",
+   "coord": [
+    133.796472,
+    34.277793
+   ],
+   "note": "香川県丸亀市中府町1-3-1 ハローズ丸亀中府モール内。100円店系列，位於丸龜站與 Youme Town 丸龜之間廊帶。",
+   "source": "Watts 官方網站、Yahoo!地図 查證",
    "parent": null
   }
  ]

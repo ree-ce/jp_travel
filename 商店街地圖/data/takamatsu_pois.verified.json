@@ -1,0 +1,68 @@
+[
+ {
+  "id": "P028", "name_zh": "ABC-MART Youme Town 高松店", "name_ja": "ABC-MART ゆめタウン高松店",
+  "cat": "shop", "coord": [134.04171, 34.31671], "parent": "MALL-YUME-TAKAMATSU", "floor": "2F",
+  "note": "各品牌運動鞋、休閒鞋款式齊全。座標=商場中心（實際店位在 2F 內，精確門市座標未查得）。",
+  "source": "izumi.jp 官方租戶目錄，2025 查證"
+ },
+ {
+  "id": "P029", "name_zh": "3COINS Youme Town 高松店", "name_ja": "3COINS+plus ゆめタウン高松店",
+  "cat": "shop", "coord": [134.04171, 34.31671], "parent": "MALL-YUME-TAKAMATSU", "floor": "2F",
+  "note": "300 日圓起生活雜貨、居家收納、日系餐具。",
+  "source": "izumi.jp 官方租戶目錄，2025 查證"
+ },
+ {
+  "id": "P030", "name_zh": "ABC-MART Youme Town 丸龜店", "name_ja": "ABC-MART ゆめタウン丸亀店",
+  "cat": "shop", "coord": [133.785403, 34.273531], "parent": "MALL-YUME-MARUGAME", "floor": "1F",
+  "note": "丸龜市區主力商場內，休閒鞋、家庭童鞋齊全。",
+  "source": "izumi.jp 官方租戶目錄，2025 查證"
+ },
+ {
+  "id": "P031", "name_zh": "3COINS Youme Town 丸龜店", "name_ja": "3COINS+plus ゆめタウン丸亀店",
+  "cat": "shop", "coord": [133.785403, 34.273531], "parent": "MALL-YUME-MARUGAME", "floor": "1F",
+  "note": "300 日圓爆紅收納、廚房生活雜貨。",
+  "source": "izumi.jp 官方租戶目錄，2025 查證"
+ },
+ {
+  "id": "P032", "name_zh": "Standard Products Youme Town 丸龜店", "name_ja": "Standard Products ゆめタウン丸亀店",
+  "cat": "shop", "coord": [133.785403, 34.273531], "parent": "MALL-YUME-MARUGAME", "floor": "2F",
+  "note": "大創高階副牌，無印簡約風木質餐具、居家香氛（¥300~1000）。",
+  "source": "izumi.jp 官方租戶目錄，2025 查證"
+ },
+ {
+  "id": "P033", "name_zh": "寶可夢中心 香川", "name_ja": "ポケモンセンターカガワ",
+  "cat": "shop", "coord": [134.0501, 34.3422], "parent": "MALL-GREEN", "floor": "1F",
+  "note": "丸龜町GREEN 東館 1F。2025/10/24 開幕，四國旗艦店，約 890㎡，含 Pokémon Card Station。呆呆獸周邊、美妝雜貨。",
+  "source": "Pokémon 官方網站、KSB News，2025 查證"
+ },
+ {
+  "id": "P034", "name_zh": "高松 LoFt", "name_ja": "高松ロフト",
+  "cat": "shop", "coord": [134.0493, 34.3426], "parent": "MALL-GREEN", "floor": "3F",
+  "note": "丸龜町GREEN 西館 3F。文具、生活雜貨、輕量傘具（Wpc./Amvel 等品牌常見於此類店）。",
+  "source": "Loft 官方店舖列表，2025 查證"
+ },
+ {
+  "id": "P035", "name_zh": "Asics Walking 高松店", "name_ja": "アシックスウォーキング高松店",
+  "cat": "shop", "coord": [134.05054726, 34.34522409], "parent": "ARC-MARUGAMEMACHI",
+  "note": "香川県高松市丸亀町14-3。專業健走鞋、通勤鞋、免費 3D 足型測量。位於丸龜町街區路面店，非壱番街/參番街等編號建物內。",
+  "source": "Yahoo!地図 查證"
+ },
+ {
+  "id": "P036", "name_zh": "ABC-MART 高松屋島店", "name_ja": "ABC-MART 高松屋島店",
+  "cat": "shop", "coord": [134.0989661, 34.3388159],
+  "note": "香川県高松市屋島西町1893-1。屋島西町路面店，距 JR 高松駅約 3.5km（超出目前底圖範圍，僅顯示為獨立標記）。",
+  "source": "Yahoo!地図 查證"
+ },
+ {
+  "id": "P037", "name_zh": "Can★Do COM高松店", "name_ja": "キャンドゥ COM高松店",
+  "cat": "shop", "coord": [134.0470232, 34.3506977],
+  "note": "香川県高松市浜ノ町1-243 COM高松 2F，JR 高松駅步行 2 分。旅行小物、百元文具雜貨。",
+  "source": "Yahoo!地図、NAVITIME 查證"
+ },
+ {
+  "id": "P038", "name_zh": "meets（Watts）丸龜中府 Halows店", "name_ja": "ワッツ/meets 丸亀中府ハローズ店",
+  "cat": "shop", "coord": [133.7964722, 34.2777932],
+  "note": "香川県丸亀市中府町1-3-1 ハローズ丸亀中府モール内。100円店系列，位於丸龜站與 Youme Town 丸龜之間廊帶。",
+  "source": "Watts 官方網站、Yahoo!地図 查證"
+ }
+]

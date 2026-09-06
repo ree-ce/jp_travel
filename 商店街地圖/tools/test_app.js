@@ -147,9 +147,10 @@ const check = (name, ok, extra) => {
     return document.getElementById("out").value;
   });
   const parsed = JSON.parse(exported);
+  const expectedAreas = await page.evaluate(() => areas.length);
   check("export round-trips through JSON",
-    parsed.pois.some((p) => p.name_zh === "測試店家") && parsed.areas.length === 14,
-    `${parsed.areas.length} areas, ${parsed.pois.length} points`);
+    parsed.pois.some((p) => p.name_zh === "測試店家") && parsed.areas.length === expectedAreas,
+    `${parsed.areas.length} areas (expected ${expectedAreas}), ${parsed.pois.length} points`);
 
   // --- category filter hides pins
   const shown = await page.evaluate(() => {

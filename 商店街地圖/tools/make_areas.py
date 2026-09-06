@@ -108,15 +108,14 @@ CITY_CONFIG = {
                 "id": "MALL-ICHIBANGAI", "parent": "ARC-MARUGAMEMACHI",
                 "name_ja": "高松丸亀町壱番街", "name_zh": "丸龜町壹番街",
                 "match": ["高松丸亀町壱番街"],
-                "floors": ["B1", "1F", "2F", "3F", "4F"],
-                "note": "丸亀町重建的第一街區，東館與西館夾著大鐘樓廣場。",
+                "floors": ["1F", "2F", "3F", "4F", "5F"],
+                "note": "丸亀町重建的第一街區，東館與西館夾著大鐘樓廣場，與高松三越相連。"
+                        "東館 1F：Rolex、Gucci、Brooks Brothers；西館 1F：Tiffany & Co.；"
+                        "4F 有小型會館與餐廳，5F 以上為住宅。精品購物廊道，非平價商場。",
             },
-            {
-                "id": "MALL-SANBANGAI", "parent": "ARC-MARUGAMEMACHI",
-                "name_ja": "高松丸亀町参番街", "name_zh": "丸龜町參番街",
-                "match": ["高松丸亀町参番街"],
-                "floors": ["1F", "2F", "3F"],
-            },
+            # 高松丸亀町参番街 (Sanbangai) is deliberately not listed here: it's a
+            # gym (JOYFIT24, RIZAP) and a Red Cross blood-donation room, not a
+            # shopping venue, so it has no place on a shopping-street map.
             {
                 "id": "MALL-MITSUKOSHI", "parent": "ARC-MARUGAMEMACHI",
                 "name_ja": "高松三越", "name_zh": "高松三越",
@@ -130,8 +129,49 @@ CITY_CONFIG = {
                 "note": "サンポート高松，JR 高松站北側的港灣複合設施。",
             },
         ],
+        # Malls with no matching OSM building outline (outside the fetched
+        # bbox, or just untagged). `center` is a verified real-world
+        # coordinate (address lookup), not derived from geometry, so we draw
+        # a synthetic placeholder box around it rather than leaving the mall
+        # as a bare point -- that's what lets tenant stores nest under it with
+        # floors, same as every OSM-derived mall.
+        "manual_malls": [
+            {
+                "id": "MALL-YUME-TAKAMATSU", "name_ja": "ゆめタウン高松",
+                "name_zh": "Youme Town 高松",
+                "center": [134.04171, 34.31671],
+                "floors": ["1F", "2F", "3F"],
+                "note": "香川県高松市三条町608-1。OSM 無建物輪廓，範圍為依地址座標估算的示意方框（約 120×80m），非實際外觀。",
+                "box_m": [60, 40],
+            },
+            {
+                "id": "MALL-YUME-MARUGAME", "name_ja": "ゆめタウン丸亀",
+                "name_zh": "Youme Town 丸龜",
+                "center": [133.785403, 34.273531],
+                "floors": ["1F", "2F"],
+                "note": "香川県丸亀市新田町150。OSM 無建物輪廓，範圍為依地址座標估算的示意方框（約 120×80m），非實際外觀。",
+                "box_m": [60, 40],
+            },
+        ],
     },
 }
+
+
+def synthetic_box(center, half_w_m, half_h_m):
+    """A small rectangular polygon around a point, in lon/lat degrees.
+
+    Used only where no real footprint exists yet -- good enough to host
+    tenant points and draw a visible extent, not a survey of the building.
+    """
+    lon, lat = center
+    kx = 111320 * math.cos(math.radians(lat))
+    dlon, dlat = half_w_m / kx, half_h_m / 110540
+    ring = [
+        [lon - dlon, lat - dlat], [lon + dlon, lat - dlat],
+        [lon + dlon, lat + dlat], [lon - dlon, lat + dlat],
+        [lon - dlon, lat - dlat],
+    ]
+    return {"type": "Polygon", "coordinates": [ring]}
 
 
 def norm(s: str) -> str:
@@ -274,6 +314,16 @@ def main() -> int:
                             else {"type": "MultiPolygon", "coordinates": polys})
         mall["label_at"] = polygon_center([r for p in polys for r in p])
         mall["source"] = sorted(f["properties"]["osm"] for f in picked)
+        areas.append(mall)
+
+    for spec in cfg.get("manual_malls", []):
+        w, h = spec.get("box_m", (60, 40))
+        mall = {k: v for k, v in spec.items() if k not in ("center", "box_m")}
+        mall["kind"] = "mall"
+        mall.setdefault("parent", None)
+        mall["geometry"] = synthetic_box(spec["center"], w, h)
+        mall["label_at"] = spec["center"]
+        mall["source"] = "manual (verified address lookup, no OSM footprint)"
         areas.append(mall)
 
     doc = {"meta": cfg["meta"], "areas": areas, "pois": kept_pois}

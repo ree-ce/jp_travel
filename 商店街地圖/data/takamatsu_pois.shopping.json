@@ -1,16 +1,5 @@
 [
  {
-  "id": "P010",
-  "name_zh": "丸龜町 GREEN（LoFt・寶可夢中心）",
-  "name_ja": "丸亀町グリーン",
-  "cat": "shop",
-  "coord": [
-   134.048,
-   34.341
-  ],
-  "note": "☂️ Amvel Pentagon Large（79g 極輕傘）\n☂️ Wpc. IZA ZA003（106cm 大傘面晴雨傘）\n寶可夢中心（呆呆獸周邊）、美妝雜貨"
- },
- {
   "id": "P011",
   "name_zh": "Mont-bell 高松店",
   "name_ja": "モンベル高松店",
@@ -20,28 +9,6 @@
    34.338
   ],
   "note": "☂️ Trekking Umbrella L / Long Tail（輕量加大傘）\n輕羽絨外套、GORE-TEX 防水機能服飾"
- },
- {
-  "id": "P012",
-  "name_zh": "Youme Town 高松",
-  "name_ja": "ゆめタウン高松",
-  "cat": "shop",
-  "coord": [
-   134.048,
-   34.316
-  ],
-  "note": "☂️ Wpc. IZA 系列雨傘（雜貨區）\nUNIQLO、GU、無印良品、EDION 電器"
- },
- {
-  "id": "P013",
-  "name_zh": "Youme Town 丸龜",
-  "name_ja": "ゆめタウン丸亀",
-  "cat": "shop",
-  "coord": [
-   133.805,
-   34.298
-  ],
-  "note": "☂️ Wpc. IZA 系列雨傘（雜貨區）\nStandard Products、3COINS、宜得利"
  },
  {
   "id": "P014",
