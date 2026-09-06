@@ -60,9 +60,15 @@
   "source": "Yahoo!地図、NAVITIME 查證"
  },
  {
-  "id": "P038", "name_zh": "meets 生活雜貨（丸龜中府）", "name_ja": "ワッツ/meets 丸亀中府ハローズ店",
+  "id": "P038", "name_zh": "Halows 丸龜中府店", "name_ja": "Halows 丸亀中府店",
   "cat": "shop", "coord": [133.7964722, 34.2777932],
-  "note": "百円均一系列，Watts 公司經營（類似大創但品質稍精緻），開在超市「Halows」的商場裡面。香川県丸亀市中府町1-3-1，位於丸龜站與 Youme Town 丸龜之間。",
-  "source": "Watts 官方網站、Yahoo!地図 查證"
+  "note": "原為 meets/Watts 百円均一，2026 已改名為 Halows。香川県丸亀市中府町1-3-1，位於丸龜站與 Youme Town 丸龜之間。",
+  "source": "使用者現場確認、Yahoo!地図 查證"
+ },
+ {
+  "id": "P060", "name_zh": "相機的北村 高松南店", "name_ja": "カメラのキタムラ 高松南店",
+  "cat": "shop", "coord": [134.03768, 34.31545],
+  "note": "香川県高松市上天神町188-1。相機／沖印連鎖店，路面店，在 Youme Town 高松斜對面。",
+  "source": "store.kitamura.jp 官方店舖目錄、Yahoo!地図 查證"
  }
 ]

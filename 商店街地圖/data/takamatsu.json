@@ -2193,6 +2193,19 @@
    "floor": "2F",
    "note": "2026/8/1 開幕，736 台扭蛋機，香川縣內規模最大。",
    "source": "gashapon.jp 官方店舖目錄、Yahoo!ニュース查證"
+  },
+  {
+   "id": "P060",
+   "name_zh": "相機的北村 高松南店",
+   "name_ja": "カメラのキタムラ 高松南店",
+   "cat": "shop",
+   "coord": [
+    134.03768,
+    34.31545
+   ],
+   "note": "香川県高松市上天神町188-1。相機／沖印連鎖店，路面店，在 Youme Town 高松斜對面。",
+   "source": "store.kitamura.jp 官方店舖目錄、Yahoo!地図 查證",
+   "parent": null
   }
  ]
 }
