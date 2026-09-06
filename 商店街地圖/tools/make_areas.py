@@ -51,41 +51,48 @@ CITY_CONFIG = {
                 "id": "ARC-HYOGOMACHI", "kind": "arcade", "parent": "GRP-CENTRAL",
                 "name_ja": "兵庫町商店街", "name_zh": "兵庫町商店街",
                 "match": ["兵庫町商店街"], "width_m": 13,
-                "note": "最靠近 JR 高松站的一段，往東接丸亀町。",
+                "note": "最靠近 JR 高松站的一段，往東接丸亀町。\n"
+                        "代表性地標：入口有巨大的紅色圓柱拱門。連鎖藥妝店多，也有許多餐廳、居酒屋。",
             },
             {
                 "id": "ARC-KATAHARAMACHI", "kind": "arcade", "parent": "GRP-CENTRAL",
                 "name_ja": "片原町商店街", "name_zh": "片原町商店街",
                 "match": ["片原町商店街", "片原町商店街 (Kataharamachi)"], "width_m": 13,
-                "note": "東西向的一段，連到琴電片原町站。",
+                "note": "東西向的一段，連到琴電片原町站。\n"
+                        "與兵庫町相連，風格較生活化，有許多在地小攤與傳統商店。",
             },
             {
                 "id": "ARC-MARUGAMEMACHI", "kind": "arcade", "parent": "GRP-CENTRAL",
                 "name_ja": "高松丸亀町商店街", "name_zh": "丸龜町商店街",
                 "match": ["高松丸亀町商店街", "丸亀町商店街"], "width_m": 15,
-                "note": "整條商店街的核心，2006 年起分區重建，最北端就是丸亀町壱番街與大鐘樓廣場。",
+                "note": "整條商店街的核心，2006 年起分區重建，最北端就是丸亀町壱番街與大鐘樓廣場。\n"
+                        "精品戰區！地標是「米蘭風格玻璃圓頂」。街道最寬敞，進駐 LV、COACH 等國際精品與時髦咖啡廳。",
             },
             {
                 "id": "ARC-MINAMISHINMACHI", "kind": "arcade", "parent": "GRP-CENTRAL",
                 "name_ja": "南新町商店街", "name_zh": "南新町商店街",
                 "match": ["南新町商店街"], "width_m": 13,
+                "note": "有大創、二手書店、烏龍麵連鎖店，年輕人多。",
             },
             {
                 "id": "ARC-TOKIWAMACHI", "kind": "arcade", "parent": "GRP-CENTRAL",
                 "name_ja": "常磐町商店街", "name_zh": "常磐町商店街",
                 "match": ["常磐町商店街"], "width_m": 13,
+                "note": "靠近瓦町站的橫向街道。動漫、卡牌遊戲、音樂表演空間的聚集地。",
             },
             {
                 "id": "ARC-TAMACHI", "kind": "arcade", "parent": "GRP-CENTRAL",
                 "name_ja": "田町商店街", "name_zh": "田町商店街",
                 "match": ["田町商店街"], "width_m": 13,
-                "note": "最南端的一段，靠近瓦町。",
+                "note": "最南端的一段，靠近瓦町。\n"
+                        "整個商店街的最南端，氣氛最悠閒、步調最慢，有許多布料行、茶葉店、傳統超市。",
             },
             {
                 "id": "ARC-LION", "kind": "arcade", "parent": "GRP-CENTRAL",
                 "name_ja": "ライオン通商店街", "name_zh": "獅子通商店街",
                 "match": ["ライオン通"], "width_m": 10,
-                "note": "橫向的飲食店街，晚上熱鬧。",
+                "note": "橫向的飲食店街，晚上熱鬧。\n"
+                        "美食天堂，與丸龜町平行。夜晚最熱鬧，聚集大量的居酒屋、拉麵店，是高松宵夜勝地！",
                 "optional": True,
             },
             {
@@ -100,7 +107,8 @@ CITY_CONFIG = {
                 "name_ja": "御坊町商店街", "name_zh": "御坊町商店街",
                 "match": ["御坊町"], "width_m": 12,
                 "note": "高松中央商店街官方 8 條街道之一（兵庫町・片原町・丸龜町・獅子通・"
-                        "南新町・常磐町・田町・御坊町，號稱四國第一長，全長約 2.7km、逾千店舖）。",
+                        "南新町・常磐町・田町・御坊町，號稱四國第一長，全長約 2.7km、逾千店舖）。\n"
+                        "8 條街中長度最短，主要以佛具店和傳統工藝小店為主，氣氛安靜。",
             },
         ],
         # Malls are real polygons in OSM; `parent` puts them inside an arcade
