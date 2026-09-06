@@ -43,7 +43,9 @@ CITY_CONFIG = {
                 "kind": "group",
                 "name_ja": "高松中央商店街",
                 "name_zh": "高松中央商店街",
-                "note": "日本最長的拱廊商店街，總長約 2.7 km，由下列數條商店街串連而成，全程有頂棚，下雨天也能逛。",
+                "note": "號稱「四國第一長」的拱廊商店街，總長約 2.7 km，逾千家店舖，"
+                        "由官方 8 條街道組成：兵庫町・片原町・丸龜町・獅子通・南新町・常磐町・田町・御坊町。"
+                        "全程有頂棚，下雨天也能逛。",
             },
             {
                 "id": "ARC-HYOGOMACHI", "kind": "arcade", "parent": "GRP-CENTRAL",
@@ -92,6 +94,13 @@ CITY_CONFIG = {
                 "match": ["トキワ街", "トキワ新町"], "width_m": 11,
                 "note": "常磐町旁的分支拱廊。",
                 "optional": True,
+            },
+            {
+                "id": "ARC-GOBOMACHI", "kind": "arcade", "parent": "GRP-CENTRAL",
+                "name_ja": "御坊町商店街", "name_zh": "御坊町商店街",
+                "match": ["御坊町"], "width_m": 12,
+                "note": "高松中央商店街官方 8 條街道之一（兵庫町・片原町・丸龜町・獅子通・"
+                        "南新町・常磐町・田町・御坊町，號稱四國第一長，全長約 2.7km、逾千店舖）。",
             },
         ],
         # Malls are real polygons in OSM; `parent` puts them inside an arcade

@@ -44,14 +44,19 @@ CACHE_DIR = DATA_DIR / ".cache"
 
 CITIES = {
     # bbox = (south, west, north, east)
+    # Widened from the original central-arcade-only box (34.3255-34.36,
+    # 134.033-134.07) once real POIs (Youme Town Takamatsu, 太田, 屋島, 山田電機
+    # 鶴市) turned up scattered across a much bigger area than "the arcade
+    # district" -- points outside the fetched bbox render with no street
+    # context at all, which reads as "missing" even though they're really there.
     "takamatsu": {
         "name_ja": "高松",
-        "bbox": (34.3255, 134.0330, 34.3600, 134.0700),
+        "bbox": (34.2900, 134.0100, 34.3600, 134.1100),
         "center": [134.0497, 34.3430],
     },
     "marugame": {
         "name_ja": "丸亀",
-        "bbox": (34.2740, 133.7700, 34.3050, 133.8080),
+        "bbox": (34.2650, 133.7700, 34.3050, 133.8080),
         "center": [133.7885, 34.2890],
     },
 }
