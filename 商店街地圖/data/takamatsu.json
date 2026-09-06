@@ -2013,20 +2013,6 @@
    "source": "DAISO 官方店舖列表（#002306）查證"
   },
   {
-   "id": "P046",
-   "name_zh": "阿卡將本舖 瓦町FLAG店",
-   "name_ja": "アカチャンホンポ 瓦町FLAG店",
-   "cat": "shop",
-   "coord": [
-    134.052699,
-    34.338992
-   ],
-   "parent": "MALL-FLAG",
-   "floor": "5F",
-   "note": "嬰幼兒用品專賣店，瓦町FLAG 5F。",
-   "source": "阿卡將本舖官方店舖列表查證"
-  },
-  {
    "id": "P047",
    "name_zh": "UNIQLO Youme Town 高松店",
    "name_ja": "ユニクロ ゆめタウン高松店",
@@ -2109,6 +2095,48 @@
    "floor": "1F",
    "note": "居家生活雜貨（デコホーム為宜得利的小型店態）。",
    "source": "izumi.jp 官方樓層指南、NITORI 官網查證"
+  },
+  {
+   "id": "P053",
+   "name_zh": "丸善ジュンク堂書店 瓦町FLAG店",
+   "name_ja": "ジュンク堂書店 瓦町FLAG店",
+   "cat": "shop",
+   "coord": [
+    134.052395,
+    34.338902
+   ],
+   "parent": "MALL-FLAG",
+   "floor": "3F",
+   "note": "大型書店。2020/3 從 7F 遷至 3F。與丸善為同一集團（丸善ジュンク堂書店）分別經營的店面。",
+   "source": "k-flag.jp 官方店舖列表、KSB News 遷店報導查證"
+  },
+  {
+   "id": "P054",
+   "name_zh": "丸善 瓦町FLAG店",
+   "name_ja": "丸善 瓦町FLAG店",
+   "cat": "shop",
+   "coord": [
+    134.052699,
+    34.338902
+   ],
+   "parent": "MALL-FLAG",
+   "floor": "3F",
+   "note": "文具、辦公用品，與ジュンク堂書店同樓層、同集團分別經營。",
+   "source": "k-flag.jp 官方店舖列表、NAVITIME 查證"
+  },
+  {
+   "id": "P055",
+   "name_zh": "GASHAPON BANDAI OFFICIAL SHOP",
+   "name_ja": "ガシャポンバンダイオフィシャルショップ",
+   "cat": "shop",
+   "coord": [
+    134.052395,
+    34.339082
+   ],
+   "parent": "MALL-FLAG",
+   "floor": "3F",
+   "note": "開設在ジュンク堂書店內的扭蛋專區，非獨立店面。",
+   "source": "ガシャポン官方店舖目錄查證"
   }
  ]
 }

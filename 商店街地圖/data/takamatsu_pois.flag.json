@@ -1,14 +1,16 @@
 [
  {
-  "id": "P045", "name_zh": "大創 瓦町FLAG店", "name_ja": "DAISO 瓦町FLAG店",
-  "cat": "shop", "coord": [134.0525472, 34.3389917], "parent": "MALL-FLAG", "floor": "4F",
+  "id": "P045",
+  "name_zh": "大創 瓦町FLAG店",
+  "name_ja": "DAISO 瓦町FLAG店",
+  "cat": "shop",
+  "coord": [
+   134.0525472,
+   34.3389917
+  ],
+  "parent": "MALL-FLAG",
+  "floor": "4F",
   "note": "大創百元商店，瓦町FLAG 4F。",
   "source": "DAISO 官方店舖列表（#002306）查證"
- },
- {
-  "id": "P046", "name_zh": "阿卡將本舖 瓦町FLAG店", "name_ja": "アカチャンホンポ 瓦町FLAG店",
-  "cat": "shop", "coord": [134.0525472, 34.3389917], "parent": "MALL-FLAG", "floor": "5F",
-  "note": "嬰幼兒用品專賣店，瓦町FLAG 5F。",
-  "source": "阿卡將本舖官方店舖列表查證"
  }
 ]

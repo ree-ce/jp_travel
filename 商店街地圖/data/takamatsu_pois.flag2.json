@@ -1,0 +1,20 @@
+[
+ {
+  "id": "P053", "name_zh": "丸善ジュンク堂書店 瓦町FLAG店", "name_ja": "ジュンク堂書店 瓦町FLAG店",
+  "cat": "shop", "coord": [134.0525472, 34.3389917], "parent": "MALL-FLAG", "floor": "3F",
+  "note": "大型書店。2020/3 從 7F 遷至 3F。與丸善為同一集團（丸善ジュンク堂書店）分別經營的店面。",
+  "source": "k-flag.jp 官方店舖列表、KSB News 遷店報導查證"
+ },
+ {
+  "id": "P054", "name_zh": "丸善 瓦町FLAG店", "name_ja": "丸善 瓦町FLAG店",
+  "cat": "shop", "coord": [134.0525472, 34.3389917], "parent": "MALL-FLAG", "floor": "3F",
+  "note": "文具、辦公用品，與ジュンク堂書店同樓層、同集團分別經營。",
+  "source": "k-flag.jp 官方店舖列表、NAVITIME 查證"
+ },
+ {
+  "id": "P055", "name_zh": "GASHAPON BANDAI OFFICIAL SHOP", "name_ja": "ガシャポンバンダイオフィシャルショップ",
+  "cat": "shop", "coord": [134.0525472, 34.3389917], "parent": "MALL-FLAG", "floor": "3F",
+  "note": "開設在ジュンク堂書店內的扭蛋專區，非獨立店面。",
+  "source": "ガシャポン官方店舖目錄查證"
+ }
+]
