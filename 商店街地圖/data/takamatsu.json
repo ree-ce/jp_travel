@@ -1911,14 +1911,14 @@
   },
   {
    "id": "P038",
-   "name_zh": "meets 生活雜貨（丸龜中府）",
-   "name_ja": "ワッツ/meets 丸亀中府ハローズ店",
+   "name_zh": "Halows 丸龜中府店",
+   "name_ja": "ハローズ丸亀中府店",
    "cat": "shop",
    "coord": [
     133.796472,
     34.277793
    ],
-   "note": "百円均一系列，Watts 公司經營（類似大創但品質稍精緻），開在超市「Halows」的商場裡面。香川県丸亀市中府町1-3-1，位於丸龜站與 Youme Town 丸龜之間。",
+   "note": "原為 Watts 公司的 meets 百円均一雜貨品牌專櫃，現已改為 Halows 丸龜中府店（同一超市商場內）。香川県丸亀市中府町1-3-1，位於丸龜站與 Youme Town 丸龜之間。",
    "source": "Watts 官方網站、Yahoo!地図 查證",
    "parent": null
   },

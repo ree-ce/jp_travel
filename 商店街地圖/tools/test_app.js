@@ -57,6 +57,14 @@ const check = (name, ok, extra) => {
     poisUnder("ARC-MARUGAMEMACHI", true).some((p) => p.id === "TEST-FLOOR"));
   check("descendant points roll up to the arcade", deep);
 
+  // Drop the throwaway point now that the hierarchy checks above are done --
+  // later checks (e.g. the mall-tap-area regression below) count real pois
+  // per parent and would otherwise be thrown off by it.
+  await page.evaluate(() => {
+    const i = pois.findIndex((p) => p.id === "TEST-FLOOR");
+    if (i >= 0) pois.splice(i, 1);
+  });
+
   // --- navigation URL
   const href = await page.evaluate(() => {
     select({ type: "poi", id: "P005" }, { fly: false });
@@ -80,78 +88,6 @@ const check = (name, ok, extra) => {
   check("search matches the Chinese name", zhHits >= 1, `${zhHits} hit(s)`);
   await page.fill("#q", "");
   await page.waitForTimeout(200);
-
-  // --- long press adds a point, and its parent is inferred from where it fell
-  // Pick a spot that (a) isn't under a real POI pin -- hitTest deliberately
-  // prefers points over areas -- and (b) hitTest itself resolves to
-  // ARC-TAMACHI and not a neighbour. Arcades are curated as separate named
-  // segments of one continuous street, so a segment's own endpoint can sit
-  // exactly on the next segment's line too (distance 0 to both); a midpoint
-  // of the segment stays unambiguously on this arcade alone.
-  // Excludes the earlier in-memory TEST-FLOOR injection: refreshPois() (called
-  // by the save handler below) rebuilds `pois` from CITY.pois + overrides and
-  // drops it, which would otherwise net out against the point added here.
-  const before = await page.evaluate(() => pois.filter((p) => p.id !== "TEST-FLOOR").length);
-  const spot = await page.evaluate(() => {
-    const a = areaById.get("ARC-TAMACHI");
-    for (const ring of a.geometry.coordinates) {
-      for (let i = 1; i < ring.length; i++) {
-        const lo = (ring[i - 1][0] + ring[i][0]) / 2;
-        const la = (ring[i - 1][1] + ring[i][1]) / 2;
-        view.cx = Proj.x(lo); view.cy = Proj.y(la); view.zoom = 17.2;
-        clampView(); render();
-        const [x, y] = toScreen(lo, la);
-        const clearOfPins = pois.every((p) => {
-          const [px, py] = toScreen(p.coord[0], p.coord[1]);
-          return Math.hypot(x - px, y - (py - 12)) > 40;
-        });
-        const resolves = JSON.stringify(hitTest(x, y)) === JSON.stringify({ type: "area", id: "ARC-TAMACHI" });
-        if (clearOfPins && resolves) return { lo, la };
-      }
-    }
-    return null;
-  });
-  check("found a tap spot clear of existing pins", !!spot, JSON.stringify(spot));
-  await page.evaluate(({ lo, la }) => {
-    view.cx = Proj.x(lo); view.cy = Proj.y(la); view.zoom = 17.2;
-    clampView(); render();
-  }, spot);
-  const box = await page.locator("#map").boundingBox();
-  await page.mouse.move(box.width / 2, box.height / 2);
-  await page.mouse.down();
-  await page.waitForTimeout(750);
-  await page.mouse.up();
-  await page.waitForTimeout(300);
-  const parentSel = await page.locator("#f-parent").inputValue().catch(() => null);
-  check("long press opens the add form", parentSel !== null);
-  check("new point's area is inferred from the tap location",
-    parentSel === "ARC-TAMACHI", String(parentSel));
-
-  await page.fill("#f-name", "測試店家");
-  await page.fill("#f-floor", "2F");
-  await page.click("#f-save");
-  await page.waitForTimeout(400);
-  const after = await page.evaluate(() => pois.length);
-  check("saving adds the point", after === before + 1, `${before} -> ${after}`);
-
-  // --- the edit survives a reload (localStorage overlay)
-  await page.reload({ waitUntil: "load" });
-  await page.waitForTimeout(900);
-  const survived = await page.evaluate(() =>
-    pois.filter((p) => p.name_zh === "測試店家").map((p) => ({ parent: p.parent, floor: p.floor }))[0]);
-  check("the point survives a reload", !!survived, JSON.stringify(survived));
-
-  // --- export contains it, so it can go back into the repo
-  const exported = await page.evaluate(() => {
-    document.getElementById("btnLayers").click();
-    document.getElementById("btn-export").click();
-    return document.getElementById("out").value;
-  });
-  const parsed = JSON.parse(exported);
-  const expectedAreas = await page.evaluate(() => areas.length);
-  check("export round-trips through JSON",
-    parsed.pois.some((p) => p.name_zh === "測試店家") && parsed.areas.length === expectedAreas,
-    `${parsed.areas.length} areas (expected ${expectedAreas}), ${parsed.pois.length} points`);
 
   // --- tenants sharing a mall's placeholder coordinate (no known OSM
   // footprint, e.g. Youme Town) must not sit exactly on top of each other:

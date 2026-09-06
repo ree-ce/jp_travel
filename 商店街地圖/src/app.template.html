@@ -234,15 +234,6 @@
     text-decoration: none;
   }
   .btn.primary { background: var(--accent); color: #fff; border-color: transparent; }
-  .btn.slim { flex: none; min-height: 38px; font-size: 13px; font-weight: 500; }
-  .field { display: block; margin: 10px 0; }
-  .field span { display: block; font-size: 12px; color: var(--ink-soft); margin-bottom: 4px; }
-  .field input, .field select, .field textarea {
-    width: 100%; padding: 10px 12px; font-size: 16px;
-    border: 1px solid var(--edge); border-radius: 10px;
-    background: var(--panel-solid); color: var(--ink); font-family: inherit;
-  }
-  .field textarea { min-height: 70px; resize: vertical; }
   .switch { display: flex; align-items: center; justify-content: space-between; padding: 11px 2px; border-top: 1px solid var(--edge); }
   .switch:first-child { border-top: none; }
   .switch input { width: 46px; height: 28px; }
@@ -324,7 +315,6 @@ const AREA_KIND = {
   mall:   { zh: "商場",     varName: "--mall" },
 };
 const DEFAULT_ARCADE_WIDTH_M = 14;
-const STORAGE_KEY = "ss-map-overrides-v1";
 const PREFS_KEY = "ss-map-prefs-v1";
 
 /* ---- projection ------------------------------------------------------ */
@@ -356,30 +346,18 @@ const safeStore = {
   },
 };
 
-// User edits live as a diff on top of the baked-in data, so replacing the
-// HTML with a newer build never throws away what was added on the road.
-const overrides = safeStore.get(STORAGE_KEY, { pois: [], removed: [] });
 const prefs = Object.assign(
   { buildings: true, labels: true, tiles: false, cats: null },
   safeStore.get(PREFS_KEY, {})
 );
-
-function saveOverrides() {
-  if (!safeStore.set(STORAGE_KEY, overrides)) toast("無法儲存（瀏覽器封鎖了儲存空間）");
-}
 function savePrefs() { safeStore.set(PREFS_KEY, prefs); }
 
 /* ---- model ----------------------------------------------------------- */
+// Points and areas are the shipped data as-is -- there is no on-device
+// editing (see README: corrections go through the repo, not the page).
 const areas = CITY.areas.slice();
 const areaById = new Map(areas.map((a) => [a.id, a]));
-
-function allPois() {
-  const removed = new Set(overrides.removed);
-  const base = CITY.pois.filter((p) => !removed.has(p.id));
-  return base.concat(overrides.pois.filter((p) => !removed.has(p.id)));
-}
-let pois = allPois();
-function refreshPois() { pois = allPois(); }
+const pois = CITY.pois;
 
 function ancestry(area) {
   const chain = [];
@@ -903,7 +881,7 @@ function hitTest(px, py) {
 
 /* ---- gestures -------------------------------------------------------- */
 const pointers = new Map();
-let gesture = null, moved = false, longPressTimer = null, velocity = { x: 0, y: 0 };
+let gesture = null, moved = false, velocity = { x: 0, y: 0 };
 let lastMove = 0;
 
 canvas.addEventListener("pointerdown", (e) => {
@@ -913,17 +891,7 @@ canvas.addEventListener("pointerdown", (e) => {
   if (pointers.size === 1) {
     moved = false;
     gesture = { mode: "pan", x: e.clientX, y: e.clientY };
-    clearTimeout(longPressTimer);
-    longPressTimer = setTimeout(() => {
-      if (!moved && pointers.size === 1) {
-        const [lon, lat] = toLngLat(e.clientX, e.clientY);
-        if (navigator.vibrate) navigator.vibrate(12);
-        openAddForm(lon, lat);
-        gesture = null;
-      }
-    }, 550);
   } else if (pointers.size === 2) {
-    clearTimeout(longPressTimer);
     const [a, b] = [...pointers.values()];
     gesture = {
       mode: "pinch",
@@ -941,7 +909,7 @@ canvas.addEventListener("pointermove", (e) => {
 
   if (gesture.mode === "pan" && pointers.size === 1) {
     const dx = e.clientX - gesture.x, dy = e.clientY - gesture.y;
-    if (Math.abs(dx) + Math.abs(dy) > 5) { moved = true; clearTimeout(longPressTimer); }
+    if (Math.abs(dx) + Math.abs(dy) > 5) moved = true;
     const s = scale();
     view.cx -= dx / s; view.cy -= dy / s;
     const now = performance.now();
@@ -971,7 +939,6 @@ canvas.addEventListener("pointermove", (e) => {
 });
 
 function endPointer(e) {
-  clearTimeout(longPressTimer);
   const had = pointers.size;
   pointers.delete(e.pointerId);
   if (had === 1 && !moved && gesture && gesture.mode === "pan") {
@@ -1265,10 +1232,6 @@ function renderPoi(p) {
     </div>`;
   if (p.hours) html += `<div class="note">🕘 ${esc(p.hours)}</div>`;
   if (p.note) html += `<div class="note">${esc(p.note)}</div>`;
-  html += `<div class="btnrow">
-      <button class="btn slim" data-edit="${esc(p.id)}">✏️ 編輯</button>
-      <button class="btn slim" data-del="${esc(p.id)}">🗑 刪除</button>
-    </div>`;
   html += credits();
   setBody(html);
 }
@@ -1368,79 +1331,7 @@ sheetBody.addEventListener("click", (e) => {
   if (a) { select({ type: "area", id: a.dataset.area }, { fly: true }); return; }
   const p = e.target.closest("[data-poi]");
   if (p) { select({ type: "poi", id: p.dataset.poi }); return; }
-  const ed = e.target.closest("[data-edit]");
-  if (ed) { openEditForm(pois.find((x) => x.id === ed.dataset.edit)); return; }
-  const del = e.target.closest("[data-del]");
-  if (del) { removePoi(del.dataset.del); return; }
 });
-
-/* ---- add / edit points ----------------------------------------------- */
-function catOptions(sel) {
-  return Object.entries(CATEGORIES)
-    .map(([k, v]) => `<option value="${k}"${k === sel ? " selected" : ""}>${v.glyph} ${v.zh}</option>`)
-    .join("");
-}
-function areaOptions(sel) {
-  const opts = areas.map((a) => {
-    const depth = ancestry(a).length - 1;
-    const pad = "　".repeat(depth);
-    return `<option value="${esc(a.id)}"${a.id === sel ? " selected" : ""}>${pad}${esc(nameOf(a))}</option>`;
-  }).join("");
-  return `<option value=""${sel ? "" : " selected"}>（不屬於任何範圍）</option>` + opts;
-}
-
-function poiForm(p, title) {
-  setBody(`<h1 class="title">${title}</h1>
-    <label class="field"><span>名稱</span><input id="f-name" value="${esc(p.name_zh || "")}" placeholder="中文或任何你記得的名字"></label>
-    <label class="field"><span>日文名（選填）</span><input id="f-ja" value="${esc(p.name_ja || "")}"></label>
-    <label class="field"><span>分類</span><select id="f-cat">${catOptions(p.cat || "restaurant")}</select></label>
-    <label class="field"><span>所屬範圍</span><select id="f-parent">${areaOptions(p.parent || "")}</select></label>
-    <label class="field"><span>樓層（選填，例 3F / B1）</span><input id="f-floor" value="${esc(p.floor || "")}"></label>
-    <label class="field"><span>營業時間（選填）</span><input id="f-hours" value="${esc(p.hours || "")}"></label>
-    <label class="field"><span>網址（選填）</span><input id="f-url" value="${esc(p.url || "")}" inputmode="url"></label>
-    <label class="field"><span>備註</span><textarea id="f-note">${esc(p.note || "")}</textarea></label>
-    <div class="btnrow">
-      <button class="btn" id="f-cancel">取消</button>
-      <button class="btn primary" id="f-save">儲存</button>
-    </div>`);
-  setSheet("full");
-  document.getElementById("f-cancel").onclick = () => closeSheet();
-  document.getElementById("f-save").onclick = () => {
-    const v = (id) => document.getElementById(id).value.trim();
-    if (!v("f-name") && !v("f-ja")) { toast("請至少填一個名稱"); return; }
-    const rec = {
-      id: p.id, coord: p.coord,
-      name_zh: v("f-name"), name_ja: v("f-ja"),
-      cat: v("f-cat"), parent: v("f-parent") || null,
-      floor: v("f-floor") || null, hours: v("f-hours") || null,
-      url: v("f-url") || null, note: v("f-note") || null,
-      user: true,
-    };
-    const i = overrides.pois.findIndex((x) => x.id === rec.id);
-    if (i >= 0) overrides.pois[i] = rec; else overrides.pois.push(rec);
-    // Editing a baked-in point shadows it rather than duplicating it.
-    if (CITY.pois.some((x) => x.id === rec.id) && !overrides.removed.includes(rec.id)) {
-      overrides.removed.push(rec.id);
-    }
-    saveOverrides(); refreshPois();
-    select({ type: "poi", id: rec.id }, { fly: false });
-    toast("已儲存到這台裝置");
-  };
-}
-
-function openAddForm(lon, lat) {
-  const hit = hitTest(...toScreen(lon, lat));
-  const parent = hit && hit.type === "area" ? hit.id : null;
-  poiForm({ id: "U" + Date.now().toString(36), coord: [lon, lat], parent }, "新增標記");
-}
-function openEditForm(p) { if (p) poiForm(JSON.parse(JSON.stringify(p)), "編輯標記"); }
-function removePoi(id) {
-  if (!confirm("確定刪除這個標記？")) return;
-  overrides.pois = overrides.pois.filter((x) => x.id !== id);
-  if (CITY.pois.some((x) => x.id === id) && !overrides.removed.includes(id)) overrides.removed.push(id);
-  saveOverrides(); refreshPois(); closeSheet();
-  toast("已刪除");
-}
 
 /* ---- search ---------------------------------------------------------- */
 let query = "";
@@ -1501,13 +1392,8 @@ document.getElementById("btnLayers").onclick = () => {
     ${sw("sw-lbl", "文字標籤", prefs.labels)}
     ${sw("sw-tile", "線上 OSM 圖磚", prefs.tiles, "需網路；在 Claude Artifact 中會被封鎖")}
     <div class="sec">資料</div>
-    <div class="note">內建 ${CITY.areas.length} 個範圍、${CITY.pois.length} 個點；
-      你在這台裝置另外新增了 ${overrides.pois.length} 個。</div>
-    <div class="btnrow">
-      <button class="btn" id="btn-export">📤 匯出 JSON</button>
-      <button class="btn" id="btn-import">📥 匯入</button>
-    </div>
-    <div class="btnrow"><button class="btn slim" id="btn-reset">清除本機修改</button></div>
+    <div class="note">內建 ${CITY.areas.length} 個範圍、${CITY.pois.length} 個點。
+      發現錯誤或想新增地點，請直接告訴我們，資料會更新到下一版。</div>
     ${credits()}`);
   setSheet("full");
   document.getElementById("sw-bld").onchange = (e) => { prefs.buildings = e.target.checked; savePrefs(); draw(); };
@@ -1515,71 +1401,7 @@ document.getElementById("btnLayers").onclick = () => {
   document.getElementById("sw-tile").onchange = (e) => {
     prefs.tiles = e.target.checked; tilesBroken = false; savePrefs(); draw();
   };
-  document.getElementById("btn-export").onclick = exportJson;
-  document.getElementById("btn-import").onclick = importJson;
-  document.getElementById("btn-reset").onclick = () => {
-    if (!confirm("清除這台裝置上的所有新增與修改？")) return;
-    overrides.pois = []; overrides.removed = [];
-    saveOverrides(); refreshPois(); closeSheet(); draw();
-  };
 };
-
-// Sandboxed viewers (a Claude Artifact, most embeds) silently drop
-// script-started downloads: the click throws nothing, it just does nothing.
-// Rather than offer a dead button, fall back to copy, which always works.
-const canDownload = (() => {
-  try { return window.self === window.top; } catch (_) { return false; }
-})();
-
-function exportJson() {
-  const merged = { meta: CITY.meta, areas: CITY.areas, pois: pois };
-  const text = JSON.stringify(merged, null, 2);
-  setBody(`<h1 class="title">匯出</h1>
-    <div class="note">貼回 <code>商店街地圖/data/${esc(CITY.meta.city)}.json</code> 再重跑 build 即可永久保存。</div>
-    <div class="btnrow">
-      <button class="btn primary" id="btn-copy">📋 複製到剪貼簿</button>
-      ${canDownload ? `<button class="btn" id="btn-dl">💾 下載檔案</button>` : ""}
-    </div>
-    <label class="field"><span>JSON</span><textarea id="out" style="min-height:46vh;font-family:ui-monospace,monospace;font-size:12px"></textarea></label>`);
-  const ta = document.getElementById("out");
-  ta.value = text;
-  document.getElementById("btn-copy").onclick = async () => {
-    try { await navigator.clipboard.writeText(text); toast("已複製"); }
-    catch (_) { ta.select(); toast("請手動複製（已全選）"); }
-  };
-  if (!canDownload) return;
-  document.getElementById("btn-dl").onclick = () => {
-    const url = URL.createObjectURL(new Blob([text], { type: "application/json" }));
-    const a = document.createElement("a");
-    a.href = url; a.download = `${CITY.meta.city}.json`; a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 2000);
-  };
-}
-
-function importJson() {
-  setBody(`<h1 class="title">匯入</h1>
-    <div class="note">貼上先前匯出的 JSON。既有的內建資料不會被刪除，只會把點合併進來。</div>
-    <label class="field"><span>JSON</span><textarea id="in" style="min-height:40vh;font-family:ui-monospace,monospace;font-size:12px"></textarea></label>
-    <div class="btnrow"><button class="btn primary" id="btn-do">合併</button></div>`);
-  document.getElementById("btn-do").onclick = () => {
-    try {
-      const obj = JSON.parse(document.getElementById("in").value);
-      const incoming = Array.isArray(obj) ? obj : obj.pois || [];
-      let n = 0;
-      for (const p of incoming) {
-        if (!p || !p.coord) continue;
-        const id = p.id || "I" + Math.random().toString(36).slice(2, 9);
-        if (CITY.pois.some((x) => x.id === id)) continue;
-        const i = overrides.pois.findIndex((x) => x.id === id);
-        const rec = Object.assign({}, p, { id });
-        if (i >= 0) overrides.pois[i] = rec; else overrides.pois.push(rec);
-        n++;
-      }
-      saveOverrides(); refreshPois(); draw(); closeSheet();
-      toast(`已匯入 ${n} 個點`);
-    } catch (err) { toast("JSON 格式錯誤"); }
-  };
-}
 
 /* ---- city switcher ----------------------------------------------------
    高松 and 丸龜 are ~25km apart with nothing of interest fetched in between,
