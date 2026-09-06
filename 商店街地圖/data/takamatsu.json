@@ -1351,58 +1351,6 @@
  ],
  "pois": [
   {
-   "id": "P001",
-   "name_ja": "肉料理ひらい",
-   "name_zh": "肉料理 HIRAI",
-   "cat": "restaurant",
-   "note": "示範標記。位置取自 OSM 建物輪廓中心。",
-   "coord": [
-    134.048659,
-    34.344239
-   ],
-   "parent": null,
-   "source": "way/430191814"
-  },
-  {
-   "id": "P002",
-   "name_ja": "ケヤキカフェ",
-   "name_zh": "櫸樹咖啡",
-   "cat": "cafe",
-   "note": "示範標記。",
-   "coord": [
-    134.042588,
-    34.342937
-   ],
-   "parent": null,
-   "source": "way/1293007066"
-  },
-  {
-   "id": "P003",
-   "name_ja": "海鮮食堂 おくどさん",
-   "name_zh": "海鮮食堂 OKUDOSAN",
-   "cat": "restaurant",
-   "note": "示範標記。",
-   "coord": [
-    134.06407,
-    34.327368
-   ],
-   "parent": null,
-   "source": "way/1124906672"
-  },
-  {
-   "id": "P004",
-   "name_ja": "ふくしま屋",
-   "name_zh": "福島屋",
-   "cat": "shop",
-   "note": "示範標記。",
-   "coord": [
-    134.068594,
-    34.344551
-   ],
-   "parent": null,
-   "source": "way/840968536"
-  },
-  {
    "id": "P005",
    "name_ja": "高松駅",
    "name_zh": "JR 高松站",
@@ -1439,17 +1387,184 @@
    "source": "node/6887308113"
   },
   {
-   "id": "P008",
-   "name_zh": "（示範）樓層標記",
-   "name_ja": "（デモ）フロア表示",
+   "id": "P010",
+   "name_zh": "丸龜町 GREEN（LoFt・寶可夢中心）",
+   "name_ja": "丸亀町グリーン",
    "cat": "shop",
    "coord": [
-    134.04938,
-    34.34228
+    134.048,
+    34.341
    ],
-   "parent": "MALL-GREEN",
-   "floor": "3F",
-   "note": "純示範，用來展示「店 → 商場 → 商店街 → 商店街群」的階層與樓層分組。確認過後可以直接刪掉。"
+   "note": "☂️ Amvel Pentagon Large（79g 極輕傘）\n☂️ Wpc. IZA ZA003（106cm 大傘面晴雨傘）\n寶可夢中心（呆呆獸周邊）、美妝雜貨",
+   "parent": null
+  },
+  {
+   "id": "P011",
+   "name_zh": "Mont-bell 高松店",
+   "name_ja": "モンベル高松店",
+   "cat": "shop",
+   "coord": [
+    134.049,
+    34.338
+   ],
+   "note": "☂️ Trekking Umbrella L / Long Tail（輕量加大傘）\n輕羽絨外套、GORE-TEX 防水機能服飾",
+   "parent": "ARC-TAMACHI"
+  },
+  {
+   "id": "P012",
+   "name_zh": "Youme Town 高松",
+   "name_ja": "ゆめタウン高松",
+   "cat": "shop",
+   "coord": [
+    134.048,
+    34.316
+   ],
+   "note": "☂️ Wpc. IZA 系列雨傘（雜貨區）\nUNIQLO、GU、無印良品、EDION 電器",
+   "parent": null
+  },
+  {
+   "id": "P013",
+   "name_zh": "Youme Town 丸龜",
+   "name_ja": "ゆめタウン丸亀",
+   "cat": "shop",
+   "coord": [
+    133.805,
+    34.298
+   ],
+   "note": "☂️ Wpc. IZA 系列雨傘（雜貨區）\nStandard Products、3COINS、宜得利",
+   "parent": null
+  },
+  {
+   "id": "P014",
+   "name_zh": "高松丸龜町商店街（藥妝戰區）",
+   "name_ja": "高松丸亀町商店街",
+   "cat": "shop",
+   "coord": [
+    134.048,
+    34.344
+   ],
+   "note": "松本清、大國藥妝等各大免稅藥妝一級戰區",
+   "parent": null
+  },
+  {
+   "id": "P015",
+   "name_zh": "四國 Shop 88",
+   "name_ja": "四国ショップ88",
+   "cat": "shop",
+   "coord": [
+    134.046,
+    34.352
+   ],
+   "note": "橄欖油、鎌田高湯醬油、讚岐烏龍麵、今治毛巾",
+   "parent": null
+  },
+  {
+   "id": "P016",
+   "name_zh": "瓦町 FLAG",
+   "name_ja": "瓦町FLAG",
+   "cat": "shop",
+   "coord": [
+    134.051,
+    34.339
+   ],
+   "note": "阿卡將本舖（Akachan Honpo）、大創 DAISO",
+   "parent": null
+  },
+  {
+   "id": "P019",
+   "name_zh": "Ace One JR高松本店",
+   "name_ja": "エースワン JR高松本店",
+   "cat": "shop",
+   "coord": [
+    134.046,
+    34.351
+   ],
+   "note": "日系濾掛咖啡、綠茶粉、生鮮水果、日清泡麵",
+   "parent": null
+  },
+  {
+   "id": "P021",
+   "name_zh": "Workman Plus",
+   "name_ja": "ワークマンプラス",
+   "cat": "shop",
+   "coord": [
+    134.044,
+    34.298
+   ],
+   "note": "平價高機能防風防水外套、耐走鞋",
+   "parent": null
+  },
+  {
+   "id": "P022",
+   "name_zh": "Sports Depo",
+   "name_ja": "スポーツデポ",
+   "cat": "shop",
+   "coord": [
+    134.053,
+    34.313
+   ],
+   "note": "Asics 亞瑟士跑鞋、HOKA、高爾夫球具",
+   "parent": null
+  },
+  {
+   "id": "P023",
+   "name_zh": "山田電機（高松春日）",
+   "name_ja": "ヤマダ電機 高松春日店",
+   "cat": "shop",
+   "coord": [
+    134.084,
+    34.335
+   ],
+   "note": "頂級電子鍋、保溫瓶、美容與生活家電",
+   "parent": null
+  },
+  {
+   "id": "P024",
+   "name_zh": "山田電機（高松伏石）",
+   "name_ja": "ヤマダ電機 高松伏石店",
+   "cat": "shop",
+   "coord": [
+    134.055,
+    34.31
+   ],
+   "note": "頂級電子鍋、保溫瓶、美容與生活家電",
+   "parent": null
+  },
+  {
+   "id": "P025",
+   "name_zh": "山田電機（高松鶴市）",
+   "name_ja": "ヤマダ電機 高松鶴市店",
+   "cat": "shop",
+   "coord": [
+    134.015,
+    34.34
+   ],
+   "note": "頂級電子鍋、保溫瓶、美容與生活家電",
+   "parent": null
+  },
+  {
+   "id": "P026",
+   "name_zh": "山田電機（丸龜）",
+   "name_ja": "ヤマダ電機 丸亀店",
+   "cat": "shop",
+   "coord": [
+    133.795,
+    34.275
+   ],
+   "note": "頂級電子鍋、保溫瓶、美容與生活家電",
+   "parent": null
+  },
+  {
+   "id": "P027",
+   "name_zh": "やまや（Yamaya）",
+   "name_ja": "やまや",
+   "cat": "shop",
+   "coord": [
+    134.073,
+    34.338
+   ],
+   "note": "日本威士忌（知多、碧）、梅酒、在地高級清酒",
+   "parent": null
   }
  ]
 }

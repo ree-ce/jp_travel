@@ -188,7 +188,7 @@
     font-size: 11px; font-weight: 600; vertical-align: 2px; margin-left: 6px;
     background: var(--chip); color: var(--ink-soft);
   }
-  .note { font-size: 14px; margin: 10px 0; color: var(--ink); }
+  .note { font-size: 14px; margin: 10px 0; color: var(--ink); white-space: pre-line; }
   .row {
     display: flex; align-items: center; gap: 10px;
     padding: 11px 2px; border-top: 1px solid var(--edge); cursor: pointer;
@@ -846,23 +846,14 @@ function hitTest(px, py) {
   if (best) return best;
 
   const mpp = metersPerPixel();
-  // Smaller areas first so a mall inside an arcade is reachable.
-  const ranked = areas.filter((a) => a.geometry)
-    .sort((a, b) => (a.kind === "mall" ? 0 : 1) - (b.kind === "mall" ? 0 : 1));
-  for (const a of ranked) {
-    if (a.kind === "arcade") {
-      const half = Math.max(6, (a.width_m || DEFAULT_ARCADE_WIDTH_M) / mpp) / 2 + 3;
-      let hit = false;
-      eachLine(a.geometry, (ring) => {
-        if (hit) return;
-        for (let i = 1; i < ring.length; i++) {
-          const [ax, ay] = toScreen(ring[i - 1][0], ring[i - 1][1]);
-          const [bx, by] = toScreen(ring[i][0], ring[i][1]);
-          if (distToSegment(px, py, ax, ay, bx, by) <= half) { hit = true; return; }
-        }
-      });
-      if (hit) return { type: "area", id: a.id };
-    } else {
+  // Malls first, since a mall's polygon sits inside its arcade's ribbon and
+  // should win there. Two arcades never overlap on a real street layout, but
+  // their generous hit margins can, so among arcade matches keep the nearest
+  // centreline rather than whichever comes first in the data.
+  let bestArcade = null, bestArcadeD = Infinity;
+  for (const a of areas) {
+    if (!a.geometry) continue;
+    if (a.kind === "mall") {
       let hit = false;
       eachLine(a.geometry, (ring) => {
         if (hit) return;
@@ -870,9 +861,20 @@ function hitTest(px, py) {
         if (pointInRing(px, py, pts)) hit = true;
       });
       if (hit) return { type: "area", id: a.id };
+    } else if (a.kind === "arcade") {
+      const half = Math.max(6, (a.width_m || DEFAULT_ARCADE_WIDTH_M) / mpp) / 2 + 3;
+      let d = Infinity;
+      eachLine(a.geometry, (ring) => {
+        for (let i = 1; i < ring.length; i++) {
+          const [ax, ay] = toScreen(ring[i - 1][0], ring[i - 1][1]);
+          const [bx, by] = toScreen(ring[i][0], ring[i][1]);
+          d = Math.min(d, distToSegment(px, py, ax, ay, bx, by));
+        }
+      });
+      if (d <= half && d < bestArcadeD) { bestArcadeD = d; bestArcade = a.id; }
     }
   }
-  return null;
+  return bestArcade ? { type: "area", id: bestArcade } : null;
 }
 
 /* ---- gestures -------------------------------------------------------- */
