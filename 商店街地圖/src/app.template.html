@@ -155,6 +155,15 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, .18);
   }
   .fab[aria-pressed="true"] { background: var(--accent); color: #fff; }
+  #cityFabs { display: flex; flex-direction: column; gap: 8px; }
+  .citybtn {
+    min-width: 52px; height: 38px; padding: 0 12px;
+    border-radius: 19px; border: 1px solid var(--edge);
+    background: var(--panel-solid); color: var(--ink);
+    font-size: 13px; font-weight: 700; line-height: 1; cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .18);
+  }
+  .citybtn[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: transparent; }
 
   /* ---- bottom sheet --------------------------------------------------- */
   #sheet {
@@ -274,6 +283,7 @@
 </div>
 
 <div id="fabs">
+  <div id="cityFabs"></div>
   <button class="fab" id="btnLocate" title="我的位置">⌖</button>
 </div>
 
@@ -303,6 +313,7 @@ const CATEGORIES = {
   cafe:       { zh: "咖啡",  glyph: "☕", color: "#9a6b43" },
   shop:       { zh: "商店",  glyph: "🛍️", color: "#2f74c9" },
   sight:      { zh: "景點",  glyph: "⛩️", color: "#3f9a5c" },
+  view:       { zh: "展望台", glyph: "🗼", color: "#1e9c96" },
   hotel:      { zh: "住宿",  glyph: "🛏️", color: "#8256c4" },
   transit:    { zh: "交通",  glyph: "🚉", color: "#6a7078" },
   other:      { zh: "其他",  glyph: "📍", color: "#8a8177" },
@@ -1569,6 +1580,41 @@ function importJson() {
     } catch (err) { toast("JSON 格式錯誤"); }
   };
 }
+
+/* ---- city switcher ----------------------------------------------------
+   高松 and 丸龜 are ~25km apart with nothing of interest fetched in between,
+   so panning by hand between them is a long, tedious drag. These jump
+   straight to each city's centre; the pressed state tracks whichever
+   city's centre is nearest the current view, updated after every flight. */
+const CITY_PRESETS = [
+  { label: "高松", center: [134.0497, 34.3430], zoom: 15.4 },
+  { label: "丸龜", center: [133.7885, 34.2890], zoom: 15.6 },
+];
+const cityFabs = document.getElementById("cityFabs");
+cityFabs.innerHTML = CITY_PRESETS.map((c, i) =>
+  `<button class="citybtn" data-idx="${i}">${esc(c.label)}</button>`).join("");
+function nearestCityIndex() {
+  const lon = Proj.lon(view.cx), lat = Proj.lat(view.cy);
+  let best = 0, bestD = Infinity;
+  CITY_PRESETS.forEach((c, i) => {
+    const d = Math.hypot(c.center[0] - lon, c.center[1] - lat);
+    if (d < bestD) { bestD = d; best = i; }
+  });
+  return best;
+}
+function refreshCityFabs() {
+  const idx = nearestCityIndex();
+  cityFabs.querySelectorAll("[data-idx]").forEach((b) =>
+    b.setAttribute("aria-pressed", String(Number(b.dataset.idx) === idx)));
+}
+cityFabs.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-idx]");
+  if (!btn) return;
+  const c = CITY_PRESETS[Number(btn.dataset.idx)];
+  flyTo(c.center[0], c.center[1], c.zoom);
+  setTimeout(refreshCityFabs, 450);
+});
+refreshCityFabs();
 
 /* ---- geolocation ----------------------------------------------------- */
 const btnLocate = document.getElementById("btnLocate");

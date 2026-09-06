@@ -256,6 +256,31 @@ const check = (name, ok, extra) => {
   });
   check("category filter narrows the visible pins", shown === 3, `${shown} transit pins`);
 
+  // --- every point renders where it should regardless of which city it's
+  // in. Regression test for a real, silent bug: the basemap's bbox (used by
+  // clampView() as the pan boundary) only ever covered whichever single city
+  // was passed as fetch_osm.py's primary argument. Centering the view on a
+  // point in a second city, then clamping against a bbox that doesn't
+  // include it, snapped the view back near the first city -- every point out
+  // there rendered off-screen at a wrong pixel position, not "missing" so
+  // much as silently mispositioned by tens of thousands of pixels. This
+  // checks every point at least 2km from the default centre still lands
+  // within a few pixels of screen centre once the view is centred on it.
+  const farFlungCheck = await page.evaluate(() => {
+    const [c0, c1] = meta.center;
+    const farPois = pois.filter((p) => Math.hypot(p.coord[0] - c0, p.coord[1] - c1) > 0.02);
+    return farPois.map((p) => {
+      view.cx = Proj.x(p.coord[0]); view.cy = Proj.y(p.coord[1]); view.zoom = 16;
+      clampView(); render();
+      const [x, y] = toScreen(p.coord[0], p.coord[1]);
+      return { id: p.id, name: p.name_zh, dx: Math.abs(x - W / 2), dy: Math.abs(y - H / 2) };
+    });
+  });
+  const misplaced = farFlungCheck.filter((p) => p.dx > 5 || p.dy > 5);
+  check(`all ${farFlungCheck.length} far-flung points render at their own screen centre`,
+    farFlungCheck.length > 0 && misplaced.length === 0,
+    misplaced.length ? JSON.stringify(misplaced) : `checked: ${farFlungCheck.map((p) => p.id).join(",")}`);
+
   // --- no external requests: the whole point of the offline build
   const external = [];
   page.on("request", (r) => { if (!r.url().startsWith("file:")) external.push(r.url()); });
