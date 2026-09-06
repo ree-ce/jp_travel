@@ -953,7 +953,11 @@ canvas.addEventListener("pointermove", (e) => {
     const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
     // Keep the world point under the pinch centre pinned while zooming.
     const before = toLngLat(mx, my);
-    view.zoom = gesture.zoom + Math.log2(Math.max(0.05, dist / gesture.dist));
+    // log2(dist ratio) is physically 1:1 with finger movement -- doubling the
+    // finger spread earns exactly one zoom level. That felt like too many
+    // repeats of the gesture to get anywhere, so amplify it.
+    const PINCH_SENSITIVITY = 1.8;
+    view.zoom = gesture.zoom + Math.log2(Math.max(0.05, dist / gesture.dist)) * PINCH_SENSITIVITY;
     clampView();
     const after = toLngLat(mx, my);
     view.cx += Proj.x(before[0]) - Proj.x(after[0]);
