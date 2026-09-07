@@ -20,18 +20,23 @@ from xml.sax.saxutils import escape
 
 DATA_DIR = pathlib.Path(__file__).resolve().parent.parent / "data"
 
-# zh label + accent colour, matching src/app.template.html's CATEGORIES/AREA_KIND
-# so the KML export looks like the same map, not a re-skin of it.
+# zh label + a distinct icon per category, from Google's own KML "shapes"
+# set (maps.google.com/mapfiles/kml/shapes/*.png) so each pin is genuinely a
+# different picture, not the same blank paddle re-tinted -- an earlier version
+# of this export used one shared icon with a per-category <color> tint, and
+# Google My Maps' import doesn't apply that tint, so every pin came out
+# looking identical regardless of category.
 CATEGORIES = {
-    "restaurant": ("餐廳", "e0642f"),
-    "cafe":       ("咖啡", "9a6b43"),
-    "shop":       ("商店", "2f74c9"),
-    "sight":      ("景點", "3f9a5c"),
-    "view":       ("展望台", "1e9c96"),
-    "hotel":      ("住宿", "8256c4"),
-    "transit":    ("交通", "6a7078"),
-    "other":      ("其他", "8a8177"),
+    "restaurant": ("餐廳", "dining"),
+    "cafe":       ("咖啡", "snack_bar"),
+    "shop":       ("商店", "shopping"),
+    "sight":      ("景點", "flag"),
+    "view":       ("展望台", "camera"),
+    "hotel":      ("住宿", "lodging"),
+    "transit":    ("交通", "rail"),
+    "other":      ("其他", "placemark_circle"),
 }
+ICON_BASE = "https://maps.google.com/mapfiles/kml/shapes/"
 AREA_KIND_LABEL = {"arcade": "商店街", "mall": "商場", "group": "商店街群"}
 AREA_COLORS = {"arcade": "d9622f", "mall": "2f74c9", "group": "7a4fbf"}
 
@@ -129,12 +134,11 @@ def build_kml(doc: dict, title: str) -> str:
             f'<PolyStyle><color>{kml_color(hexcol, "50")}</color></PolyStyle>'
             f"</Style>"
         )
-    for cat, (_, hexcol) in CATEGORIES.items():
+    for cat, (_, icon) in CATEGORIES.items():
         styles.append(
             f'<Style id="poi-{cat}">'
-            f"<IconStyle><color>{kml_color(hexcol)}</color><scale>1.1</scale>"
-            f'<Icon><href>http://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href></Icon>'
-            f"</IconStyle></Style>"
+            f'<IconStyle><scale>1.1</scale><Icon><href>{ICON_BASE}{icon}.png</href></Icon></IconStyle>'
+            f"</Style>"
         )
 
     area_placemarks = "\n".join(p for a in areas if (p := area_placemark(a)))
