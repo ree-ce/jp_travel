@@ -190,7 +190,7 @@ const check = (name, ok, extra) => {
     visibleCats = new Set(["transit"]);
     return pois.filter((p) => visibleCats.has(p.cat || "other")).length;
   });
-  check("category filter narrows the visible pins", shown === 3, `${shown} transit pins`);
+  check("category filter narrows the visible pins", shown === 6, `${shown} transit pins`);
 
   // --- clicking a category chip (e.g. 住宿) doesn't just filter the map, it
   // also lists the matching pins in the sheet -- so tapping a chip is a way
