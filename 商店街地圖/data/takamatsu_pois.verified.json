@@ -70,5 +70,17 @@
   "cat": "shop", "coord": [134.03768, 34.31545],
   "note": "香川県高松市上天神町188-1。相機／沖印連鎖店，路面店，在 Youme Town 高松斜對面。",
   "source": "store.kitamura.jp 官方店舖目錄、Yahoo!地図 查證"
+ },
+ {
+  "id": "P061", "name_zh": "Murasaki Sports Youme Town 高松店", "name_ja": "ムラサキスポーツ ゆめタウン高松店",
+  "cat": "shop", "coord": [134.04171, 34.3168], "parent": "MALL-YUME-TAKAMATSU", "floor": "2F",
+  "note": "生活雜貨／運動用品連鎖店。座標為商場示意方框內既有 3×3 排列格中唯一空格（避免與其他租戶重疊），非精確門市座標。",
+  "source": "izumi.jp 官方租戶目錄查證"
+ },
+ {
+  "id": "P062", "name_zh": "喜馬拉雅 Youme Town 丸龜店", "name_ja": "ヒマラヤスポーツ ゆめタウン丸亀店",
+  "cat": "shop", "coord": [133.785403, 34.273531], "parent": "MALL-YUME-MARUGAME", "floor": "2F",
+  "note": "運動用品連鎖店，2025/3/20 開幕。座標=商場中心（其餘 4 家租戶已佔滿四角，此點位於正中央，不與任何一家重疊）。",
+  "source": "izumi.jp 官方租戶目錄、himaraya.co.jp 店舖查詢查證"
  }
 ]
