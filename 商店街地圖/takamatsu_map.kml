@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+<name>高松 商店街地圖</name>
+<Style id="area-arcade"><LineStyle><color>ff2f62d9</color><width>3</width></LineStyle><PolyStyle><color>502f62d9</color></PolyStyle></Style><Style id="area-mall"><LineStyle><color>ffc9742f</color><width>3</width></LineStyle><PolyStyle><color>50c9742f</color></PolyStyle></Style><Style id="area-group"><LineStyle><color>ffbf4f7a</color><width>3</width></LineStyle><PolyStyle><color>50bf4f7a</color></PolyStyle></Style><Style id="poi-restaurant"><IconStyle><color>ff2f64e0</color><scale>1.1</scale><Icon><href>http://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href></Icon></IconStyle></Style><Style id="poi-cafe"><IconStyle><color>ff436b9a</color><scale>1.1</scale><Icon><href>http://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href></Icon></IconStyle></Style><Style id="poi-shop"><IconStyle><color>ffc9742f</color><scale>1.1</scale><Icon><href>http://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href></Icon></IconStyle></Style><Style id="poi-sight"><IconStyle><color>ff5c9a3f</color><scale>1.1</scale><Icon><href>http://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href></Icon></IconStyle></Style><Style id="poi-view"><IconStyle><color>ff969c1e</color><scale>1.1</scale><Icon><href>http://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href></Icon></IconStyle></Style><Style id="poi-hotel"><IconStyle><color>ffc45682</color><scale>1.1</scale><Icon><href>http://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href></Icon></IconStyle></Style><Style id="poi-transit"><IconStyle><color>ff78706a</color><scale>1.1</scale><Icon><href>http://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href></Icon></IconStyle></Style><Style id="poi-other"><IconStyle><color>ff77818a</color><scale>1.1</scale><Icon><href>http://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href></Icon></IconStyle></Style><Folder><name>範圍（商店街／商場，16）</name><Placemark><name>兵庫町商店街</name><styleUrl>#area-arcade</styleUrl><description>商店街
+最靠近 JR 高松站的一段，往東接丸亀町。
+代表性地標：入口有巨大的紅色圓柱拱門。連鎖藥妝店多，也有許多餐廳、居酒屋。</description><MultiGeometry><LineString><coordinates>134.0465395,34.3466598,0 134.0467401,34.3466264,0 134.0469418,34.3465931,0 134.0473894,34.3465322,0 134.0478977,34.3464561,0 134.0483013,34.3463919,0 134.0483336,34.3463868,0</coordinates></LineString><LineString><coordinates>134.0486054,34.3463448,0 134.0486346,34.3463402,0 134.0492124,34.3462495,0 134.0501765,34.3460982,0 134.0503764,34.3460674,0 134.0505338,34.3460421,0</coordinates></LineString><LineString><coordinates>134.0483336,34.3463868,0 134.0484056,34.3463754,0 134.048476,34.3463643,0</coordinates></LineString><LineString><coordinates>134.048476,34.3463643,0 134.0485477,34.346354,0 134.0486054,34.3463448,0</coordinates></LineString></MultiGeometry></Placemark>
+<Placemark><name>片原町商店街</name><styleUrl>#area-arcade</styleUrl><description>商店街
+東西向的一段，連到琴電片原町站。
+與兵庫町相連，風格較生活化，有許多在地小攤與傳統商店。</description><MultiGeometry><LineString><coordinates>134.0505338,34.3460421,0 134.0506716,34.3460229,0 134.0519506,34.3458435,0 134.0520322,34.3458321,0 134.0523563,34.345783,0 134.0527664,34.3457229,0 134.0529042,34.3456997,0 134.053115,34.3456681,0 134.0531251,34.3456666,0</coordinates></LineString><LineString><coordinates>134.0543479,34.3454792,0 134.0546671,34.3454331,0 134.0548822,34.3454036,0 134.0554152,34.345324,0 134.0554336,34.3453212,0</coordinates></LineString><LineString><coordinates>134.0532008,34.3456548,0 134.0532573,34.3456451,0</coordinates></LineString><LineString><coordinates>134.0541688,34.3455059,0 134.0542397,34.3454944,0 134.0542774,34.3454874,0 134.0543479,34.3454792,0</coordinates></LineString><LineString><coordinates>134.0531251,34.3456666,0 134.0532008,34.3456548,0</coordinates></LineString><LineString><coordinates>134.0532573,34.3456451,0 134.0532721,34.3456426,0 134.0539213,34.345545,0 134.0541688,34.3455059,0</coordinates></LineString><LineString><coordinates>134.0555021,34.3453151,0 134.0554336,34.3453212,0</coordinates></LineString></MultiGeometry></Placemark>
+<Placemark><name>丸龜町商店街</name><styleUrl>#area-arcade</styleUrl><description>商店街
+整條商店街的核心，2006 年起分區重建，最北端就是丸亀町壱番街與大鐘樓廣場。
+精品戰區！地標是「米蘭風格玻璃圓頂」。街道最寬敞，進駐 LV、COACH 等國際精品與時髦咖啡廳。</description><LineString><coordinates>134.0505338,34.3460421,0 134.0505032,34.345905,0 134.0503954,34.3454299,0 134.0502739,34.3448639,0 134.0501594,34.3443408,0 134.0501566,34.3443281,0 134.0501476,34.344287,0 134.0501405,34.3442549,0 134.0501378,34.3442428,0 134.0500022,34.343626,0 134.0499976,34.3436051,0 134.0499908,34.3435743,0 134.0499383,34.3433004,0 134.0498852,34.3430557,0 134.0497897,34.3425742,0 134.0496306,34.3418591,0 134.0496288,34.3418508,0</coordinates></LineString></Placemark>
+<Placemark><name>南新町商店街</name><styleUrl>#area-arcade</styleUrl><description>商店街
+有大創、二手書店、烏龍麵連鎖店，年輕人多。</description><MultiGeometry><LineString><coordinates>134.0495959,34.3416874,0 134.0495329,34.3413801,0 134.0494636,34.341034,0 134.0494279,34.3408718,0 134.0493546,34.3405383,0 134.0493029,34.3402874,0 134.049222,34.3398945,0</coordinates></LineString><LineString><coordinates>134.0492283,34.3397478,0 134.0491469,34.3393166,0 134.0490786,34.3389543,0 134.0491033,34.3388791,0</coordinates></LineString></MultiGeometry></Placemark>
+<Placemark><name>常磐町商店街</name><styleUrl>#area-arcade</styleUrl><description>商店街
+靠近瓦町站的橫向街道。動漫、卡牌遊戲、音樂表演空間的聚集地。</description><MultiGeometry><LineString><coordinates>134.0502136,34.3387696,0 134.0503173,34.3392287,0 134.0504021,34.3395537,0 134.0504078,34.3395756,0</coordinates></LineString><LineString><coordinates>134.0504078,34.3395756,0 134.0504362,34.3396173,0</coordinates></LineString></MultiGeometry></Placemark>
+<Placemark><name>田町商店街</name><styleUrl>#area-arcade</styleUrl><description>商店街
+最南端的一段，靠近瓦町。
+整個商店街的最南端，氣氛最悠閒、步調最慢，有許多布料行、茶葉店、傳統超市。</description><MultiGeometry><LineString><coordinates>134.0491033,34.3388791,0 134.0491146,34.3387748,0 134.049059,34.33846,0 134.0490079,34.3381537,0 134.0489216,34.3376535,0 134.0488068,34.3370853,0</coordinates></LineString><LineString><coordinates>134.0488068,34.3370853,0 134.0487938,34.3370137,0 134.0487803,34.3369393,0 134.0487628,34.336843,0</coordinates></LineString><LineString><coordinates>134.0487628,34.336843,0 134.0487192,34.3365463,0 134.0486324,34.3360512,0 134.0485727,34.3357045,0 134.0484867,34.3352516,0</coordinates></LineString></MultiGeometry></Placemark>
+<Placemark><name>獅子通商店街</name><styleUrl>#area-arcade</styleUrl><description>商店街
+橫向的飲食店街，晚上熱鬧。
+美食天堂，與丸龜町平行。夜晚最熱鬧，聚集大量的居酒屋、拉麵店，是高松宵夜勝地！</description><LineString><coordinates>134.0520322,34.3458321,0 134.051971,34.3455146,0 134.0519157,34.3452279,0 134.0518615,34.3449441,0 134.0518053,34.3446555,0 134.0517523,34.3443689,0 134.0517025,34.3441215,0 134.051693,34.3440733,0 134.051686,34.3440372,0 134.0516383,34.3437895,0 134.0515677,34.3433968,0 134.0515597,34.3433659,0 134.0515292,34.3432191,0 134.0515214,34.3431794,0 134.0515011,34.3430631,0 134.051449,34.3428049,0 134.0513944,34.342525,0 134.0513484,34.3422864,0 134.0512679,34.3418706,0 134.0512122,34.3415803,0</coordinates></LineString></Placemark>
+<Placemark><name>常盤街</name><styleUrl>#area-arcade</styleUrl><description>商店街
+常磐町旁的分支拱廊。</description><MultiGeometry><LineString><coordinates>134.0489973,34.3388557,0 134.0491033,34.3388791,0 134.0491753,34.3389022,0 134.0502136,34.3387696,0 134.0504086,34.3387399,0 134.0508893,34.3386805,0 134.0516761,34.3385732,0</coordinates></LineString><LineString><coordinates>134.0504362,34.3396173,0 134.0504782,34.3396809,0 134.0504848,34.3397136,0 134.0505629,34.340099,0 134.0506093,34.3402883,0 134.050693,34.3406002,0 134.0507513,34.3408175,0 134.0508033,34.3410249,0 134.0508455,34.3411935,0 134.0509101,34.3414468,0 134.0509139,34.3414619,0 134.0509249,34.3415157,0</coordinates></LineString></MultiGeometry></Placemark>
+<Placemark><name>御坊町商店街</name><styleUrl>#area-arcade</styleUrl><description>商店街
+高松中央商店街官方 8 條街道之一（兵庫町・片原町・丸龜町・獅子通・南新町・常磐町・田町・御坊町，號稱四國第一長，全長約 2.7km、逾千店舖）。
+8 條街中長度最短，主要以佛具店和傳統工藝小店為主，氣氛安靜。　（OSM 未標記為行人徒步區，此為一般道路幾何，非拱廊實測輪廓。）</description><MultiGeometry><LineString><coordinates>134.0581549,34.3425287,0 134.0581013,34.3425264,0 134.0576548,34.3425159,0</coordinates></LineString><LineString><coordinates>134.0576548,34.3425159,0 134.0567526,34.3426353,0 134.0566725,34.3426459,0 134.0551814,34.3428311,0 134.0551464,34.3428354,0 134.0550769,34.3428488,0</coordinates></LineString><LineString><coordinates>134.0550769,34.3428488,0 134.0549995,34.342859,0 134.0545434,34.3429357,0 134.0543498,34.3429642,0 134.0540686,34.342999,0 134.0539028,34.3430196,0 134.0538049,34.3430317,0 134.053682,34.343047,0 134.0536148,34.3430587,0 134.053579,34.3430642,0 134.0535258,34.3430696,0 134.0529528,34.3431505,0 134.0527935,34.343173,0 134.0527756,34.3431761,0 134.0526927,34.3431883,0 134.0526092,34.3432012,0 134.0521588,34.3432701,0 134.051877,34.3433117,0 134.0517901,34.343325,0 134.0516061,34.3433566,0 134.0515597,34.3433659,0 134.0513337,34.3434042,0 134.0512844,34.3434133,0 134.0508879,34.3434739,0 134.0507648,34.343492,0 134.0504263,34.3435418,0 134.0504092,34.3435446,0 134.0503702,34.3435507,0 134.0500635,34.3435955,0 134.0500438,34.3435984,0 134.0499976,34.3436051,0 134.0499512,34.3436119,0 134.0493693,34.3436976,0 134.0493177,34.3437061,0 134.0489962,34.3437528,0 134.0486934,34.3437972,0 134.0483637,34.3438457,0 134.0483156,34.3438528,0 134.0482145,34.3438677,0</coordinates></LineString></MultiGeometry></Placemark>
+<Placemark><name>丸龜町 GREEN</name><styleUrl>#area-mall</styleUrl><description>商場
+蓋在丸亀町商店街上的複合商場，中庭有櫸樹廣場。</description><MultiGeometry><Polygon><outerBoundaryIs><LinearRing><coordinates>134.0495839,34.341891,0 134.0494552,34.3419099,0 134.0494991,34.3421132,0 134.0492281,34.3421531,0 134.0492498,34.3422537,0 134.0491686,34.3422657,0 134.0490263,34.3422874,0 134.0490552,34.3424366,0 134.0491579,34.3424215,0 134.0492094,34.34266,0 134.0497088,34.3425865,0 134.0497285,34.3425608,0 134.0495839,34.341891,0</coordinates></LinearRing></outerBoundaryIs></Polygon><Polygon><outerBoundaryIs><LinearRing><coordinates>134.0503399,34.3423233,0 134.0502955,34.3421241,0 134.0502635,34.3419801,0 134.0502273,34.3418097,0 134.0502208,34.3417836,0 134.0496915,34.3418654,0 134.0498288,34.3424666,0 134.049841,34.3424722,0 134.0503327,34.3423973,0 134.0503196,34.3423365,0 134.0503422,34.3423338,0 134.0503399,34.3423233,0</coordinates></LinearRing></outerBoundaryIs></Polygon></MultiGeometry></Placemark>
+<Placemark><name>丸龜町壹番街</name><styleUrl>#area-mall</styleUrl><description>商場
+丸亀町重建的第一街區，東館與西館夾著大鐘樓廣場，與高松三越相連。東館 1F：Rolex、Gucci、Brooks Brothers；西館 1F：Tiffany &amp; Co.；4F 有小型會館與餐廳，5F 以上為住宅。精品購物廊道，非平價商場。</description><MultiGeometry><Polygon><outerBoundaryIs><LinearRing><coordinates>134.0505552,34.3459032,0 134.0506069,34.3459237,0 134.0506738,34.3459789,0 134.0512149,34.3458987,0 134.0512054,34.3458682,0 134.0512861,34.3458541,0 134.0512586,34.3457305,0 134.0508138,34.3457973,0 134.0508027,34.3457486,0 134.050529,34.345788,0 134.0505552,34.3459032,0</coordinates></LinearRing></outerBoundaryIs></Polygon><Polygon><outerBoundaryIs><LinearRing><coordinates>134.0500707,34.3455318,0 134.0503127,34.3454978,0 134.0503285,34.3455077,0 134.0504227,34.3459349,0 134.0504007,34.3459526,0 134.05038,34.3459817,0 134.0503697,34.3460133,0 134.0503696,34.3460281,0 134.0501801,34.3460563,0 134.0500707,34.3455318,0</coordinates></LinearRing></outerBoundaryIs></Polygon></MultiGeometry></Placemark>
+<Placemark><name>高松三越</name><styleUrl>#area-mall</styleUrl><description>商場
+位於丸亀町商店街北段。</description><Polygon><outerBoundaryIs><LinearRing><coordinates>134.0507084,34.3466492,0 134.0523192,34.346494,0 134.052358,34.3464674,0 134.0523048,34.3461347,0 134.0522978,34.3460906,0 134.0522632,34.3460733,0 134.0520323,34.3461089,0 134.050651,34.3463216,0 134.0507084,34.3466492,0</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>
+<Placemark><name>海洋廣場高松</name><styleUrl>#area-mall</styleUrl><description>商場
+サンポート高松，JR 高松站北側的港灣複合設施。</description><Polygon><outerBoundaryIs><LinearRing><coordinates>134.0470029,34.3525489,0 134.0470368,34.3525582,0 134.0470739,34.3525618,0 134.0471111,34.3525591,0 134.0471465,34.3525502,0 134.0471776,34.3525364,0 134.0472044,34.3525182,0 134.0472225,34.352501,0 134.0472377,34.3524808,0 134.0472491,34.3524582,0 134.0472565,34.3524299,0 134.0472578,34.3524093,0 134.0472521,34.3523749,0 134.0472413,34.3523498,0 134.0472263,34.352328,0 134.0472085,34.3523096,0 134.0471897,34.3522953,0 134.0471618,34.3522802,0 134.0472206,34.3521841,0 134.0475654,34.352328,0 134.0477389,34.3524041,0 134.0477148,34.3524416,0 134.0476966,34.3524695,0 134.0477783,34.3525106,0 134.0471932,34.353305,0 134.0471551,34.3533107,0 134.0471102,34.3532914,0 134.0470912,34.3533216,0 134.0466132,34.3531354,0 134.0467436,34.3529111,0 134.0470029,34.3525489,0</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>
+<Placemark><name>Youme Town 高松</name><styleUrl>#area-mall</styleUrl><description>商場
+香川県高松市三条町608-1。OSM 無建物輪廓，範圍為依實際建物規模估算的示意方框（約 300×150m，本館＋南館＋東館三棟相連的賣場量體，不含周邊平面停車場；敷地面積約 98,530㎡、店舗面積約 54,590㎡，ja.wikipedia.org 查證），非精確外觀。放大縮小時範圍也更容易點到（而非誤點到店家標記）。</description><Polygon><outerBoundaryIs><LinearRing><coordinates>134.04007855377162,34.31603151257463,0 134.04334144622837,34.31603151257463,0 134.04334144622837,34.31738848742537,0 134.04007855377162,34.31738848742537,0 134.04007855377162,34.31603151257463,0</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>
+<Placemark><name>Youme Town 丸龜</name><styleUrl>#area-mall</styleUrl><description>商場
+香川県丸亀市新田町150。OSM 無建物輪廓，範圍為依實際建物規模估算的示意方框（約 145×95m，涵蓋 1-3F 賣場＋附設立體停車場量體；敷地面積約 47,800㎡、店舗面積約 24,400㎡，ja.wikipedia.org 查證），非精確外觀。</description><Polygon><outerBoundaryIs><LinearRing><coordinates>133.78460943748848,34.273096768047765,0 133.78619656251152,34.273096768047765,0 133.78619656251152,34.27396523195223,0 133.78460943748848,34.27396523195223,0 133.78460943748848,34.273096768047765,0</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>
+<Placemark><name>瓦町 FLAG</name><styleUrl>#area-mall</styleUrl><description>商場
+香川県高松市常磐町1-3-1，直接連通琴電瓦町駅（コトデン瓦町ビル）。單棟建物，地上約 8-10 層＋地下 3 層，商業樓地板約 29,700㎡，2015 年開幕。1F Starbucks、1-2F Beams、3F 丸善書店／駿河屋、4F 大創 DAISO、5F 阿卡將本舖。OSM 無此建物輪廓（附近的「瓦町ビル」way 是另一棟建物），範圍為依地址座標估算的示意方框（約 100×80m），非實際外觀。</description><Polygon><outerBoundaryIs><LinearRing><coordinates>134.05200324015618,34.33862984003981,0 134.0530911598438,34.33862984003981,0 134.0530911598438,34.339353559960195,0 134.05200324015618,34.339353559960195,0 134.05200324015618,34.33862984003981,0</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark></Folder>
+<Folder><name>餐廳（14）</name><Placemark><name>一鶴 丸龜本店</name><styleUrl>#poi-restaurant</styleUrl><description>骨付鳥（おやどり老雞／ひなどり嫩雞）、雞肉炊飯（とりめし）。香川県丸亀市浜町317，JR 丸龜站 Exit 2 步行 3 分。店內無停車場，需用附近投幣停車場。
+來源：Yahoo!地図、一鶴官網 查證</description><Point><coordinates>133.79459,34.292801,0</coordinates></Point></Placemark>
+<Placemark><name>一鶴 土器川店</name><styleUrl>#poi-restaurant</styleUrl><description>骨付鳥。香川県丸亀市土居町2丁目12-33，最大分店，96 個車位，適合開車前往。
+來源：Yahoo!地図、MapFan、NAVITIME 查證</description><Point><coordinates>133.805102,34.292024,0</coordinates></Point></Placemark>
+<Placemark><name>一鶴 中府店</name><styleUrl>#poi-restaurant</styleUrl><description>骨付鳥。香川県丸亀市中府町1丁目2-3，距丸龜站約步行 25 分，建議開車。
+來源：Yahoo!地図 查證</description><Point><coordinates>133.79879,34.277622,0</coordinates></Point></Placemark>
+<Placemark><name>一鶴 高松店</name><styleUrl>#poi-restaurant</styleUrl><description>骨付鳥。香川県高松市鍛冶屋町4-11，近瓦町，人氣極高常排隊。
+來源：Retty、MapFan 查證</description><Point><coordinates>134.048602,34.343086,0</coordinates></Point></Placemark>
+<Placemark><name>一鶴 屋島店</name><styleUrl>#poi-restaurant</styleUrl><description>骨付鳥。香川県高松市屋島中町220-1，近琴電屋島（志度線）站，獨棟大型店。
+來源：Yahoo!地図、MapFan 查證</description><Point><coordinates>134.107112,34.341194,0</coordinates></Point></Placemark>
+<Placemark><name>一鶴 太田店</name><styleUrl>#poi-restaurant</styleUrl><description>骨付鳥。香川県高松市多肥下町1567-3，近琴電太田站，Youme Town 高松往南方向。
+來源：Retty、Yahoo!地図 查證</description><Point><coordinates>134.057814,34.300013,0</coordinates></Point></Placemark>
+<Placemark><name>麺処 綿谷 丸龜店</name><styleUrl>#poi-restaurant</styleUrl><description>Tabelog 3.7+ / Google 4.3★。丸龜當地代表性超人氣烏龍麵店，招牌「牛肉烏龍麵」甜鹹入味、份量充沛且高 CP 值。香川県丸亀市北平山町2丁目6-18。
+來源：使用者提供、MapFan 查證座標</description><Point><coordinates>133.796088,34.296253,0</coordinates></Point></Placemark>
+<Placemark><name>讃岐の香り 石川うどん</name><styleUrl>#poi-restaurant</styleUrl><description>Tabelog 3.5+ / Google 4.1★。丸龜車站步行約 2 分鐘，主打現點現炸的酥脆天婦羅與清香湯頭。香川県丸亀市福島町54-8。
+來源：使用者提供、NAVITIME 查證座標</description><Point><coordinates>133.793689,34.293091,0</coordinates></Point></Placemark>
+<Placemark><name>酒亭 うり</name><styleUrl>#poi-restaurant</styleUrl><description>Tabelog 居酒屋百名店 / Google 4.3★。高質感割烹居酒屋，提供瀨戶內海新鮮刺身、香川在地地酒與精緻季節小菜。香川県丸亀市通町154-1。
+來源：使用者提供、NAVITIME 查證座標</description><Point><coordinates>133.795824,34.291794,0</coordinates></Point></Placemark>
+<Placemark><name>ぶつぎりたんちゃん 丸龜店</name><styleUrl>#poi-restaurant</styleUrl><description>Tabelog 3.6+ / Google 4.3★。以招牌「塊狀厚切牛舌」、烤牛排與多元單點下酒菜聞名，氣氛熱鬧。香川県丸亀市西本町1丁目2-33。
+來源：使用者提供、楽天ぐるなび 查證座標</description><Point><coordinates>133.791537,34.289241,0</coordinates></Point></Placemark>
+<Placemark><name>姿壽司 三四郎</name><styleUrl>#poi-restaurant</styleUrl><description>Tabelog 3.5+ / Google 4.2★。在地老字號壽司割烹，選用新鮮海產製作握壽司與天婦羅，板前氛圍道地。香川県丸亀市土居町3丁目13-13（2023/10 遷址至此）。
+來源：使用者提供、MapFan 查證座標</description><Point><coordinates>133.803943,34.294101,0</coordinates></Point></Placemark>
+<Placemark><name>や台壽司 丸龜駅前町</name><styleUrl>#poi-restaurant</styleUrl><description>Google 3.8★。丸龜車站正對面，主打平價職人握壽司與居酒屋料理，營業至深夜。香川県丸亀市新町6-2（2025/12 開幕新店，與另一家「や台ずし 丸亀駅富屋町」不同店）。
+來源：使用者提供、yossix-shop.com 官方店舖頁查證座標</description><Point><coordinates>133.792724,34.292034,0</coordinates></Point></Placemark>
+<Placemark><name>熊八中華拉麵</name><styleUrl>#poi-restaurant</styleUrl><description>Google 4.3★。距離車站步行約 3 分鐘，主打經典醬油風味中華拉麵，是深夜續攤的首選。香川県丸亀市福島町125 ポートマンション1F。
+來源：使用者提供、Yahoo!地図 查證座標</description><Point><coordinates>133.792133,34.294732,0</coordinates></Point></Placemark>
+<Placemark><name>Namaste Ganesha 丸龜店</name><styleUrl>#poi-restaurant</styleUrl><description>Tabelog 評分佳 / Google 4.3★。丸龜代表性本格印度香料咖哩店，爆漿起司烤餅與坦都里烤雞極受好評。香川県丸亀市田村町962-1。
+來源：使用者提供、楽天ぐるなび 查證座標</description><Point><coordinates>133.799487,34.267141,0</coordinates></Point></Placemark></Folder>
+<Folder><name>商店（36）</name><Placemark><name>Mont-bell 高松店</name><styleUrl>#poi-shop</styleUrl><description>☂️ Trekking Umbrella L / Long Tail（輕量加大傘）
+輕羽絨外套、GORE-TEX 防水機能服飾</description><Point><coordinates>134.049,34.338,0</coordinates></Point></Placemark>
+<Placemark><name>高松丸龜町商店街（藥妝戰區）</name><styleUrl>#poi-shop</styleUrl><description>松本清、大國藥妝等各大免稅藥妝一級戰區</description><Point><coordinates>134.048,34.344,0</coordinates></Point></Placemark>
+<Placemark><name>四國 Shop 88</name><styleUrl>#poi-shop</styleUrl><description>橄欖油、鎌田高湯醬油、讚岐烏龍麵、今治毛巾</description><Point><coordinates>134.046,34.352,0</coordinates></Point></Placemark>
+<Placemark><name>Ace One JR高松本店</name><styleUrl>#poi-shop</styleUrl><description>日系濾掛咖啡、綠茶粉、生鮮水果、日清泡麵</description><Point><coordinates>134.046,34.351,0</coordinates></Point></Placemark>
+<Placemark><name>Workman Plus</name><styleUrl>#poi-shop</styleUrl><description>平價高機能防風防水外套、耐走鞋</description><Point><coordinates>134.044,34.298,0</coordinates></Point></Placemark>
+<Placemark><name>Sports Depo</name><styleUrl>#poi-shop</styleUrl><description>Asics 亞瑟士跑鞋、HOKA、高爾夫球具</description><Point><coordinates>134.053,34.313,0</coordinates></Point></Placemark>
+<Placemark><name>山田電機（高松春日）</name><styleUrl>#poi-shop</styleUrl><description>頂級電子鍋、保溫瓶、美容與生活家電</description><Point><coordinates>134.084,34.335,0</coordinates></Point></Placemark>
+<Placemark><name>山田電機（高松伏石）</name><styleUrl>#poi-shop</styleUrl><description>頂級電子鍋、保溫瓶、美容與生活家電</description><Point><coordinates>134.055,34.31,0</coordinates></Point></Placemark>
+<Placemark><name>山田電機（高松鶴市）</name><styleUrl>#poi-shop</styleUrl><description>頂級電子鍋、保溫瓶、美容與生活家電</description><Point><coordinates>134.015,34.34,0</coordinates></Point></Placemark>
+<Placemark><name>山田電機（丸龜）</name><styleUrl>#poi-shop</styleUrl><description>頂級電子鍋、保溫瓶、美容與生活家電</description><Point><coordinates>133.795,34.275,0</coordinates></Point></Placemark>
+<Placemark><name>やまや（Yamaya）</name><styleUrl>#poi-shop</styleUrl><description>日本威士忌（知多、碧）、梅酒、在地高級清酒</description><Point><coordinates>134.073,34.338,0</coordinates></Point></Placemark>
+<Placemark><name>ABC-MART Youme Town 高松店</name><styleUrl>#poi-shop</styleUrl><description>2F
+各品牌運動鞋、休閒鞋款式齊全。座標=商場中心（實際店位在 2F 內，精確門市座標未查得）。
+來源：izumi.jp 官方租戶目錄，2025 查證</description><Point><coordinates>134.041558,34.31662,0</coordinates></Point></Placemark>
+<Placemark><name>3COINS Youme Town 高松店</name><styleUrl>#poi-shop</styleUrl><description>2F
+300 日圓起生活雜貨、居家收納、日系餐具。
+來源：izumi.jp 官方租戶目錄，2025 查證</description><Point><coordinates>134.04171,34.31662,0</coordinates></Point></Placemark>
+<Placemark><name>ABC-MART Youme Town 丸龜店</name><styleUrl>#poi-shop</styleUrl><description>1F
+丸龜市區主力商場內，休閒鞋、家庭童鞋齊全。
+來源：izumi.jp 官方租戶目錄，2025 查證</description><Point><coordinates>133.785251,34.273441,0</coordinates></Point></Placemark>
+<Placemark><name>3COINS Youme Town 丸龜店</name><styleUrl>#poi-shop</styleUrl><description>1F
+300 日圓爆紅收納、廚房生活雜貨。
+來源：izumi.jp 官方租戶目錄，2025 查證</description><Point><coordinates>133.785555,34.273441,0</coordinates></Point></Placemark>
+<Placemark><name>Standard Products Youme Town 丸龜店</name><styleUrl>#poi-shop</styleUrl><description>2F
+大創高階副牌，無印簡約風木質餐具、居家香氛（¥300~1000）。
+來源：izumi.jp 官方租戶目錄，2025 查證</description><Point><coordinates>133.785251,34.273621,0</coordinates></Point></Placemark>
+<Placemark><name>寶可夢中心 香川</name><styleUrl>#poi-shop</styleUrl><description>1F
+丸龜町GREEN 東館 1F。2025/10/24 開幕，四國旗艦店，約 890㎡，含 Pokémon Card Station。呆呆獸周邊、美妝雜貨。
+來源：Pokémon 官方網站、KSB News，2025 查證</description><Point><coordinates>134.0501,34.3422,0</coordinates></Point></Placemark>
+<Placemark><name>高松 LoFt</name><styleUrl>#poi-shop</styleUrl><description>3F
+丸龜町GREEN 西館 3F。文具、生活雜貨、輕量傘具（Wpc./Amvel 等品牌常見於此類店）。
+來源：Loft 官方店舖列表，2025 查證</description><Point><coordinates>134.0493,34.3426,0</coordinates></Point></Placemark>
+<Placemark><name>Asics Walking 高松店</name><styleUrl>#poi-shop</styleUrl><description>香川県高松市丸亀町14-3。專業健走鞋、通勤鞋、免費 3D 足型測量。位於丸龜町街區路面店，非壱番街/參番街等編號建物內。
+來源：Yahoo!地図 查證</description><Point><coordinates>134.050547,34.345224,0</coordinates></Point></Placemark>
+<Placemark><name>ABC-MART 高松屋島店</name><styleUrl>#poi-shop</styleUrl><description>香川県高松市屋島西町1893-1。屋島西町路面店，距 JR 高松駅約 3.5km（超出目前底圖範圍，僅顯示為獨立標記）。
+來源：Yahoo!地図 查證</description><Point><coordinates>134.098966,34.338816,0</coordinates></Point></Placemark>
+<Placemark><name>Can★Do COM高松店</name><styleUrl>#poi-shop</styleUrl><description>香川県高松市浜ノ町1-243 COM高松 2F，JR 高松駅步行 2 分。旅行小物、百元文具雜貨。
+來源：Yahoo!地図、NAVITIME 查證</description><Point><coordinates>134.047023,34.350698,0</coordinates></Point></Placemark>
+<Placemark><name>Halows 丸龜中府店</name><styleUrl>#poi-shop</styleUrl><description>原為 Watts 公司的 meets 百円均一雜貨品牌專櫃，現已改為 Halows 丸龜中府店（同一超市商場內）。香川県丸亀市中府町1-3-1，位於丸龜站與 Youme Town 丸龜之間。
+來源：Watts 官方網站、Yahoo!地図 查證</description><Point><coordinates>133.796472,34.277793,0</coordinates></Point></Placemark>
+<Placemark><name>大創 瓦町FLAG店</name><styleUrl>#poi-shop</styleUrl><description>4F
+大創百元商店，瓦町FLAG 4F。
+來源：DAISO 官方店舖列表（#002306）查證</description><Point><coordinates>134.052395,34.338992,0</coordinates></Point></Placemark>
+<Placemark><name>UNIQLO Youme Town 高松店</name><styleUrl>#poi-shop</styleUrl><description>3F
+服飾。
+來源：izumi.jp 官方租戶目錄查證</description><Point><coordinates>134.041862,34.31662,0</coordinates></Point></Placemark>
+<Placemark><name>GU Youme Town 高松店</name><styleUrl>#poi-shop</styleUrl><description>3F
+平價服飾。
+來源：izumi.jp 官方租戶目錄查證</description><Point><coordinates>134.041558,34.31671,0</coordinates></Point></Placemark>
+<Placemark><name>無印良品 Youme Town 高松店</name><styleUrl>#poi-shop</styleUrl><description>1F
+生活雜貨、服飾、文具。
+來源：izumi.jp 官方樓層指南、MUJI 官網查證</description><Point><coordinates>134.04171,34.31671,0</coordinates></Point></Placemark>
+<Placemark><name>EDION Youme Town 高松店</name><styleUrl>#poi-shop</styleUrl><description>1F
+家電量販。注意：位於商場的「南館」附屬棟，非主館，實際位置可能略有偏移。
+來源：izumi.jp 官方租戶目錄查證</description><Point><coordinates>134.041862,34.31671,0</coordinates></Point></Placemark>
+<Placemark><name>Super Sports Xebio Youme Town 高松店</name><styleUrl>#poi-shop</styleUrl><description>2F
+運動用品。
+來源：izumi.jp 官方租戶目錄查證</description><Point><coordinates>134.041558,34.3168,0</coordinates></Point></Placemark>
+<Placemark><name>宜得利 Deco Home Youme Town 丸龜店</name><styleUrl>#poi-shop</styleUrl><description>1F
+居家生活雜貨（デコホーム為宜得利的小型店態）。
+來源：izumi.jp 官方樓層指南、NITORI 官網查證</description><Point><coordinates>133.785555,34.273621,0</coordinates></Point></Placemark>
+<Placemark><name>丸善ジュンク堂書店 瓦町FLAG店</name><styleUrl>#poi-shop</styleUrl><description>3F
+大型書店。2020/3 從 7F 遷至 3F。與丸善為同一集團（丸善ジュンク堂書店）分別經營的店面。
+來源：k-flag.jp 官方店舖列表、KSB News 遷店報導查證</description><Point><coordinates>134.052395,34.338902,0</coordinates></Point></Placemark>
+<Placemark><name>丸善 瓦町FLAG店</name><styleUrl>#poi-shop</styleUrl><description>3F
+文具、辦公用品，與ジュンク堂書店同樓層、同集團分別經營。
+來源：k-flag.jp 官方店舖列表、NAVITIME 查證</description><Point><coordinates>134.052699,34.338902,0</coordinates></Point></Placemark>
+<Placemark><name>GASHAPON BANDAI OFFICIAL SHOP</name><styleUrl>#poi-shop</styleUrl><description>3F
+開設在ジュンク堂書店內的扭蛋專區，非獨立店面。
+來源：ガシャポン官方店舖目錄查證</description><Point><coordinates>134.052395,34.339082,0</coordinates></Point></Placemark>
+<Placemark><name>扭蛋之森 海洋廣場高松店</name><styleUrl>#poi-shop</styleUrl><description>2F
+2026/8/1 開幕，736 台扭蛋機，香川縣內規模最大。
+來源：gashapon.jp 官方店舖目錄、Yahoo!ニュース查證</description><Point><coordinates>134.047193,34.352787,0</coordinates></Point></Placemark>
+<Placemark><name>相機的北村 高松南店</name><styleUrl>#poi-shop</styleUrl><description>香川県高松市上天神町188-1。相機／沖印連鎖店，路面店，在 Youme Town 高松斜對面。
+來源：store.kitamura.jp 官方店舖目錄、Yahoo!地図 查證</description><Point><coordinates>134.03768,34.31545,0</coordinates></Point></Placemark>
+<Placemark><name>Murasaki Sports Youme Town 高松店</name><styleUrl>#poi-shop</styleUrl><description>2F
+生活雜貨／運動用品連鎖店。
+來源：izumi.jp 官方租戶目錄查證</description><Point><coordinates>134.04171,34.3168,0</coordinates></Point></Placemark>
+<Placemark><name>喜馬拉雅 Youme Town 丸龜店</name><styleUrl>#poi-shop</styleUrl><description>2F
+運動用品連鎖店，2025/3/20 開幕。
+來源：izumi.jp 官方租戶目錄、himaraya.co.jp 店舖查詢查證</description><Point><coordinates>133.785403,34.273531,0</coordinates></Point></Placemark></Folder>
+<Folder><name>展望台（1）</name><Placemark><name>高松地標塔展望台</name><styleUrl>#poi-view</styleUrl><description>29F
+免費入場。サンポート高松内，高松港旁的地標大樓。360度環景，可望瀬戸內海、屋島、市區天際線。
+來源：symboltower.com 官方網站查證</description><Point><coordinates>134.046584,34.352451,0</coordinates></Point></Placemark></Folder>
+<Folder><name>住宿（2）</name><Placemark><name>Seto Chill Stay 瓦町フロント</name><styleUrl>#poi-hotel</styleUrl><description>落腳處。鄰近瓦町站／瓦町FLAG（約 100m）。
+來源：使用者提供 Google Maps 連結</description><Point><coordinates>134.05085,34.339374,0</coordinates></Point></Placemark>
+<Placemark><name>Super Hotel 丸龜站前</name><styleUrl>#poi-hotel</styleUrl><description>落腳處。位於通町商店街內，近 JR 丸龜站。
+來源：OSM way/1117982585、superhoteljapan.com 官方網站查證</description><Point><coordinates>133.796065,34.29132,0</coordinates></Point></Placemark></Folder>
+<Folder><name>交通（3）</name><Placemark><name>JR 高松站</name><styleUrl>#poi-transit</styleUrl><description>來源：node/8667971394</description><Point><coordinates>134.046153,34.350692,0</coordinates></Point></Placemark>
+<Placemark><name>瓦町站</name><styleUrl>#poi-transit</styleUrl><description>來源：node/8067577865</description><Point><coordinates>134.053479,34.33957,0</coordinates></Point></Placemark>
+<Placemark><name>高松築港站</name><styleUrl>#poi-transit</styleUrl><description>來源：node/6887308113</description><Point><coordinates>134.049485,34.350728,0</coordinates></Point></Placemark></Folder>
+</Document>
+</kml>

@@ -56,6 +56,9 @@ python3 tools/add_pois.py takamatsu data/takamatsu_pois.seed.json
 
 # 5. 打包成單一 HTML
 python3 tools/build.py takamatsu
+
+# 6.（選用）匯出成 KML，可匯入 Google 我的地圖
+python3 tools/export_kml.py takamatsu
 ```
 
 第 4 步的 `add_pois.py` 是**之後匯入你自己的點**要走的路徑。輸入是一個 JSON 陣列，
@@ -63,6 +66,11 @@ python3 tools/build.py takamatsu
 其餘欄位（`cat`／`floor`／`note`／`url`／`hours`）照抄。
 `parent` 不用填 —— 它會自己算：先看點落在哪個商場多邊形裡（取最小的那個），
 沒有的話再找最近、且距離在「中心線 ± 寬度/2 + 8 公尺」內的商店街。
+
+第 6 步的 `export_kml.py` 把同一份資料轉成 `.kml`，給 Google 我的地圖／Google Maps
+匯入用（App 本身不吃 KML，這是給想在別的地圖 App 上看同一批標記的人）。
+範圍（商店街／商場）放一個圖層，標記依分類各自一個圖層（Google 我的地圖上限 10 個圖層，
+目前用到的分類數量遠低於此）。
 
 ## 測試
 
@@ -86,6 +94,7 @@ npm i playwright && node tools/test_app.js   # 建置後的 App 端對端行為
 SPEC.md                       需求分析與規格
 takamatsu_map.html            成品（單檔、離線）
 takamatsu_map.artifact.html   成品（Artifact 用的 body-only 版）
+takamatsu_map.kml             成品（KML，給 Google 我的地圖／Google Maps 匯入）
 src/app.template.html         App 原始碼（HTML/CSS/JS，資料以佔位符注入）
 data/
   takamatsu.json              ★ 策劃過的範圍 + 我的標記（要手改就改這個）
@@ -99,6 +108,7 @@ tools/
   make_areas.py               OSM 線段 → 階層化商店街
   add_pois.py                 加入標記並自動判斷所屬範圍
   build.py                    模板 + 資料 → 單一 HTML
+  export_kml.py                資料 → KML（給 Google 我的地圖／Google Maps）
   test_derive_sea.py          海域幾何測試
   test_app.js                 App 端對端測試（需 playwright）
 ```
