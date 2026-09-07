@@ -1159,6 +1159,21 @@ function poiRow(p) {
       <div style="color:var(--ink-soft)">›</div>
     </div>`;
 }
+// Listing for the top category chips: e.g. tapping 住宿 shows every lodging
+// pin as a flat list in the sheet (a right-hand panel on wide/landscape
+// screens per #sheet's media query), rather than only filtering the map.
+function renderCategoryList() {
+  const cats = [...visibleCats];
+  const names = cats.map((k) => (CATEGORIES[k] || CATEGORIES.other).zh);
+  const list = pois.filter((p) => visibleCats.has(p.cat || "other"))
+    .slice().sort((a, b) => nameOf(a).localeCompare(nameOf(b), "zh-Hant"));
+  let html = `<h1 class="title">${esc(names.join(" · "))}</h1>
+    <div class="subtitle">${list.length} 個標記</div>`;
+  html += list.length ? list.map(poiRow).join("") : `<div class="empty">這個分類目前沒有標記。</div>`;
+  html += credits();
+  setBody(html);
+}
+
 function areaRow(a) {
   const kind = AREA_KIND[a.kind] || AREA_KIND.arcade;
   const n = poisUnder(a.id, true).length;
@@ -1377,7 +1392,19 @@ chipsEl.addEventListener("click", (e) => {
   else visibleCats.add(k);
   if (!visibleCats.size) visibleCats = new Set(Object.keys(CATEGORIES));
   prefs.cats = [...visibleCats]; savePrefs();
-  renderChips(); draw();
+  renderChips();
+  // A narrowed-down filter (anything short of every category) doubles as a
+  // browsable list of what's currently shown -- e.g. tapping 住宿 lists every
+  // lodging pin in the sheet. Picking "全部" again clears the filter, so the
+  // list closes with it.
+  selection = null;
+  if (visibleCats.size === Object.keys(CATEGORIES).length) {
+    closeSheet();
+  } else {
+    renderCategoryList();
+    setSheet("half");
+  }
+  draw();
 });
 
 /* ---- layers / settings sheet ----------------------------------------- */

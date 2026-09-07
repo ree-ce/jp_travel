@@ -192,6 +192,24 @@ const check = (name, ok, extra) => {
   });
   check("category filter narrows the visible pins", shown === 3, `${shown} transit pins`);
 
+  // --- clicking a category chip (e.g. 住宿) doesn't just filter the map, it
+  // also lists the matching pins in the sheet -- so tapping a chip is a way
+  // to browse "every hotel" without hunting for pins on the map by eye.
+  await page.evaluate(() => { visibleCats = new Set(Object.keys(CATEGORIES)); renderChips(); });
+  const hotelCount = await page.evaluate(() => pois.filter((p) => p.cat === "hotel").length);
+  await page.click("#chips [data-cat='hotel']");
+  await page.waitForTimeout(200);
+  const chipListRows = await page.evaluate(() =>
+    [...document.querySelectorAll("#sheetbody [data-poi]")].length);
+  check("tapping a category chip lists its pins in the sheet",
+    chipListRows === hotelCount && hotelCount > 0, `${chipListRows} rows listed, ${hotelCount} hotel pois`);
+  const chipSheetOpen = await page.evaluate(() => sheetState);
+  check("the sheet opens when a category chip narrows the filter", chipSheetOpen !== "closed", chipSheetOpen);
+  await page.click("#chips [data-cat='*']");
+  await page.waitForTimeout(200);
+  const chipSheetClosed = await page.evaluate(() => sheetState);
+  check("choosing 全部 again closes the category list", chipSheetClosed === "closed", chipSheetClosed);
+
   // --- every point renders where it should regardless of which city it's
   // in. Regression test for a real, silent bug: the basemap's bbox (used by
   // clampView() as the pan boundary) only ever covered whichever single city
